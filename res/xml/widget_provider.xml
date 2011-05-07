@@ -5,4 +5,4 @@
 	android:minHeight="146dp"
 	android:updatePeriodMillis="1800000"
 	android:icon="@drawable/icon"
-	android:initialLayout="@layout/main" />
+	android:initialLayout="@layout/widget" />

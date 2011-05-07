@@ -16,15 +16,18 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
 
+import android.content.Intent;
+import android.app.PendingIntent;
+
 /**
  * Widget shows time of sunrise and sunset in Poland.
  * 
  * @author Wojciech Topolski - code
  * @author Piotr Ilski - graphic (sun, sunrise, sunset, moon)
  */
-public class SunsetWidgetProvider extends AppWidgetProvider {
+public class WidgetProvider extends AppWidgetProvider {
 	@SuppressWarnings("unused")
-	private static final String LOG_TAG = SunsetWidgetProvider.class.getName();
+	private static final String LOG_TAG = WidgetProvider.class.getName();
 	
 	private TimeZone timeZone = TimeZone.getTimeZone("Europe/Warsaw");
 	private Locale locale = new Locale("pl", "pl_PL");
@@ -72,7 +75,7 @@ public class SunsetWidgetProvider extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
             // Get the layout for the widget.
-    		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.main);
+    		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
     		
     		// Set times.
     		remoteViews.setTextViewText(R.id.SunriseTextView, sunrise);
@@ -93,6 +96,12 @@ public class SunsetWidgetProvider extends AppWidgetProvider {
         		remoteViews.setImageViewResource(R.id.ImageImageView, R.drawable.moon);
     			break;
     		}
+
+            // Create an Intent to launch ExampleActivity
+            Intent intent = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+            remoteViews.setOnClickPendingIntent(R.id.layout, pendingIntent);
     		
             // Tell the AppWidgetManager to perform an update on the current widget.
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
@@ -135,14 +144,7 @@ public class SunsetWidgetProvider extends AppWidgetProvider {
 			return DayMode.NIGHT;
 		}
 	}
-	
-	/**
-	 * Get last Sunday in month in current year.
-	 * @param calendar 
-	 * 
-	 * @param month
-	 * @return Date of last Sunday.
-	 */
+
 	private Date getLastSundayInMonth(int month) {
 		// Create instance of calendar with parameters.
 		Calendar calendar = Calendar.getInstance(timeZone, locale);

@@ -47,8 +47,20 @@
 			android:gravity="center"
 			android:layout_weight="1"
 			android:typeface="monospace"
-			android:textStyle="bold"
-			android:textSize="18sp"
+			android:textStyle="normal"
+			android:textSize="16sp"
+			android:textColor="#2858a8" />
+
+		<TextView
+			android:id="@+id/CulminationTextView"
+			android:text="00:00"
+			android:layout_height="fill_parent"
+			android:layout_width="fill_parent"
+			android:gravity="center"
+			android:layout_weight="1"
+			android:typeface="monospace"
+			android:textStyle="normal"
+			android:textSize="16sp"
 			android:textColor="#2858a8" />
 	
 		<TextView
@@ -59,8 +71,8 @@
 			android:gravity="center"
 			android:layout_weight="1"
 			android:typeface="monospace"
-			android:textStyle="bold"
-			android:textSize="18sp"
+			android:textStyle="normal"
+			android:textSize="16sp"
 			android:textColor="#2858a8" />
 		
 	</LinearLayout>

@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pory dnia</string>
+
+    <string name="the_closest_city">Najbliższe miasto:</string>
+    <string name="city_prompt">Wybierz najbliższe miasto</string>
+    <string-array name="city_array">
+        <item>Białystok</item>
+        <item>Bydgoszcz</item>
+        <item>Gdańsk</item>
+        <item>Gorzów Wlkp.</item>
+        <item>Katowice</item>
+        <item>Kielce</item>
+        <item>Kraków</item>
+        <item>Lublin</item>
+        <item>Łódź</item>
+        <item>Olsztyn</item>
+        <item>Opole</item>
+        <item>Poznań</item>
+        <item>Rzeszów</item>
+        <item>Szczecin</item>
+        <item>Toruń</item>
+        <item>Warszawa</item>
+        <item>Wrocław</item>
+        <item>Zielona Góra</item>
+    </string-array>
 </resources>

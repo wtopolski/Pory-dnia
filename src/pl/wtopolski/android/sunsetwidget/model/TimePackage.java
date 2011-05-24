@@ -2,6 +2,7 @@ package pl.wtopolski.android.sunsetwidget.model;
 
 import java.util.Calendar;
 import java.util.Date;
+
 import pl.wtopolski.android.sunsetwidget.util.TimesCalculator;
 
 public class TimePackage {

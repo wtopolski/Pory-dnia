@@ -41,6 +41,7 @@ public final class R {
         public static final int the_closest_city=0x7f050001;
     }
     public static final class xml {
-        public static final int widget_provider=0x7f040000;
+        public static final int places=0x7f040000;
+        public static final int widget_provider=0x7f040001;
     }
 }

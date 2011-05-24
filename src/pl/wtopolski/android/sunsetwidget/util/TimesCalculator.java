@@ -9,8 +9,8 @@ import java.util.TimeZone;
 
 public abstract class TimesCalculator {
     public static Calendar createCalendarForNow() {
-	    TimeZone timeZone = TimeZone.getTimeZone("Europe/Warsaw");
-	    Locale locale = new Locale("pl", "pl_PL");
+        TimeZone timeZone = TimeZone.getTimeZone("Europe/Warsaw");
+        Locale locale = new Locale("pl", "pl_PL");
         return Calendar.getInstance(timeZone, locale);
     }
 

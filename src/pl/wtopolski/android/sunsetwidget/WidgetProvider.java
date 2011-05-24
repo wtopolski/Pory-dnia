@@ -19,11 +19,11 @@ import pl.wtopolski.android.sunsetwidget.util.TimesCalculator;
 import pl.wtopolski.android.sunsetwidget.util.TimesCalculatorImpl;
 
 public class WidgetProvider extends AppWidgetProvider {
-	protected static final String LOG_TAG = WidgetProvider.class.getName();
-	
-	@Override
-	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		super.onUpdate(context, appWidgetManager, appWidgetIds);
+    protected static final String LOG_TAG = WidgetProvider.class.getName();
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
 
         Calendar calendarNow = TimesCalculator.createCalendarForNow();
 
@@ -35,21 +35,21 @@ public class WidgetProvider extends AppWidgetProvider {
 
         TimePackage times = calculator.determineForDayAndLocation(calendarNow, location);
 
-		String sunrise = formatDate(times.getSunrise());
-		String culmination = formatDate(times.getCulmination());
-		String sunset = formatDate(times.getSunset());
+        String sunrise = formatDate(times.getSunrise());
+        String culmination = formatDate(times.getCulmination());
+        String sunset = formatDate(times.getSunset());
 
-		DayMode dayMode = DayMode.determineDayMode(calendarNow, times);
+        DayMode dayMode = DayMode.determineDayMode(calendarNow, times);
 
-		final int numberOfWidgets = appWidgetIds.length;
+        final int numberOfWidgets = appWidgetIds.length;
         for (int i = 0; i < numberOfWidgets; i++) {
             int appWidgetId = appWidgetIds[i];
 
-    		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
 
-    		remoteViews.setTextViewText(R.id.SunriseTextView, sunrise);
-    		remoteViews.setTextViewText(R.id.CulminationTextView, culmination);
-    		remoteViews.setTextViewText(R.id.SunsetTextView, sunset);
+            remoteViews.setTextViewText(R.id.SunriseTextView, sunrise);
+            remoteViews.setTextViewText(R.id.CulminationTextView, culmination);
+            remoteViews.setTextViewText(R.id.SunsetTextView, sunset);
 
             int imageId = dayMode.getDrawableId();
             remoteViews.setImageViewResource(R.id.ImageImageView, imageId);
@@ -60,7 +60,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
-	}
+    }
 
     private String formatDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
@@ -68,7 +68,7 @@ public class WidgetProvider extends AppWidgetProvider {
     }
 
     @Override
-	public void onDeleted(Context context, int[] appWidgetIds) {
-		super.onDeleted(context, appWidgetIds);
-	}
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+    }
 }

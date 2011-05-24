@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 import pl.wtopolski.android.sunsetwidget.util.SharedPreferencesStorage;
+
 import static pl.wtopolski.android.sunsetwidget.util.SharedPreferencesStorage.*;
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {

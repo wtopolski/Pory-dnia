@@ -25,6 +25,8 @@ public class LocationManagerImpl implements LocationManager {
         values.put(COLUMN_NAME_LATITUDE, loc.getLatitude());
         values.put(COLUMN_NAME_LONGITUDE, loc.getLongitude());
         values.put(COLUMN_NAME_PROVINCE, loc.getProvince());
+        values.put(COLUMN_NAME_FAVOURITES, loc.getFavourites());
+        values.put(COLUMN_NAME_SELECTED, loc.getSelected());
 
         return context.getContentResolver().insert(CONTENT_URI, values);
     }

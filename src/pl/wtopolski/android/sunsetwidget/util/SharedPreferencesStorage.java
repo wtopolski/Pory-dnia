@@ -7,8 +7,10 @@ public class SharedPreferencesStorage {
     private static final String PREFERENCES_NAME = "PORY_DNIA";
     public static final String CITY_SAVED = "CITY_SAVED";
     public static final String CITY_SAVED_ID = "CITY_SAVED_ID";
+    public static final String IS_CONTENT_LOADED = "IS_CONTENT_LOADED";
     private static final String S_DEFAULT = "";
     private static final int I_DEFAULT = 0;
+    private static final boolean B_DEFAULT = false;
 
     public static String getString(Context context, String key) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCES_NAME, 0);
@@ -31,6 +33,18 @@ public class SharedPreferencesStorage {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCES_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(key, value);
+        editor.commit();
+    }
+
+    public static boolean getBoolean(Context context, String key) {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCES_NAME, 0);
+        return settings.getBoolean(key, B_DEFAULT);
+    }
+
+    public static void setBoolean(Context context, String key, boolean value) {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCES_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(key, value);
         editor.commit();
     }
 }

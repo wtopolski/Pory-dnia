@@ -39,6 +39,8 @@ public class LocationContentProvider extends ContentProvider {
         locationsProjectionMap.put(COLUMN_NAME_LATITUDE, COLUMN_NAME_LATITUDE);
         locationsProjectionMap.put(COLUMN_NAME_LONGITUDE, COLUMN_NAME_LONGITUDE);
         locationsProjectionMap.put(COLUMN_NAME_PROVINCE, COLUMN_NAME_PROVINCE);
+        locationsProjectionMap.put(COLUMN_NAME_FAVOURITES, COLUMN_NAME_FAVOURITES);
+        locationsProjectionMap.put(COLUMN_NAME_SELECTED, COLUMN_NAME_SELECTED);
     }
 
     static class DatabaseHelper extends SQLiteOpenHelper {
@@ -53,7 +55,9 @@ public class LocationContentProvider extends ContentProvider {
                     + COLUMN_NAME_NAME + " TEXT,"
                     + COLUMN_NAME_LATITUDE + " REAL,"
                     + COLUMN_NAME_LONGITUDE + " REAL,"
-                    + COLUMN_NAME_PROVINCE + " TEXT"
+                    + COLUMN_NAME_PROVINCE + " TEXT,"
+                    + COLUMN_NAME_FAVOURITES + " INTEGER,"
+                    + COLUMN_NAME_SELECTED + " INTEGER"
                     + ");");
         }
 
@@ -122,6 +126,14 @@ public class LocationContentProvider extends ContentProvider {
 
         if (values.containsKey(COLUMN_NAME_LONGITUDE) == false) {
             throw new SQLException("No longitude");
+        }
+
+        if (values.containsKey(COLUMN_NAME_FAVOURITES) == false) {
+            throw new SQLException("No favourites");
+        }
+
+        if (values.containsKey(COLUMN_NAME_SELECTED) == false) {
+            throw new SQLException("No selected");
         }
 
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();

@@ -2,12 +2,17 @@ package pl.wtopolski.android.sunsetwidget;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
+import pl.wtopolski.android.sunsetwidget.model.Location;
+import pl.wtopolski.android.sunsetwidget.util.LocationManager;
+import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
 import pl.wtopolski.android.sunsetwidget.util.SharedPreferencesStorage;
+
+import java.util.List;
 
 import static pl.wtopolski.android.sunsetwidget.util.SharedPreferencesStorage.*;
 
@@ -31,6 +36,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     private void bindDataToSpinner() {
+        /*
+        LocationManager locationManager = new LocationManagerImpl();
+        locationManager.setContext(getApplicationContext());
+        locationManager.addLocation(new Location("WWA", 1f, 2f, "Maz"));
+        List<Location> list = locationManager.getAllLocations();
+        Log.d("-------------------->", list.size() + " " + list.get(0).getName());
+        */
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.city_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(adapter);

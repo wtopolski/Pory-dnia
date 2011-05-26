@@ -5,12 +5,16 @@ public class Location {
     private double latitude;
     private double longitude;
     private String province;
+    private int favourites;
+    private int selected;
 
     public Location(String name, double latitude, double longitude, String province) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.province = province;
+        this.setFavourites(0);
+        this.setSelected(0);
     }
 
     public String getName() {
@@ -43,5 +47,21 @@ public class Location {
 
     public void setProvince(String province) {
         this.province = province;
+    }
+
+    public int getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(int favourites) {
+        this.favourites = favourites;
+    }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
     }
 }

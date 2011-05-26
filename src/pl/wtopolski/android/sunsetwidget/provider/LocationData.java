@@ -35,6 +35,8 @@ public class LocationData {
         public static final String COLUMN_NAME_LATITUDE = "latitude";
         public static final String COLUMN_NAME_LONGITUDE = "longitude";
         public static final String COLUMN_NAME_PROVINCE = "province";
+        public static final String COLUMN_NAME_FAVOURITES = "favourites";
+        public static final String COLUMN_NAME_SELECTED = "selected";
 
         // SORT
         public static final String DEFAULT_SORT_ORDER = COLUMN_NAME_NAME + " DESC";
@@ -45,7 +47,9 @@ public class LocationData {
                 COLUMN_NAME_NAME,
                 COLUMN_NAME_LATITUDE,
                 COLUMN_NAME_LONGITUDE,
-                COLUMN_NAME_PROVINCE
+                COLUMN_NAME_PROVINCE,
+                COLUMN_NAME_FAVOURITES,
+                COLUMN_NAME_SELECTED
         };
     }
 }

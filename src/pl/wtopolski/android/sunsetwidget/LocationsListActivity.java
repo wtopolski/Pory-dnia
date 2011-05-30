@@ -34,19 +34,7 @@ public class LocationsListActivity extends ListActivity {
         }
 
         Cursor cursor = locationManager.getAllLocationsByCursor();
-
-        String[] dataColumns = {LocationData.Locations.COLUMN_NAME_NAME};
-
-        int[] viewIDs = {android.R.id.text1};
-
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                this,
-                android.R.layout.simple_list_item_1,
-                cursor,
-                dataColumns,
-                viewIDs
-        );
-
+        LocationListAdapter adapter = new LocationListAdapter(this, R.layout.locations_item, cursor);
         setListAdapter(adapter);
     }
 }

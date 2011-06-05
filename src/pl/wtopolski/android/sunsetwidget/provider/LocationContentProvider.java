@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.*;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.*;
@@ -201,6 +202,9 @@ public class LocationContentProvider extends ContentProvider {
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
+
+        Log.d("update", "count: " + count);
+
         return count;
     }
 }

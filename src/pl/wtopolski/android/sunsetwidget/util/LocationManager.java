@@ -10,9 +10,15 @@ import java.util.List;
 public interface LocationManager {
     void setContext(Context context);
 
+    void deleteAll();
+
     Uri addLocation(Location loc);
 
     List<Location> getAllLocationsByList();
 
-    Cursor getAllLocationsByCursor();
+    Cursor getAllLocationsIdByCursor();
+
+    Location getLocation(int id);
+
+    void revertSelection(Location loc);
 }

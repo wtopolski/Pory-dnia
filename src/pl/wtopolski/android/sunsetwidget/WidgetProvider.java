@@ -8,13 +8,12 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationProvider;
 import android.widget.RemoteViews;
 
 import android.content.Intent;
 import android.app.PendingIntent;
+import pl.wtopolski.android.sunsetwidget.model.DayMode;
 import pl.wtopolski.android.sunsetwidget.model.TimePackage;
-import pl.wtopolski.android.sunsetwidget.util.DayMode;
 import pl.wtopolski.android.sunsetwidget.util.TimesCalculator;
 import pl.wtopolski.android.sunsetwidget.util.TimesCalculatorImpl;
 

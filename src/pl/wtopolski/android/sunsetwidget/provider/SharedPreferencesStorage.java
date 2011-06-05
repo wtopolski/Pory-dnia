@@ -1,4 +1,4 @@
-package pl.wtopolski.android.sunsetwidget.util;
+package pl.wtopolski.android.sunsetwidget.provider;
 
 import android.content.Context;
 import android.content.SharedPreferences;

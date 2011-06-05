@@ -2,19 +2,13 @@ package pl.wtopolski.android.sunsetwidget;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import pl.wtopolski.android.sunsetwidget.model.Location;
-import pl.wtopolski.android.sunsetwidget.util.LocationManager;
-import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
-import pl.wtopolski.android.sunsetwidget.util.SharedPreferencesStorage;
+import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
 
-import java.util.List;
-
-import static pl.wtopolski.android.sunsetwidget.util.SharedPreferencesStorage.*;
+import static pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage.*;
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
     private Spinner locationSpinner;

@@ -14,26 +14,34 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int day=0x7f020000;
-        public static final int frame_landscape=0x7f020001;
-        public static final int frame_portrait=0x7f020002;
-        public static final int icon=0x7f020003;
-        public static final int icon_ldpi=0x7f020004;
-        public static final int night=0x7f020005;
-        public static final int sunrise=0x7f020006;
-        public static final int sunset=0x7f020007;
+        public static final int book=0x7f020000;
+        public static final int calendar=0x7f020001;
+        public static final int day=0x7f020002;
+        public static final int frame_landscape=0x7f020003;
+        public static final int frame_portrait=0x7f020004;
+        public static final int gear=0x7f020005;
+        public static final int house=0x7f020006;
+        public static final int icon=0x7f020007;
+        public static final int icon_ldpi=0x7f020008;
+        public static final int map=0x7f020009;
+        public static final int navigation_bar_background=0x7f02000a;
+        public static final int night=0x7f02000b;
+        public static final int star=0x7f02000c;
+        public static final int sunrise=0x7f02000d;
+        public static final int sunset=0x7f02000e;
     }
     public static final class id {
-        public static final int CulminationTextView=0x7f070008;
-        public static final int ImageImageView=0x7f070006;
-        public static final int SunriseTextView=0x7f070007;
-        public static final int SunsetTextView=0x7f070009;
-        public static final int firstLine=0x7f070003;
-        public static final int icon=0x7f070001;
-        public static final int layout=0x7f070005;
-        public static final int location_spinner=0x7f070004;
-        public static final int row=0x7f070000;
-        public static final int secondLine=0x7f070002;
+        public static final int CulminationTextView=0x7f070009;
+        public static final int ImageImageView=0x7f070007;
+        public static final int SunriseTextView=0x7f070008;
+        public static final int SunsetTextView=0x7f07000a;
+        public static final int firstLine=0x7f070004;
+        public static final int icon=0x7f070002;
+        public static final int layout=0x7f070006;
+        public static final int location_spinner=0x7f070005;
+        public static final int navigation_bar=0x7f070000;
+        public static final int row=0x7f070001;
+        public static final int secondLine=0x7f070003;
     }
     public static final class layout {
         public static final int locations=0x7f030000;

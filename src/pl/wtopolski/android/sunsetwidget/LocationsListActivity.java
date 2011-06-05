@@ -3,18 +3,21 @@ package pl.wtopolski.android.sunsetwidget;
 import android.app.ListActivity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.SimpleCursorAdapter;
-import pl.wtopolski.android.sunsetwidget.R;
-import pl.wtopolski.android.sunsetwidget.provider.LocationData;
+import org.xmlpull.v1.XmlPullParserException;
+import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
+import pl.wtopolski.android.sunsetwidget.util.DataLoader;
+import pl.wtopolski.android.sunsetwidget.util.DataLoaderImpl;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.model.Location;
-import pl.wtopolski.android.sunsetwidget.util.SharedPreferencesStorage;
+
+import java.io.IOException;
 
 public class LocationsListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.locations);
 
         // TODO
         // 1) Create AsyncTask with ProgressBar
@@ -25,16 +28,21 @@ public class LocationsListActivity extends ListActivity {
         locationManager.setContext(getApplicationContext());
 
         if (!SharedPreferencesStorage.getBoolean(getApplicationContext(), SharedPreferencesStorage.IS_CONTENT_LOADED)) {
-            for (int i = 0; i < 10; i++) {
-                locationManager.setContext(getApplicationContext());
-                locationManager.addLocation(new Location("Łódź " + i, 1f, 2f, "Łódzkie"));
+            locationManager.deleteAll();
 
+            try {
+                DataLoader dataLoader = new DataLoaderImpl();
+                dataLoader.fill(getApplicationContext(), locationManager, R.xml.places);
+                SharedPreferencesStorage.setBoolean(getApplicationContext(), SharedPreferencesStorage.IS_CONTENT_LOADED, true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            SharedPreferencesStorage.setBoolean(getApplicationContext(), SharedPreferencesStorage.IS_CONTENT_LOADED, true);
         }
 
-        Cursor cursor = locationManager.getAllLocationsByCursor();
+        Cursor cursor = locationManager.getAllLocationsIdByCursor();
+        startManagingCursor(cursor);
         LocationListAdapter adapter = new LocationListAdapter(this, R.layout.locations_item, cursor);
+        adapter.setLocationManager(locationManager);
         setListAdapter(adapter);
     }
 }

@@ -1,6 +1,7 @@
 package pl.wtopolski.android.sunsetwidget.model;
 
 public class Location {
+    private int id;
     private String name;
     private double latitude;
     private double longitude;
@@ -8,13 +9,22 @@ public class Location {
     private int favourites;
     private int selected;
 
-    public Location(String name, double latitude, double longitude, String province) {
+    public Location(int id, String name, double latitude, double longitude, String province) {
+        this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.province = province;
         this.setFavourites(0);
         this.setSelected(0);
+    }
+
+    public int getImageResourse() {
+        return (favourites > 0) ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -63,5 +73,9 @@ public class Location {
 
     public void setSelected(int selected) {
         this.selected = selected;
+    }
+
+    public void revertFavouriteState() {
+        favourites = (favourites > 0) ? 0 : 1;
     }
 }

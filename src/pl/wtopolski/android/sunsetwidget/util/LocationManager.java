@@ -8,15 +8,16 @@ import pl.wtopolski.android.sunsetwidget.model.Location;
 import java.util.List;
 
 public interface LocationManager {
+
     void setContext(Context context);
 
     void deleteAll();
 
     Uri addLocation(Location loc);
 
-    List<Location> getAllLocationsByList();
-
     Cursor getAllLocationsIdByCursor();
+
+    Cursor getAllFavouritesLocationsIdByCursor();
 
     Location getLocation(int id);
 

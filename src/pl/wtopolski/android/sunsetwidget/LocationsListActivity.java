@@ -1,32 +1,46 @@
 package pl.wtopolski.android.sunsetwidget;
 
-import android.app.ListActivity;
 import android.database.Cursor;
 import android.os.Bundle;
-import org.xmlpull.v1.XmlPullParserException;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import com.google.inject.Inject;
 import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
 import pl.wtopolski.android.sunsetwidget.util.DataLoader;
 import pl.wtopolski.android.sunsetwidget.util.DataLoaderImpl;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
-import pl.wtopolski.android.sunsetwidget.model.Location;
+import roboguice.activity.RoboListActivity;
 
-import java.io.IOException;
+public class LocationsListActivity extends RoboListActivity {
+    private static final String LOG_TAG = LocationsListActivity.class.getSimpleName();
 
-public class LocationsListActivity extends ListActivity {
+    private LocationManager locationManager;
+    private boolean shouldShowAll = true;
+    private LocationListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.locations);
 
-        // TODO
-        // 1) Create AsyncTask with ProgressBar
-        // 2) Load 50 tmp positions with 1sec delay per location
-        // 3) Write XML parser for raw data
+        createLocationManager();
+        loadData();
 
-        LocationManager locationManager = new LocationManagerImpl();
+        if (shouldShowAll) {
+            showAll();
+        } else {
+            showFavouritesOnly();
+        }
+    }
+
+    private void createLocationManager() {
+        locationManager = new LocationManagerImpl();
         locationManager.setContext(getApplicationContext());
+    }
 
+    private void loadData() {
         if (!SharedPreferencesStorage.getBoolean(getApplicationContext(), SharedPreferencesStorage.IS_CONTENT_LOADED)) {
             locationManager.deleteAll();
 
@@ -38,11 +52,60 @@ public class LocationsListActivity extends ListActivity {
                 e.printStackTrace();
             }
         }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.locations_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.new_location:
+                newLocation();
+                return true;
+            case R.id.show_all:
+                showAll();
+                return true;
+            case R.id.show_favourites_only:
+                showFavouritesOnly();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showFavouritesOnly() {
+        Cursor cursor = locationManager.getAllFavouritesLocationsIdByCursor();
+        showLocations(cursor);
+    }
+
+    private void showAll() {
         Cursor cursor = locationManager.getAllLocationsIdByCursor();
+        showLocations(cursor);
+    }
+
+    private void newLocation() {
+    }
+
+    private void showLocations(Cursor cursor) {
         startManagingCursor(cursor);
-        LocationListAdapter adapter = new LocationListAdapter(this, R.layout.locations_item, cursor);
+
+        if (adapter == null) {
+            adapter = createAdapter(cursor);
+            setListAdapter(adapter);
+        } else {
+            adapter.changeCursor(cursor);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private LocationListAdapter createAdapter(Cursor cursor) {
+        adapter = new LocationListAdapter(this, R.layout.locations_item, cursor);
         adapter.setLocationManager(locationManager);
-        setListAdapter(adapter);
+        return adapter;
     }
 }

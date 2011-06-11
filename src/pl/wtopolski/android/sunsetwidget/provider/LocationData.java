@@ -43,7 +43,7 @@ public class LocationData {
         public static final String DEFAULT_SORT_ORDER = COLUMN_NAME_NAME + " ASC";
 
         // STANDARD PROJECTION
-        public static final String[] STANDARD_LOCATION_PROJECTION = new String[] {
+        public static final String[] STANDARD_LOCATION_PROJECTION = new String[]{
                 COLUMN_NAME_ID,
                 COLUMN_NAME_NAME,
                 COLUMN_NAME_LATITUDE,
@@ -54,7 +54,7 @@ public class LocationData {
         };
 
         // ID ONLY PROJECTION
-        public static final String[] ID_ONLY_LOCATION_PROJECTION = new String[] {
+        public static final String[] ID_ONLY_LOCATION_PROJECTION = new String[]{
                 COLUMN_NAME_ID
         };
     }

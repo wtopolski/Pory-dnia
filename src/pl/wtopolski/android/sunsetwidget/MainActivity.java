@@ -11,7 +11,6 @@ import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
 import static pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage.*;
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
-    private Spinner locationSpinner;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +21,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     private void findViews() {
-        locationSpinner = (Spinner) findViewById(R.id.location_spinner);
     }
 
     private void bindData() {
@@ -37,16 +35,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         List<Location> list = locationManager.getAllLocations();
         Log.d("-------------------->", list.size() + " " + list.get(0).getName());
         */
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.city_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locationSpinner.setAdapter(adapter);
-        locationSpinner.setOnItemSelectedListener(this);
     }
 
     private void restoreContent() {
         int citySavedId = SharedPreferencesStorage.getInt(getApplicationContext(), CITY_SAVED_ID);
-        locationSpinner.setSelection(citySavedId);
     }
 
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {

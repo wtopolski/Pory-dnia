@@ -10,13 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dip"
         android:layout_marginTop="3dip"
-        android:text="@string/the_closest_city" />
-
-    <Spinner
-        android:id="@+id/location_spinner"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:prompt="@string/city_prompt" />
+        android:text="the_closest_city" />
 
 
 </LinearLayout>

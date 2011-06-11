@@ -5,16 +5,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import pl.wtopolski.android.sunsetwidget.model.Location;
+import roboguice.inject.ContextScoped;
 
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.*;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class LocationManagerImpl implements LocationManager {
-
-    private Context context;
+    protected Context context;
 
     public void setContext(Context context) {
         this.context = context;
@@ -36,46 +35,18 @@ public class LocationManagerImpl implements LocationManager {
         return context.getContentResolver().insert(CONTENT_URI, values);
     }
 
-    public List<Location> getAllLocationsByList() {
-        List<Location> list = new LinkedList<Location>();
-        Cursor cursor = context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, null, null, DEFAULT_SORT_ORDER);
-
-        if (cursor.moveToFirst()) {
-            int idColumn = cursor.getColumnIndex(COLUMN_NAME_ID);
-            int nameColumn = cursor.getColumnIndex(COLUMN_NAME_NAME);
-            int latitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LATITUDE);
-            int longitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LONGITUDE);
-            int provinceColumn = cursor.getColumnIndex(COLUMN_NAME_PROVINCE);
-            int selectedColumn = cursor.getColumnIndex(COLUMN_NAME_SELECTED);
-            int favouritesColumn = cursor.getColumnIndex(COLUMN_NAME_FAVOURITES);
-
-            do {
-                int id = cursor.getInt(idColumn);
-                String name = cursor.getString(nameColumn);
-                double latitude = cursor.getDouble(latitudeColumn);
-                double longitude = cursor.getDouble(longitudeColumn);
-                String province = cursor.getString(provinceColumn);
-                int selected = cursor.getInt(selectedColumn);
-                int favourites = cursor.getInt(favouritesColumn);
-
-                Location loc = new Location(id, name, latitude, longitude, province);
-                loc.setSelected(selected);
-                loc.setFavourites(favourites);
-                list.add(loc);
-            } while (cursor.moveToNext());
-        }
-
-        return list;
-    }
-
     public Cursor getAllLocationsIdByCursor() {
         return context.getContentResolver().query(CONTENT_URI, ID_ONLY_LOCATION_PROJECTION, null, null, DEFAULT_SORT_ORDER);
     }
 
+    public Cursor getAllFavouritesLocationsIdByCursor() {
+        return context.getContentResolver().query(CONTENT_URI, ID_ONLY_LOCATION_PROJECTION, COLUMN_NAME_FAVOURITES + "=?", new String[]{"1"}, DEFAULT_SORT_ORDER);
+    }
+
     public Location getLocation(int id) {
-        Uri location = ContentUris.withAppendedId(CONTENT_URI, id);
-        Cursor cursor = context.getContentResolver().query(location, STANDARD_LOCATION_PROJECTION, null, null, null);
-        Location loc = null;
+        Uri locationUri = ContentUris.withAppendedId(CONTENT_URI, id);
+        Cursor cursor = context.getContentResolver().query(locationUri, STANDARD_LOCATION_PROJECTION, null, null, null);
+        Location location = null;
 
         if (cursor.moveToFirst()) {
             int nameColumn = cursor.getColumnIndex(COLUMN_NAME_NAME);
@@ -92,13 +63,13 @@ public class LocationManagerImpl implements LocationManager {
             int selected = cursor.getInt(selectedColumn);
             int favourites = cursor.getInt(favouritesColumn);
 
-            loc = new Location(id, name, latitude, longitude, province);
-            loc.setSelected(selected);
-            loc.setFavourites(favourites);
+            location = new Location(id, name, latitude, longitude, province);
+            location.setSelected(selected);
+            location.setFavourites(favourites);
         }
 
         cursor.close();
-        return loc;
+        return location;
     }
 
     public void revertSelection(Location location) {

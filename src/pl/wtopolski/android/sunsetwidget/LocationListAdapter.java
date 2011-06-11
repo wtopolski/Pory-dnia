@@ -23,9 +23,7 @@ public class LocationListAdapter extends CursorAdapter {
     public LocationListAdapter(Context context, int layout, Cursor cursor) {
         super(context, cursor);
         this.layout = layout;
-
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         idColumn = cursor.getColumnIndex(LocationData.Locations._ID);
     }
 

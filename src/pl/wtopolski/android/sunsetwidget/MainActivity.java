@@ -1,14 +1,11 @@
 package pl.wtopolski.android.sunsetwidget;
 
+import static pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage.CITY_SAVED_ID;
+import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
-
-import static pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage.*;
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
 

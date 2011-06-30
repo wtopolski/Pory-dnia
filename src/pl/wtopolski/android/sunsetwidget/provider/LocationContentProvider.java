@@ -1,6 +1,27 @@
 package pl.wtopolski.android.sunsetwidget.provider;
 
-import android.content.*;
+import static android.provider.BaseColumns._ID;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.AUTHORITY;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_FAVOURITES;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LATITUDE;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LONGITUDE;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_NAME;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_PROVINCE;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_SELECTED;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.CONTENT_URI;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.DEFAULT_SORT_ORDER;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.LOCATION_ID_PATH_POSITION;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_CONTENT;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_CONTENT_ID;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.TABLE_NAME;
+
+import java.util.HashMap;
+
+import android.content.ContentProvider;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,15 +29,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
-
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.*;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.*;
-
-import java.util.HashMap;
 
 public class LocationContentProvider extends ContentProvider {
-    private static final String LOG_TAG = LocationContentProvider.class.getSimpleName();
+    protected static final String LOG_TAG = LocationContentProvider.class.getSimpleName();
 
     private static final String DATABASE_NAME = "locations.db";
     private static final int DATABASE_VERSION = 1;
@@ -102,7 +117,14 @@ public class LocationContentProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return null;
+    	switch (uriMatcher.match(uri)) {
+        case LOCATIONS:
+            return LocationData.Locations.CONTENT_TYPE;
+        case LOCATION_ID:
+            return LocationData.Locations.CONTENT_ITEM_TYPE;
+        default:
+            throw new IllegalArgumentException("Unknown URI " + uri);
+    	}
     }
 
     @Override
@@ -163,7 +185,7 @@ public class LocationContentProvider extends ContentProvider {
             case LOCATION_ID:
                 String finalWhere = _ID + " = " + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
 
-                if (where != null) {
+                if (!TextUtils.isEmpty(where)) {
                     finalWhere = finalWhere + " AND " + where;
                 }
 
@@ -187,11 +209,9 @@ public class LocationContentProvider extends ContentProvider {
                 count = db.update(TABLE_NAME, contentValues, where, whereArgs);
                 break;
             case LOCATION_ID:
-                String locationId = uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
-
                 String finalWhere = _ID + " = " + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
 
-                if (where != null) {
+                if (!TextUtils.isEmpty(where)) {
                     finalWhere = finalWhere + " AND " + where;
                 }
 
@@ -202,8 +222,6 @@ public class LocationContentProvider extends ContentProvider {
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
-
-        Log.d("update", "count: " + count);
 
         return count;
     }

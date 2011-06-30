@@ -7,7 +7,7 @@
 
     <RelativeLayout
             android:id="@+id/navigation_bar"
-            android:layout_height="49dip"
+            android:layout_height="45dip"
             android:layout_width="fill_parent"
             android:background="@drawable/navigation_bar_background"
             android:gravity="center_vertical">

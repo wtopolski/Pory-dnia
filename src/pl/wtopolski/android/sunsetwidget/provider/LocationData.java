@@ -39,6 +39,10 @@ public class LocationData {
         public static final String COLUMN_NAME_FAVOURITES = "favourites";
         public static final String COLUMN_NAME_SELECTED = "selected";
 
+        // TYPES
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.locations.place";
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.locations.place";
+        
         // SORT
         public static final String DEFAULT_SORT_ORDER = COLUMN_NAME_NAME + " ASC";
 

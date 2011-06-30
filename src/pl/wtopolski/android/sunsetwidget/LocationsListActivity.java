@@ -13,7 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class LocationsListActivity extends RoboListActivity {
-    private static final String LOG_TAG = LocationsListActivity.class.getSimpleName();
+    protected static final String LOG_TAG = LocationsListActivity.class.getSimpleName();
 
     private LocationManager locationManager;
     private boolean shouldShowAll = true;

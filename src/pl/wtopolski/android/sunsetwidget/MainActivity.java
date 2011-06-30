@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     private void restoreContent() {
-        int citySavedId = SharedPreferencesStorage.getInt(getApplicationContext(), CITY_SAVED_ID);
+        //int citySavedId = SharedPreferencesStorage.getInt(getApplicationContext(), CITY_SAVED_ID);
     }
 
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {

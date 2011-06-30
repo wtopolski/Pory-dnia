@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pory dnia</string>
+    <string name="add_location">Dodaj</string>
+    <string name="show_all">Wszystkie</string>
+    <string name="show_favourites_only">Ulubione</string>
+    <string name="empty">Brak elementów do wyświetlenia</string>
+</resources>

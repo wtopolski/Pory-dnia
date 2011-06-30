@@ -1,16 +1,21 @@
 package pl.wtopolski.android.sunsetwidget.util;
 
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_FAVOURITES;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LATITUDE;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LONGITUDE;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_NAME;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_PROVINCE;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_SELECTED;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.CONTENT_URI;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.DEFAULT_SORT_ORDER;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.ID_ONLY_LOCATION_PROJECTION;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.STANDARD_LOCATION_PROJECTION;
+import pl.wtopolski.android.sunsetwidget.model.Location;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import pl.wtopolski.android.sunsetwidget.model.Location;
-import roboguice.inject.ContextScoped;
-
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.*;
 
 public class LocationManagerImpl implements LocationManager {
     protected Context context;

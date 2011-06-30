@@ -1,17 +1,16 @@
 package pl.wtopolski.android.sunsetwidget;
 
+import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
+import pl.wtopolski.android.sunsetwidget.util.DataLoader;
+import pl.wtopolski.android.sunsetwidget.util.DataLoaderImpl;
+import pl.wtopolski.android.sunsetwidget.util.LocationManager;
+import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
+import roboguice.activity.RoboListActivity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import com.google.inject.Inject;
-import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
-import pl.wtopolski.android.sunsetwidget.util.DataLoader;
-import pl.wtopolski.android.sunsetwidget.util.DataLoaderImpl;
-import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
-import pl.wtopolski.android.sunsetwidget.util.LocationManager;
-import roboguice.activity.RoboListActivity;
 
 public class LocationsListActivity extends RoboListActivity {
     private static final String LOG_TAG = LocationsListActivity.class.getSimpleName();

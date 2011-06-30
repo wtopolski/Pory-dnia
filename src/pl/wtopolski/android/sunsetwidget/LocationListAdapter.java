@@ -1,7 +1,9 @@
 package pl.wtopolski.android.sunsetwidget;
 
+import pl.wtopolski.android.sunsetwidget.model.Location;
+import pl.wtopolski.android.sunsetwidget.provider.LocationData;
+import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +11,6 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import pl.wtopolski.android.sunsetwidget.model.Location;
-import pl.wtopolski.android.sunsetwidget.provider.LocationData;
-import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 
 public class LocationListAdapter extends CursorAdapter {
 	protected static final String LOG_TAG = LocationListAdapter.class.getName();

@@ -1,13 +1,13 @@
 package pl.wtopolski.android.sunsetwidget.util;
 
-import android.content.Context;
-import android.content.res.XmlResourceParser;
-import android.util.Log;
+import java.io.IOException;
+
 import org.xmlpull.v1.XmlPullParserException;
+
 import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.model.Location;
-
-import java.io.IOException;
+import android.content.Context;
+import android.content.res.XmlResourceParser;
 
 public class DataLoaderImpl implements DataLoader {
     private static final String PLACE_TAG = "place";

@@ -22,13 +22,8 @@
 		<maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version>
 		<maven-eclipse-plugin-version>2.8</maven-eclipse-plugin-version>
 		<android-version>2.1_r1</android-version>
-		<!-- Available Android versions: 1.5_r3, 1.5_r4, 1.6_r2, 2.1.2, 2.1_r1, 
-			2.2.1, 2.3.1, 2.3.3 -->
+		<!-- 1.5_r3, 1.5_r4, 1.6_r2, 2.1.2, 2.1_r1, 2.2.1, 2.3.1, 2.3.3 -->
 		<spring-android-version>1.0.0.M3</spring-android-version>
-		<spring-social-version>1.0.0.M3</spring-social-version>
-		<jackson-version>1.8.0</jackson-version>
-		<simple-version>2.4.1</simple-version>
-		<android-rome-version>1.0.0-r2</android-rome-version>
 	</properties>
 
 	<build>
@@ -80,102 +75,18 @@
 			<version>${spring-android-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.android</groupId>
-			<artifactId>spring-android-auth</artifactId>
-			<version>${spring-android-version}</version>
+		    <groupId>org.roboguice</groupId>
+		    <artifactId>roboguice</artifactId>
+		    <version>1.1.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.social</groupId>
-			<artifactId>spring-social-twitter</artifactId>
-			<version>${spring-social-version}</version>
-			<exclusions>
-				<exclusion>
-					<!-- Exclude in favor of Spring Android RestTemplate -->
-					<artifactId>spring-social-web</artifactId>
-					<groupId>org.springframework.social</groupId>
-				</exclusion>
-				<exclusion>
-					<!-- Provided by Android -->
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.social</groupId>
-			<artifactId>spring-social-facebook</artifactId>
-			<version>${spring-social-version}</version>
-			<exclusions>
-				<exclusion>
-					<!-- Exclude in favor of Spring Android RestTemplate -->
-					<artifactId>spring-social-web</artifactId>
-					<groupId>org.springframework.social</groupId>
-				</exclusion>
-				<exclusion>
-					<!-- Provided by Android -->
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-webmvc</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<!-- Using Jackson for JSON marshaling -->
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${jackson-version}</version>
-		</dependency>
-		<dependency>
-			<!-- Using Simple for XML marshaling -->
-			<groupId>org.simpleframework</groupId>
-			<artifactId>simple-xml</artifactId>
-			<version>${simple-version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>stax</artifactId>
-					<groupId>stax</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>stax-api</artifactId>
-					<groupId>stax</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<!-- Using ROME for RSS and ATOM feeds -->
-			<groupId>com.google.code.android-rome-feed-reader</groupId>
-			<artifactId>android-rome-feed-reader</artifactId>
-			<version>${android-rome-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.roboguice</groupId>
-			<artifactId>roboguice</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>3.0</version>
-            <classifier>no_aop</classifier>
-        </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>1.3.9</version>
-        </dependency>
+		    <groupId>com.google.inject</groupId>
+		    <artifactId>guice</artifactId>
+		    <version>2.0-no_aop</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
-		<!-- For developing with Android ROME Feed Reader -->
-		<repository>
-			<id>android-rome-feed-reader-repository</id>
-			<name>Android ROME Feed Reader Repository</name>
-			<url>https://android-rome-feed-reader.googlecode.com/svn/maven2/releases</url>
-		</repository>
-		<!-- For developing against latest Spring milestones -->
 		<repository>
 			<id>org.springframework.maven.milestone</id>
 			<name>Spring Maven Milestone Repository</name>

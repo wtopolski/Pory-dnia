@@ -6,8 +6,7 @@ public class Location {
     private double latitude;
     private double longitude;
     private String province;
-    private int favourites;
-    private int selected;
+    private SelectionType type;
 
     public Location(int id, String name, double latitude, double longitude, String province) {
         this.id = id;
@@ -15,12 +14,11 @@ public class Location {
         this.latitude = latitude;
         this.longitude = longitude;
         this.province = province;
-        this.setFavourites(0);
-        this.setSelected(0);
+        this.type = SelectionType.NONE;
     }
 
     public int getImageResourse() {
-        return (favourites > 0) ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off;
+    	return type.getImage();
     }
 
     public int getId() {
@@ -58,24 +56,17 @@ public class Location {
     public void setProvince(String province) {
         this.province = province;
     }
+    
+    public SelectionType getType() {
+		return type;
+	}
 
-    public int getFavourites() {
-        return favourites;
-    }
+	public void setType(SelectionType type) {
+		this.type = type;
+	}
 
-    public void setFavourites(int favourites) {
-        this.favourites = favourites;
-    }
-
-    public int getSelected() {
-        return selected;
-    }
-
-    public void setSelected(int selected) {
-        this.selected = selected;
-    }
-
-    public void revertFavouriteState() {
-        favourites = (favourites > 0) ? 0 : 1;
-    }
+	@Override
+	public String toString() {
+		return name + ", " + province;
+	}
 }

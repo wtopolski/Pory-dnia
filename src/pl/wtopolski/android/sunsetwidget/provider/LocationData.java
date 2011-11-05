@@ -36,15 +36,14 @@ public class LocationData {
         public static final String COLUMN_NAME_LATITUDE = "latitude";
         public static final String COLUMN_NAME_LONGITUDE = "longitude";
         public static final String COLUMN_NAME_PROVINCE = "province";
-        public static final String COLUMN_NAME_FAVOURITES = "favourites";
-        public static final String COLUMN_NAME_SELECTED = "selected";
+        public static final String COLUMN_NAME_SELECTION = "selection";
 
         // TYPES
         public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.locations.place";
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.locations.place";
         
         // SORT
-        public static final String DEFAULT_SORT_ORDER = COLUMN_NAME_NAME + " ASC";
+        public static final String DEFAULT_SORT_ORDER = COLUMN_NAME_NAME + " COLLATE LOCALIZED ASC";
 
         // STANDARD PROJECTION
         public static final String[] STANDARD_LOCATION_PROJECTION = new String[]{
@@ -53,13 +52,7 @@ public class LocationData {
                 COLUMN_NAME_LATITUDE,
                 COLUMN_NAME_LONGITUDE,
                 COLUMN_NAME_PROVINCE,
-                COLUMN_NAME_FAVOURITES,
-                COLUMN_NAME_SELECTED
-        };
-
-        // ID ONLY PROJECTION
-        public static final String[] ID_ONLY_LOCATION_PROJECTION = new String[]{
-                COLUMN_NAME_ID
+                COLUMN_NAME_SELECTION
         };
     }
 }

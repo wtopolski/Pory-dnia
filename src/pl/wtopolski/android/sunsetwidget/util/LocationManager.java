@@ -18,6 +18,10 @@ public interface LocationManager {
     Cursor getAllFavouritesLocationsIdByCursor();
 
     Location getLocation(int id);
-
-    void revertSelection(Location loc);
+    
+    boolean makeNoFavourite(Location location);
+    
+    boolean makeFavourite(Location location);
+    
+    boolean selectAsMain(Location location);
 }

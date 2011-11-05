@@ -1,16 +1,15 @@
 package pl.wtopolski.android.sunsetwidget.util;
 
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_FAVOURITES;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LATITUDE;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LONGITUDE;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_NAME;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_PROVINCE;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_SELECTED;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_SELECTION;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.CONTENT_URI;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.DEFAULT_SORT_ORDER;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.ID_ONLY_LOCATION_PROJECTION;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.STANDARD_LOCATION_PROJECTION;
 import pl.wtopolski.android.sunsetwidget.model.Location;
+import pl.wtopolski.android.sunsetwidget.model.SelectionType;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -34,18 +33,16 @@ public class LocationManagerImpl implements LocationManager {
         values.put(COLUMN_NAME_LATITUDE, loc.getLatitude());
         values.put(COLUMN_NAME_LONGITUDE, loc.getLongitude());
         values.put(COLUMN_NAME_PROVINCE, loc.getProvince());
-        values.put(COLUMN_NAME_FAVOURITES, loc.getFavourites());
-        values.put(COLUMN_NAME_SELECTED, loc.getSelected());
-
+        values.put(COLUMN_NAME_SELECTION, loc.getType().getValue());
         return context.getContentResolver().insert(CONTENT_URI, values);
     }
 
     public Cursor getAllLocationsIdByCursor() {
-        return context.getContentResolver().query(CONTENT_URI, ID_ONLY_LOCATION_PROJECTION, null, null, DEFAULT_SORT_ORDER);
+        return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, null, null, DEFAULT_SORT_ORDER);
     }
 
     public Cursor getAllFavouritesLocationsIdByCursor() {
-        return context.getContentResolver().query(CONTENT_URI, ID_ONLY_LOCATION_PROJECTION, COLUMN_NAME_FAVOURITES + "=?", new String[]{"1"}, DEFAULT_SORT_ORDER);
+    	return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_NAME_SELECTION + ">=?", new String[]{String.valueOf(SelectionType.FAVOURITE.getValue())}, DEFAULT_SORT_ORDER);
     }
 
     public Location getLocation(int id) {
@@ -58,37 +55,59 @@ public class LocationManagerImpl implements LocationManager {
             int latitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LATITUDE);
             int longitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LONGITUDE);
             int provinceColumn = cursor.getColumnIndex(COLUMN_NAME_PROVINCE);
-            int selectedColumn = cursor.getColumnIndex(COLUMN_NAME_SELECTED);
-            int favouritesColumn = cursor.getColumnIndex(COLUMN_NAME_FAVOURITES);
+            int selectionColumn = cursor.getColumnIndex(COLUMN_NAME_SELECTION);
 
             String name = cursor.getString(nameColumn);
             double latitude = cursor.getDouble(latitudeColumn);
             double longitude = cursor.getDouble(longitudeColumn);
             String province = cursor.getString(provinceColumn);
-            int selected = cursor.getInt(selectedColumn);
-            int favourites = cursor.getInt(favouritesColumn);
+            int selection = cursor.getInt(selectionColumn);
 
             location = new Location(id, name, latitude, longitude, province);
-            location.setSelected(selected);
-            location.setFavourites(favourites);
+            location.setType(SelectionType.getSelectionType(selection));
         }
 
         cursor.close();
         return location;
     }
 
-    public void revertSelection(Location location) {
-        int backupState = location.getFavourites();
-
+    public boolean makeNoFavourite(Location location) {
         Uri locationUri = ContentUris.withAppendedId(CONTENT_URI, location.getId());
 
+        if (location.getType() != SelectionType.FAVOURITE) {
+        	return false;
+        }
+        
         ContentValues values = new ContentValues(1);
-        location.revertFavouriteState();
-        values.put(COLUMN_NAME_FAVOURITES, location.getFavourites());
+        values.put(COLUMN_NAME_SELECTION, SelectionType.NONE.getValue());
 
         int count = context.getContentResolver().update(locationUri, values, null, null);
-        if (count <= 0) {
-            location.setFavourites(backupState);
-        }
+        return (count <= 0) ? false : true;
     }
+
+    public boolean makeFavourite(Location location) {
+        Uri locationUri = ContentUris.withAppendedId(CONTENT_URI, location.getId());
+
+        if (location.getType() != SelectionType.NONE) {
+        	return true;
+        }
+        
+        ContentValues values = new ContentValues(1);
+        values.put(COLUMN_NAME_SELECTION, SelectionType.FAVOURITE.getValue());
+
+        int count = context.getContentResolver().update(locationUri, values, null, null);
+        return (count <= 0) ? false : true;
+    }
+
+	public boolean selectAsMain(Location location) {
+        ContentValues values = new ContentValues(1);
+        values.put(COLUMN_NAME_SELECTION, SelectionType.FAVOURITE.getValue());
+        context.getContentResolver().update(CONTENT_URI, values, COLUMN_NAME_SELECTION + "=?", new String[]{String.valueOf(SelectionType.SELECTED.getValue())});
+		
+		Uri locationUri = ContentUris.withAppendedId(CONTENT_URI, location.getId());
+        values = new ContentValues(1);
+        values.put(COLUMN_NAME_SELECTION, SelectionType.SELECTED.getValue());
+        int count = context.getContentResolver().update(locationUri, values, null, null);
+        return (count <= 0) ? false : true;
+	}
 }

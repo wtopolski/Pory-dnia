@@ -2,12 +2,11 @@ package pl.wtopolski.android.sunsetwidget.provider;
 
 import static android.provider.BaseColumns._ID;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.AUTHORITY;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_FAVOURITES;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LATITUDE;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LONGITUDE;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_NAME;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_PROVINCE;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_SELECTED;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_SELECTION;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.CONTENT_URI;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.DEFAULT_SORT_ORDER;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.LOCATION_ID_PATH_POSITION;
@@ -55,8 +54,7 @@ public class LocationContentProvider extends ContentProvider {
         locationsProjectionMap.put(COLUMN_NAME_LATITUDE, COLUMN_NAME_LATITUDE);
         locationsProjectionMap.put(COLUMN_NAME_LONGITUDE, COLUMN_NAME_LONGITUDE);
         locationsProjectionMap.put(COLUMN_NAME_PROVINCE, COLUMN_NAME_PROVINCE);
-        locationsProjectionMap.put(COLUMN_NAME_FAVOURITES, COLUMN_NAME_FAVOURITES);
-        locationsProjectionMap.put(COLUMN_NAME_SELECTED, COLUMN_NAME_SELECTED);
+        locationsProjectionMap.put(COLUMN_NAME_SELECTION, COLUMN_NAME_SELECTION);
     }
 
     static class DatabaseHelper extends SQLiteOpenHelper {
@@ -72,8 +70,7 @@ public class LocationContentProvider extends ContentProvider {
                     + COLUMN_NAME_LATITUDE + " REAL,"
                     + COLUMN_NAME_LONGITUDE + " REAL,"
                     + COLUMN_NAME_PROVINCE + " TEXT,"
-                    + COLUMN_NAME_FAVOURITES + " INTEGER,"
-                    + COLUMN_NAME_SELECTED + " INTEGER"
+                    + COLUMN_NAME_SELECTION + " INTEGER"
                     + ");");
         }
 
@@ -151,11 +148,7 @@ public class LocationContentProvider extends ContentProvider {
             throw new SQLException("No longitude");
         }
 
-        if (values.containsKey(COLUMN_NAME_FAVOURITES) == false) {
-            throw new SQLException("No favourites");
-        }
-
-        if (values.containsKey(COLUMN_NAME_SELECTED) == false) {
+        if (values.containsKey(COLUMN_NAME_SELECTION) == false) {
             throw new SQLException("No selected");
         }
 
@@ -200,7 +193,8 @@ public class LocationContentProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String where, String[] whereArgs) {// Opens the database object in "write" mode.
+    public int update(Uri uri, ContentValues contentValues, String where, String[] whereArgs) {
+    	// Opens the database object in "write" mode.
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int count;
 

@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.app.PendingIntent;
 import pl.wtopolski.android.sunsetwidget.model.DayMode;
 import pl.wtopolski.android.sunsetwidget.model.TimePackage;
+import pl.wtopolski.android.sunsetwidget.util.LocationManager;
+import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
 import pl.wtopolski.android.sunsetwidget.util.TimesCalculator;
 import pl.wtopolski.android.sunsetwidget.util.TimesCalculatorImpl;
 
@@ -28,9 +30,13 @@ public class WidgetProvider extends AppWidgetProvider {
 
         TimesCalculator calculator = new TimesCalculatorImpl();
 
+        LocationManager locationManager = new LocationManagerImpl();
+        locationManager.setContext(context);
+        pl.wtopolski.android.sunsetwidget.model.Location mainLocation = locationManager.getMainLocation();
+        
         Location location = new Location("my");
-        location.setLatitude(52.069167);
-        location.setLongitude(19.480556);
+        location.setLatitude(mainLocation.getLatitude());
+        location.setLongitude(mainLocation.getLongitude());
 
         TimePackage times = calculator.determineForDayAndLocation(calendarNow, location);
 

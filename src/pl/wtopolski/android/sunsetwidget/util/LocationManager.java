@@ -24,4 +24,6 @@ public interface LocationManager {
     boolean makeFavourite(Location location);
     
     boolean selectAsMain(Location location);
+    
+    Location getMainLocation();
 }

@@ -13,9 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ListView;
 
 public class LocationsListActivity extends RoboListActivity {
     protected static final String LOG_TAG = LocationsListActivity.class.getSimpleName();
@@ -39,16 +38,17 @@ public class LocationsListActivity extends RoboListActivity {
         
         locationManager = new LocationManagerImpl();
         locationManager.setContext(getApplicationContext());
-    }
-    
-    @Override
-    protected void onStart() {
-    	super.onStart();
+
     	if (shouldShowAll) {
             showAll();
         } else {
             showFavouritesOnly();
         }
+    }
+    
+    @Override
+    protected void onStart() {
+    	super.onStart();
     }
     
     @Override
@@ -130,5 +130,10 @@ public class LocationsListActivity extends RoboListActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    public void showMain(View view) {
+    	startActivity(new Intent(this, MainActivity.class));
+    	finish();
     }
 }

@@ -63,6 +63,7 @@
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/navigation_selector_1"
             android:scaleType="centerInside"
+            android:onClick="showMain"
             android:src="@drawable/ic_tab_favourites_elements"
             android:background="@android:color/transparent" />
 

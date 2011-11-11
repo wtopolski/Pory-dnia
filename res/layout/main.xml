@@ -44,6 +44,7 @@
             android:layout_alignParentTop="true"
             android:background="@android:color/transparent"
             android:scaleType="centerInside"
+            android:onClick="showList"
             android:src="@drawable/ic_tab_all_elements" />
 
         <LinearLayout

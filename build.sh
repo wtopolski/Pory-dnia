@@ -9,4 +9,4 @@ echo "Install..."
 adb install -r target/sunset-widget.apk
 
 echo "Start..."
-adb shell am start -a android.intent.action.MAIN -n pl.wtopolski.android.sunsetwidget/.LocationsListActivity
+adb shell am start -a android.intent.action.MAIN -n pl.wtopolski.android.sunsetwidget/.MainActivity

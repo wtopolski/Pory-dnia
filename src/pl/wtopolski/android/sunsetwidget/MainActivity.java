@@ -14,12 +14,14 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends RoboActivity {
     protected static final String LOG_TAG = MainActivity.class.getSimpleName();
     
     public static final String LOCATION_ID = "LOCATION_ID";
+    public static final int LOCATION_UNKNOWN = -1;
 
 	@InjectView(R.id.city)
 	private TextView cityView;
@@ -41,15 +43,19 @@ public class MainActivity extends RoboActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        Intent intent = getIntent();
-        int locationId = intent.getIntExtra(LOCATION_ID, 1);
-        
+
         locationManager = new LocationManagerImpl();
         locationManager.setContext(getApplicationContext());
-
-    	Location location = locationManager.getLocation(locationId);
-    	
+        Location location = null;
+        
+        Intent intent = getIntent();
+        int locationId = intent.getIntExtra(LOCATION_ID, LOCATION_UNKNOWN);
+        if (locationId == LOCATION_UNKNOWN) {
+        	location = locationManager.getMainLocation();
+        } else {
+        	location = locationManager.getLocation(locationId);
+        }
+            	
     	cityView.setText(location.getName());
     	provinceView.setText(location.getProvince());
     	
@@ -75,5 +81,10 @@ public class MainActivity extends RoboActivity {
     private String formatDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         return sdf.format(date);
+    }
+    
+    public void showList(View view) {
+    	startActivity(new Intent(this, LocationsListActivity.class));
+    	finish();
     }
 }

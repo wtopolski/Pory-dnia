@@ -1,13 +1,6 @@
 package pl.wtopolski.android.sunsetwidget.util;
 
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LATITUDE;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LONGITUDE;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_NAME;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_PROVINCE;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_SELECTION;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.CONTENT_URI;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.DEFAULT_SORT_ORDER;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.STANDARD_LOCATION_PROJECTION;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.*;
 import pl.wtopolski.android.sunsetwidget.model.Location;
 import pl.wtopolski.android.sunsetwidget.model.SelectionType;
 import android.content.ContentUris;
@@ -109,5 +102,32 @@ public class LocationManagerImpl implements LocationManager {
         values.put(COLUMN_NAME_SELECTION, SelectionType.SELECTED.getValue());
         int count = context.getContentResolver().update(locationUri, values, null, null);
         return (count <= 0) ? false : true;
+	}
+
+	public Location getMainLocation() {
+		Cursor cursor = context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_NAME_SELECTION + "=?", new String[]{String.valueOf(SelectionType.SELECTED.getValue())}, DEFAULT_SORT_ORDER);
+        Location location = null;
+
+        if (cursor.moveToFirst()) {
+            int idColumn = cursor.getColumnIndex(COLUMN_NAME_ID);
+            int nameColumn = cursor.getColumnIndex(COLUMN_NAME_NAME);
+            int latitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LATITUDE);
+            int longitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LONGITUDE);
+            int provinceColumn = cursor.getColumnIndex(COLUMN_NAME_PROVINCE);
+            int selectionColumn = cursor.getColumnIndex(COLUMN_NAME_SELECTION);
+
+            int id = cursor.getInt(idColumn);
+            String name = cursor.getString(nameColumn);
+            double latitude = cursor.getDouble(latitudeColumn);
+            double longitude = cursor.getDouble(longitudeColumn);
+            String province = cursor.getString(provinceColumn);
+            int selection = cursor.getInt(selectionColumn);
+
+            location = new Location(id, name, latitude, longitude, province);
+            location.setType(SelectionType.getSelectionType(selection));
+        }
+
+        cursor.close();
+        return location;
 	}
 }

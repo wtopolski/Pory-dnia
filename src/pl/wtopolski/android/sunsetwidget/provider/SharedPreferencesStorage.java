@@ -8,6 +8,7 @@ public class SharedPreferencesStorage {
     public static final String CITY_SAVED = "CITY_SAVED";
     public static final String CITY_SAVED_ID = "CITY_SAVED_ID";
     public static final String IS_CONTENT_LOADED = "IS_CONTENT_LOADED";
+    public static final String IS_MAIN_SELECTED = "IS_MAIN_SELECTED";
     private static final String S_DEFAULT = "";
     private static final int I_DEFAULT = 0;
     private static final boolean B_DEFAULT = false;

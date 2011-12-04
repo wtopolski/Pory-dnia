@@ -11,9 +11,15 @@ import android.net.Uri;
 
 public class LocationManagerImpl implements LocationManager {
     protected Context context;
+    private LocationManagerListener listener;
 
     public void setContext(Context context) {
+    	setContext(context, null);
+    }
+    
+    public void setContext(Context context, LocationManagerListener listener) {
         this.context = context;
+        this.listener = listener;
     }
 
     public void deleteAll() {
@@ -27,7 +33,11 @@ public class LocationManagerImpl implements LocationManager {
         values.put(COLUMN_NAME_LONGITUDE, loc.getLongitude());
         values.put(COLUMN_NAME_PROVINCE, loc.getProvince());
         values.put(COLUMN_NAME_SELECTION, loc.getType().getValue());
-        return context.getContentResolver().insert(CONTENT_URI, values);
+        Uri uri = context.getContentResolver().insert(CONTENT_URI, values);
+        if (listener != null && uri != null) {
+        	listener.addedLocation();
+        }
+        return uri;
     }
 
     public Cursor getAllLocationsIdByCursor() {

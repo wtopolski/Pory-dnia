@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="actionbar_title_color">#eee</color>
+    
     <drawable name="black">#000000</drawable>
     <drawable name="gray_ccc">#cccccc</drawable>
     <drawable name="gray_aaa">#aaaaaa</drawable>

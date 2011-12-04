@@ -8,6 +8,7 @@ import pl.wtopolski.android.sunsetwidget.util.DataLoader;
 import pl.wtopolski.android.sunsetwidget.util.DataLoaderImpl;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
+import pl.wtopolski.android.sunsetwidget.util.LocationManagerListener;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,12 +17,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class RestoreNativeStateAsyncTask extends AsyncTask<Void, Void, Boolean> {
+public class RestoreNativeStateAsyncTask extends AsyncTask<Void, Integer, Boolean> implements LocationManagerListener {
 	private static final String LOG_TAG = RestoreNativeStateAsyncTask.class.getSimpleName();
 	
 	private RestoreNativeStateListener listener;
 	private boolean completed;
-	
+	private float progressState;
 	
 	public RestoreNativeStateAsyncTask() {
 		completed = false;
@@ -65,7 +66,7 @@ public class RestoreNativeStateAsyncTask extends AsyncTask<Void, Void, Boolean> 
             SharedPreferencesStorage.setBoolean(applicationContext, SharedPreferencesStorage.IS_CONTENT_LOADED, false);
 			
 			LocationManager locationManager = new LocationManagerImpl();
-			locationManager.setContext(applicationContext);
+			locationManager.setContext(applicationContext, this);
 			locationManager.deleteAll();
 		
             DataLoader dataLoader = new DataLoaderImpl();
@@ -73,12 +74,25 @@ public class RestoreNativeStateAsyncTask extends AsyncTask<Void, Void, Boolean> 
             
             SharedPreferencesStorage.setBoolean(applicationContext, SharedPreferencesStorage.IS_CONTENT_LOADED, true);
             
+            
     		return true;
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error", e);
     		return false;
         }
 	}
+	
+	protected void onProgressUpdate(Integer... progress) {
+		progressState += progress[0];
+		try {
+	    	if (listener != null) {
+	    		int percent = (int)((progressState / 439f) * 100f);
+	    		listener.infoProgressbar(percent);
+	    	}
+		} catch (Exception e) {
+			Log.e(LOG_TAG, "Error", e);
+		}
+    }
 
 	@Override
     protected void onPostExecute(Boolean success) {
@@ -106,8 +120,8 @@ public class RestoreNativeStateAsyncTask extends AsyncTask<Void, Void, Boolean> 
 		
 		CharSequence tickerText = applicationContext.getString(R.string.error_during_restoring_state_ticker);
 		long when = System.currentTimeMillis();
-
-		Notification notification = new Notification(R.drawable.icon, tickerText, when);
+		
+		Notification notification = new Notification(android.R.drawable.stat_sys_warning, tickerText, when);
 		
 		CharSequence contentTitle = applicationContext.getString(R.string.error_during_restoring_state_title);
 		CharSequence contentText = applicationContext.getString(R.string.error_during_restoring_state_msg);
@@ -119,5 +133,9 @@ public class RestoreNativeStateAsyncTask extends AsyncTask<Void, Void, Boolean> 
 		notification.setLatestEventInfo(applicationContext, contentTitle, contentText, contentIntent);
 		
 		mNotificationManager.notify(Const.Notification.ERROR_DURING_RESTORING_STATE_ID, notification);
+	}
+
+	public void addedLocation() {
+        publishProgress(1);
 	}
 }

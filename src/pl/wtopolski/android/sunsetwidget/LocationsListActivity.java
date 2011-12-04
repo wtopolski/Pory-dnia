@@ -3,7 +3,7 @@ package pl.wtopolski.android.sunsetwidget;
 import pl.wtopolski.android.sunsetwidget.model.Location;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
-import roboguice.activity.RoboListActivity;
+import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -15,8 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class LocationsListActivity extends RoboListActivity {
+public class LocationsListActivity extends ActionBarListActivity {
     protected static final String LOG_TAG = LocationsListActivity.class.getSimpleName();
 
     private static String SHOULD_SHOW_ALL_KEY = "SHOULD_SHOW_ALL";
@@ -110,26 +111,34 @@ public class LocationsListActivity extends RoboListActivity {
 			return super.onContextItemSelected(item);
 		}
 	}
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.locations_menu, menu);
-        return true;
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.locations, menu);
+        return super.onCreateOptionsMenu(menu);
     }
-
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                Toast.makeText(this, "Tapped home", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.menu_favourite:
+            	showMain(null);
+                break;
+                
             case R.id.show_all:
                 showAll();
-                return true;
+            	break;
+            
             case R.id.show_favourites_only:
                 showFavouritesOnly();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            	break;
         }
+        return super.onOptionsItemSelected(item);
     }
     
     public void showMain(View view) {

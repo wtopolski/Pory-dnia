@@ -6,18 +6,23 @@ import java.util.Date;
 
 import pl.wtopolski.android.sunsetwidget.model.Location;
 import pl.wtopolski.android.sunsetwidget.model.TimePackage;
+import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
 import pl.wtopolski.android.sunsetwidget.util.TimesCalculator;
 import pl.wtopolski.android.sunsetwidget.util.TimesCalculatorImpl;
-import roboguice.activity.RoboActivity;
+import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarActivity;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends RoboActivity {
+public class MainActivity extends ActionBarActivity {
     protected static final String LOG_TAG = MainActivity.class.getSimpleName();
     
     public static final String LOCATION_ID = "LOCATION_ID";
@@ -39,11 +44,19 @@ public class MainActivity extends RoboActivity {
 	private TextView sunsetView;
 	
     private LocationManager locationManager;
-	
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
+        
+        boolean isContentLoaded = SharedPreferencesStorage.getBoolean(this, SharedPreferencesStorage.IS_CONTENT_LOADED);
+        boolean isMainSelected = SharedPreferencesStorage.getBoolean(this, SharedPreferencesStorage.IS_MAIN_SELECTED);
+        if (!isContentLoaded || !isMainSelected) {
+        	startActivity(new Intent(this, ConfListActivity.class));
+        	finish();
+        	return;
+        }
+        
         locationManager = new LocationManagerImpl();
         locationManager.setContext(getApplicationContext());
         Location location = null;
@@ -55,9 +68,12 @@ public class MainActivity extends RoboActivity {
         } else {
         	location = locationManager.getLocation(locationId);
         }
-            	
-    	cityView.setText(location.getName());
-    	provinceView.setText(location.getProvince());
+        
+        String name = location.getName();
+    	cityView.setText(name);
+    	
+    	String province = location.getProvince();
+    	provinceView.setText(province);
     	
     	Calendar calendarNow = TimesCalculator.createCalendarForNow();
 
@@ -72,10 +88,17 @@ public class MainActivity extends RoboActivity {
         String sunrise = formatDate(times.getSunrise());
         String culmination = formatDate(times.getCulmination());
         String sunset = formatDate(times.getSunset());
-        
+
         sunriseView.setText(sunrise);
         culminationView.setText(culmination);
         sunsetView.setText(sunset);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
     
     private String formatDate(Date date) {
@@ -86,5 +109,33 @@ public class MainActivity extends RoboActivity {
     public void showList(View view) {
     	startActivity(new Intent(this, LocationsListActivity.class));
     	finish();
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Toast.makeText(this, "Tapped home", Toast.LENGTH_SHORT).show();
+                break;
+
+            /*
+            case R.id.menu_refresh:
+                Toast.makeText(this, "Fake refreshing...", Toast.LENGTH_SHORT).show();
+                getActionBarHelper().setRefreshActionItemState(true);
+                getWindow().getDecorView().postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                getActionBarHelper().setRefreshActionItemState(false);
+                            }
+                        }, 1000);
+                break;
+            */
+            case R.id.menu_list:
+            	Intent intent = new Intent(this, LocationsListActivity.class);
+            	startActivity(intent);
+            	finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

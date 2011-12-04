@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.net.Uri;
 
 public interface LocationManager {
-
+	
     void setContext(Context context);
+
+    void setContext(Context context, LocationManagerListener listener);
 
     void deleteAll();
 

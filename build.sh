@@ -3,7 +3,7 @@ echo "Build..."
 mvn clean install
 
 #echo "Usuwanie..."
-adb uninstall pl.wtopolski.android.sunsetwidget
+#adb uninstall pl.wtopolski.android.sunsetwidget
 
 echo "Install..."
 adb install -r target/sunset-widget.apk

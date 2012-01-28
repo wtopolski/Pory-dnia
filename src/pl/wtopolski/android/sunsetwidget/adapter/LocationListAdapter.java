@@ -1,12 +1,13 @@
-package pl.wtopolski.android.sunsetwidget;
+package pl.wtopolski.android.sunsetwidget.adapter;
 
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations._ID;
+import static android.provider.BaseColumns._ID;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LATITUDE;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LONGITUDE;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_NAME;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_PROVINCE;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_SELECTION;
-import pl.wtopolski.android.sunsetwidget.model.Location;
+import pl.wtopolski.android.sunsetwidget.R;
+import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.model.SelectionType;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AlphabetIndexer;
 import android.widget.CursorAdapter;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -65,22 +66,19 @@ public class LocationListAdapter extends CursorAdapter implements SectionIndexer
         String province = cursor.getString(provinceColumn);
         int selection = cursor.getInt(selectionColumn);
 
-        Location location = new Location(locationId, name, latitude, longitude, province);
+        GPSLocation location = new GPSLocation(locationId, name, latitude, longitude, province);
         location.setType(SelectionType.getSelectionType(selection));
 
+        RelativeLayout row = (RelativeLayout) view.findViewById(R.id.row);
+    	row.setBackgroundDrawable(context.getResources().getDrawable(location.getType().getBackgroundResource()));
+        
         setTextOnView(view, cursor, R.id.firstLine, location.getName());
         setTextOnView(view, cursor, R.id.secondLine, location.getProvince());
-        setStarOnView(view, cursor, R.id.icon, location);
     }
 
     private void setTextOnView(View view, Cursor cursor, int resource, String value) {
         TextView line = (TextView) view.findViewById(resource);
         line.setText(value);
-    }
-
-    private void setStarOnView(View view, Cursor cursor, int resource, final Location location) {
-        final ImageView image = (ImageView) view.findViewById(resource);
-        image.setImageResource(location.getImageResourse());
     }
 
 	public Object[] getSections() {

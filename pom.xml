@@ -3,7 +3,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>pl.wtopolski.android</groupId>
 	<artifactId>sunset-widget</artifactId>
 	<packaging>apk</packaging>
@@ -14,81 +13,70 @@
 		<name>Wojciech Topolski</name>
 		<url>http://wtopolski.pl</url>
 	</organization>
-
 	<properties>
-		<!-- 
-		<android-platform>14</android-platform>
-		<android-emulator>10</android-emulator>
-		<android-maven-plugin-version>3.0.0-alpha-14</android-maven-plugin-version>
-		<maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version>
-		<maven-eclipse-plugin-version>2.8</maven-eclipse-plugin-version>
-		<android-version>2.3.3</android-version>
-		 -->
+		<!-- <android-platform>14</android-platform> <android-emulator>10</android-emulator> <android-maven-plugin-version>3.0.0-alpha-14</android-maven-plugin-version>
+			<maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version> <maven-eclipse-plugin-version>2.8</maven-eclipse-plugin-version>
+			<android-version>2.3.3</android-version> -->
 		<!-- 1.5_r3, 1.5_r4, 1.6_r2, 2.1.2, 2.1_r1, 2.2.1, 2.3.1, 2.3.3 -->
 		<spring-android-version>1.0.0.M4</spring-android-version>
 	</properties>
-
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
-			    <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-			    <artifactId>android-maven-plugin</artifactId>
-			    <version>3.0.0-alpha-14</version>
-			    <configuration>
-			        <sdk>
-			            <platform>14</platform>
-			        </sdk>
-			        <deleteConflictingFiles>true</deleteConflictingFiles>
-			        <undeployBeforeDeploy>true</undeployBeforeDeploy>
-			    </configuration>
-			    <extensions>true</extensions>
-			</plugin>
-			<!-- 
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.8</version>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<version>3.0.0-alpha-14</version>
 				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
+					<sdk>
+						<platform>14</platform>
+					</sdk>
+					<deleteConflictingFiles>true</deleteConflictingFiles>
+					<undeployBeforeDeploy>true</undeployBeforeDeploy>
 				</configuration>
+				<extensions>true</extensions>
 			</plugin>
-			 -->
+			<!-- <plugin> <artifactId>maven-compiler-plugin</artifactId> <version>2.3.2</version> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId> <version>2.8</version> <configuration> <downloadSources>true</downloadSources>
+				<downloadJavadocs>true</downloadJavadocs> </configuration> </plugin> -->
 		</plugins>
 	</build>
-
-	<dependencies><!-- 
+	<dependencies>
 		<dependency>
-			<groupId>com.google.android</groupId>
+			<groupId>android</groupId>
 			<artifactId>android</artifactId>
-			<version>${android-version}</version>
+			<version>4.0_r1</version>
 			<scope>provided</scope>
-		</dependency> -->
-		<dependency>
-		  <groupId>android</groupId>
-		  <artifactId>android</artifactId>
-		  <version>4.0_r1</version>
-		  <scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.roboguice</groupId>
-		    <artifactId>roboguice</artifactId>
-		    <version>1.1.2</version>
+			<groupId>android.support</groupId>
+			<artifactId>compatibility-v4</artifactId>
+			<version>r4</version>
 		</dependency>
-        <dependency>
-		    <groupId>com.google.inject</groupId>
-		    <artifactId>guice</artifactId>
-		    <version>2.0-no_aop</version>
+		<dependency>
+			<groupId>org.roboguice</groupId>
+			<artifactId>roboguice</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>2.0-no_aop</version>
+		</dependency>
+		<dependency>
+			<groupId>com.viewpagerindicator</groupId>
+			<artifactId>library</artifactId>
+			<version>2.2.0</version>
+			<type>apklib</type>
 		</dependency>
 	</dependencies>
-
 	<repositories>
+		<repository>
+			<id>jakewharton</id>
+			<name>jakewharton In</name>
+			<url>http://r.jakewharton.com/maven/release/</url>
+		</repository>
 		<repository>
 			<id>org.springframework.maven.milestone</id>
 			<name>Spring Maven Milestone Repository</name>
@@ -98,6 +86,4 @@
 			</snapshots>
 		</repository>
 	</repositories>
-
 </project>
-	

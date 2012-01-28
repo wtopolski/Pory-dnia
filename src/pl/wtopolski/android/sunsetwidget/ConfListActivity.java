@@ -1,8 +1,9 @@
 package pl.wtopolski.android.sunsetwidget;
 
+import pl.wtopolski.android.sunsetwidget.adapter.LocationListAdapter;
 import pl.wtopolski.android.sunsetwidget.async.RestoreNativeStateAsyncTask;
 import pl.wtopolski.android.sunsetwidget.async.RestoreNativeStateListener;
-import pl.wtopolski.android.sunsetwidget.model.Location;
+import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
@@ -88,7 +89,7 @@ public class ConfListActivity extends ActionBarListActivity implements RestoreNa
     }
 
 	private void selectLocationAsMain(int locationId) {
-		Location location = locationManager.getLocation(locationId);
+		GPSLocation location = locationManager.getLocation(locationId);
 		locationManager.selectAsMain(location);
 		SharedPreferencesStorage.setBoolean(this, SharedPreferencesStorage.IS_MAIN_SELECTED, true);
 	}

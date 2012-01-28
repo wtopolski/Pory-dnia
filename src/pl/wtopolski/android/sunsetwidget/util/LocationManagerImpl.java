@@ -1,7 +1,7 @@
 package pl.wtopolski.android.sunsetwidget.util;
 
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.*;
-import pl.wtopolski.android.sunsetwidget.model.Location;
+import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.model.SelectionType;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -26,7 +26,7 @@ public class LocationManagerImpl implements LocationManager {
         context.getContentResolver().delete(CONTENT_URI, null, null);
     }
 
-    public Uri addLocation(Location loc) {
+    public Uri addLocation(GPSLocation loc) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_NAME, loc.getName());
         values.put(COLUMN_NAME_LATITUDE, loc.getLatitude());
@@ -48,10 +48,10 @@ public class LocationManagerImpl implements LocationManager {
     	return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_NAME_SELECTION + ">=?", new String[]{String.valueOf(SelectionType.FAVOURITE.getValue())}, DEFAULT_SORT_ORDER);
     }
 
-    public Location getLocation(int id) {
+    public GPSLocation getLocation(int id) {
         Uri locationUri = ContentUris.withAppendedId(CONTENT_URI, id);
         Cursor cursor = context.getContentResolver().query(locationUri, STANDARD_LOCATION_PROJECTION, null, null, null);
-        Location location = null;
+        GPSLocation location = null;
 
         if (cursor.moveToFirst()) {
             int nameColumn = cursor.getColumnIndex(COLUMN_NAME_NAME);
@@ -66,7 +66,7 @@ public class LocationManagerImpl implements LocationManager {
             String province = cursor.getString(provinceColumn);
             int selection = cursor.getInt(selectionColumn);
 
-            location = new Location(id, name, latitude, longitude, province);
+            location = new GPSLocation(id, name, latitude, longitude, province);
             location.setType(SelectionType.getSelectionType(selection));
         }
 
@@ -74,7 +74,7 @@ public class LocationManagerImpl implements LocationManager {
         return location;
     }
 
-    public boolean makeNoFavourite(Location location) {
+    public boolean makeNoFavourite(GPSLocation location) {
         Uri locationUri = ContentUris.withAppendedId(CONTENT_URI, location.getId());
 
         if (location.getType() != SelectionType.FAVOURITE) {
@@ -88,7 +88,7 @@ public class LocationManagerImpl implements LocationManager {
         return (count <= 0) ? false : true;
     }
 
-    public boolean makeFavourite(Location location) {
+    public boolean makeFavourite(GPSLocation location) {
         Uri locationUri = ContentUris.withAppendedId(CONTENT_URI, location.getId());
 
         if (location.getType() != SelectionType.NONE) {
@@ -102,7 +102,7 @@ public class LocationManagerImpl implements LocationManager {
         return (count <= 0) ? false : true;
     }
 
-	public boolean selectAsMain(Location location) {
+	public boolean selectAsMain(GPSLocation location) {
         ContentValues values = new ContentValues(1);
         values.put(COLUMN_NAME_SELECTION, SelectionType.FAVOURITE.getValue());
         context.getContentResolver().update(CONTENT_URI, values, COLUMN_NAME_SELECTION + "=?", new String[]{String.valueOf(SelectionType.SELECTED.getValue())});
@@ -114,9 +114,9 @@ public class LocationManagerImpl implements LocationManager {
         return (count <= 0) ? false : true;
 	}
 
-	public Location getMainLocation() {
+	public GPSLocation getMainLocation() {
 		Cursor cursor = context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_NAME_SELECTION + "=?", new String[]{String.valueOf(SelectionType.SELECTED.getValue())}, DEFAULT_SORT_ORDER);
-        Location location = null;
+        GPSLocation location = null;
 
         if (cursor.moveToFirst()) {
             int idColumn = cursor.getColumnIndex(COLUMN_NAME_ID);
@@ -133,7 +133,7 @@ public class LocationManagerImpl implements LocationManager {
             String province = cursor.getString(provinceColumn);
             int selection = cursor.getInt(selectionColumn);
 
-            location = new Location(id, name, latitude, longitude, province);
+            location = new GPSLocation(id, name, latitude, longitude, province);
             location.setType(SelectionType.getSelectionType(selection));
         }
 

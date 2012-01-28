@@ -17,12 +17,13 @@
 package pl.wtopolski.android.sunsetwidget.util.actionbar;
 
 import pl.wtopolski.android.sunsetwidget.util.FlowManager;
-import roboguice.activity.RoboListActivity;
+import roboguice.activity.RoboActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-public abstract class ActionBarListActivity extends RoboListActivity {
+public abstract class ActionBarFragmentActivity extends FragmentActivity {
     final ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
 
     protected ActionBarHelper getActionBarHelper() {

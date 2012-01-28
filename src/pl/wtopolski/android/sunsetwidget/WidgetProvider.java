@@ -7,17 +7,16 @@ import java.util.Date;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.location.Location;
 import android.widget.RemoteViews;
 
 import android.content.Intent;
 import android.app.PendingIntent;
 import pl.wtopolski.android.sunsetwidget.model.DayMode;
+import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.model.TimePackage;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
-import pl.wtopolski.android.sunsetwidget.util.TimesCalculator;
-import pl.wtopolski.android.sunsetwidget.util.TimesCalculatorImpl;
+import pl.wtopolski.android.sunsetwidget.util.TimePackageUTCCreator;
 
 public class WidgetProvider extends AppWidgetProvider {
     protected static final String LOG_TAG = WidgetProvider.class.getName();
@@ -26,19 +25,14 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        Calendar calendarNow = TimesCalculator.createCalendarForNow();
-
-        TimesCalculator calculator = new TimesCalculatorImpl();
+        TimePackageUTCCreator calculator = new TimePackageUTCCreator();
+    	Calendar calendarNow = calculator.prepareCalendar();
 
         LocationManager locationManager = new LocationManagerImpl();
         locationManager.setContext(context);
-        pl.wtopolski.android.sunsetwidget.model.Location mainLocation = locationManager.getMainLocation();
+        GPSLocation mainLocation = locationManager.getMainLocation();
         
-        Location location = new Location("my");
-        location.setLatitude(mainLocation.getLatitude());
-        location.setLongitude(mainLocation.getLongitude());
-
-        TimePackage times = calculator.determineForDayAndLocation(calendarNow, location);
+        TimePackage times = calculator.prepareTimePackage(mainLocation);
 
         String sunrise = formatDate(times.getSunrise());
         String culmination = formatDate(times.getCulmination());

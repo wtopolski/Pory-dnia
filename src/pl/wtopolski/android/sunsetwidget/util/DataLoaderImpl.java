@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import pl.wtopolski.android.sunsetwidget.R;
-import pl.wtopolski.android.sunsetwidget.model.Location;
+import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 
@@ -24,7 +24,7 @@ public class DataLoaderImpl implements DataLoader {
         while (eventType != XmlResourceParser.END_DOCUMENT) {
             if (eventType == XmlResourceParser.START_TAG) {
                 if (isStartTag(PLACE_TAG, xmlResourceParser)) {
-                    Location location = processWithPlace(xmlResourceParser);
+                    GPSLocation location = processWithPlace(xmlResourceParser);
                     locationManager.addLocation(location);
                 }
             }
@@ -35,7 +35,7 @@ public class DataLoaderImpl implements DataLoader {
         return true;
     }
 
-    private Location processWithPlace(final XmlResourceParser xmlResourceParser) throws IOException, XmlPullParserException {
+    private GPSLocation processWithPlace(final XmlResourceParser xmlResourceParser) throws IOException, XmlPullParserException {
         String locationName = null;
         Double locationLatitude = null;
         Double locationLongitude = null;
@@ -58,7 +58,7 @@ public class DataLoaderImpl implements DataLoader {
             }
         }
 
-        return new Location(0, locationName, locationLatitude, locationLongitude, locationProvince);
+        return new GPSLocation(0, locationName, locationLatitude, locationLongitude, locationProvince);
     }
 
     private boolean keepFilling(Object... objects) {

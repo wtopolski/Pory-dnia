@@ -3,18 +3,7 @@
     android:id="@+id/row"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:background="@drawable/locations_item_selector"
-    android:padding="6dip" >
-
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="32dip"
-        android:layout_height="32dip"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="6dip"
-        android:src="@android:drawable/star_big_on" />
+    android:padding="6dip">
 
     <TextView
         android:id="@+id/secondLine"
@@ -22,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/icon"
+        android:layout_alignParentRight="true"
         android:ellipsize="marquee"
         android:includeFontPadding="false"
         android:singleLine="true"
@@ -38,7 +27,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toLeftOf="@id/icon"
+        android:layout_alignParentRight="true"
         android:gravity="center_vertical"
         android:includeFontPadding="false"
         android:text=""

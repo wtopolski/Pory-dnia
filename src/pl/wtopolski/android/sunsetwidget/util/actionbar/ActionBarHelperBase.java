@@ -56,17 +56,14 @@ public class ActionBarHelperBase extends ActionBarHelper {
         super(activity);
     }
 
-    /**{@inheritDoc}*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mActivity.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
     }
 
-    /**{@inheritDoc}*/
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
-        mActivity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                R.layout.actionbar_compat);
+        mActivity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.actionbar_compat);
         setupActionBar();
 
         SimpleMenu menu = new SimpleMenu(mActivity);
@@ -89,14 +86,12 @@ public class ActionBarHelperBase extends ActionBarHelper {
             return;
         }
 
-        LinearLayout.LayoutParams springLayoutParams = new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.FILL_PARENT);
+        LinearLayout.LayoutParams springLayoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.FILL_PARENT);
         springLayoutParams.weight = 1;
 
         // Add Home button
         SimpleMenu tempMenu = new SimpleMenu(mActivity);
-        SimpleMenuItem homeItem = new SimpleMenuItem(
-                tempMenu, android.R.id.home, 0, mActivity.getString(R.string.app_name));
+        SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu, android.R.id.home, 0, mActivity.getString(R.string.app_name));
         homeItem.setIcon(R.drawable.ic_home);
         addActionItemCompatFromMenuItem(homeItem);
 

@@ -1,6 +1,6 @@
 package pl.wtopolski.android.sunsetwidget.model;
 
-public class Location {
+public class GPSLocation {
     private int id;
     private String name;
     private double latitude;
@@ -8,17 +8,13 @@ public class Location {
     private String province;
     private SelectionType type;
 
-    public Location(int id, String name, double latitude, double longitude, String province) {
+    public GPSLocation(int id, String name, double latitude, double longitude, String province) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.province = province;
         this.type = SelectionType.NONE;
-    }
-
-    public int getImageResourse() {
-    	return type.getImage();
     }
 
     public int getId() {

@@ -1,9 +1,11 @@
 package pl.wtopolski.android.sunsetwidget;
 
-import pl.wtopolski.android.sunsetwidget.model.Location;
+import pl.wtopolski.android.sunsetwidget.adapter.LocationListAdapter;
+import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarListActivity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -15,18 +17,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class LocationsListActivity extends ActionBarListActivity {
     protected static final String LOG_TAG = LocationsListActivity.class.getSimpleName();
 
-    private static String SHOULD_SHOW_ALL_KEY = "SHOULD_SHOW_ALL";
-    private static boolean SHOULD_SHOW_ALL_DEFAULT = true;
+    public static String SHOW_ACTION = "SHOW_ACTION";
+    public static boolean SHOW_ALL = true;
+    public static boolean SHOW_FAVOURITES = false;
     
     private LocationManager locationManager;
-    private boolean shouldShowAll = true;
+    private boolean showAction = SHOW_ALL;
     private LocationListAdapter adapter;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,13 +36,15 @@ public class LocationsListActivity extends ActionBarListActivity {
         registerForContextMenu(getListView());
         
         if (savedInstanceState != null) {
-    		shouldShowAll = savedInstanceState.getBoolean(SHOULD_SHOW_ALL_KEY, SHOULD_SHOW_ALL_DEFAULT);
+    		showAction = savedInstanceState.getBoolean(SHOW_ACTION, SHOW_ALL);
+        } else if (getIntent().hasExtra(SHOW_ACTION)) {
+    		showAction = getIntent().getBooleanExtra(SHOW_ACTION, SHOW_ALL);
         }
         
         locationManager = new LocationManagerImpl();
         locationManager.setContext(getApplicationContext());
 
-    	if (shouldShowAll) {
+    	if (showAction) {
             showAll();
         } else {
             showFavouritesOnly();
@@ -55,18 +59,18 @@ public class LocationsListActivity extends ActionBarListActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
-    	outState.putBoolean(SHOULD_SHOW_ALL_KEY, shouldShowAll);
+    	outState.putBoolean(SHOW_ACTION, showAction);
     }
 
     private void showAll() {
         Cursor cursor = locationManager.getAllLocationsIdByCursor();
-        shouldShowAll = true;
+        showAction = SHOW_ALL;
         showLocations(cursor);
     }
 
     private void showFavouritesOnly() {
         Cursor cursor = locationManager.getAllFavouritesLocationsIdByCursor();
-        shouldShowAll = false;
+        showAction = SHOW_FAVOURITES;
         showLocations(cursor);
     }
 
@@ -95,7 +99,7 @@ public class LocationsListActivity extends ActionBarListActivity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		int locationId = (int) info.id;
-		Location location = locationManager.getLocation(locationId);
+		GPSLocation location = locationManager.getLocation(locationId);
 
 		switch (item.getItemId()) {
 		case R.id.set_as_main:
@@ -123,11 +127,11 @@ public class LocationsListActivity extends ActionBarListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Toast.makeText(this, "Tapped home", Toast.LENGTH_SHORT).show();
+            	finishAndGoTo(HomeActivity.class);
                 break;
 
             case R.id.menu_favourite:
-            	showMain(null);
+            	finishAndGoTo(MainActivity.class);
                 break;
                 
             case R.id.show_all:
@@ -139,10 +143,5 @@ public class LocationsListActivity extends ActionBarListActivity {
             	break;
         }
         return super.onOptionsItemSelected(item);
-    }
-    
-    public void showMain(View view) {
-    	startActivity(new Intent(this, MainActivity.class));
-    	finish();
     }
 }

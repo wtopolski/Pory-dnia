@@ -16,6 +16,7 @@
 
 package pl.wtopolski.android.sunsetwidget.util.actionbar;
 
+import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import roboguice.activity.RoboActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -57,5 +58,9 @@ public abstract class ActionBarActivity extends RoboActivity {
     protected void onTitleChanged(CharSequence title, int color) {
         mActionBarHelper.onTitleChanged(title, color);
         super.onTitleChanged(title, color);
+    }
+    
+    public void finishAndGoTo(Class<?> cls, Bundle... bundle) {
+    	FlowManager.finishAndGoTo(this, cls, bundle);
     }
 }

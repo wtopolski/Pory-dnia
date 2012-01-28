@@ -1,6 +1,6 @@
 package pl.wtopolski.android.sunsetwidget.util;
 
-import pl.wtopolski.android.sunsetwidget.model.Location;
+import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,19 +13,19 @@ public interface LocationManager {
 
     void deleteAll();
 
-    Uri addLocation(Location loc);
+    Uri addLocation(GPSLocation loc);
 
     Cursor getAllLocationsIdByCursor();
 
     Cursor getAllFavouritesLocationsIdByCursor();
 
-    Location getLocation(int id);
+    GPSLocation getLocation(int id);
     
-    boolean makeNoFavourite(Location location);
+    boolean makeNoFavourite(GPSLocation location);
     
-    boolean makeFavourite(Location location);
+    boolean makeFavourite(GPSLocation location);
     
-    boolean selectAsMain(Location location);
+    boolean selectAsMain(GPSLocation location);
     
-    Location getMainLocation();
+    GPSLocation getMainLocation();
 }

@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.viewpagerindicator.TitleProvider;
-
 import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.model.TimePackage;
@@ -19,7 +17,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class PresenterPagerAdapter extends PagerAdapter implements TitleProvider {
+public class PresenterPagerAdapter extends PagerAdapter {
     protected static final String LOG_TAG = PresenterPagerAdapter.class.getSimpleName();
 
     private static int NUM_VIEWS = 5;
@@ -116,10 +114,5 @@ public class PresenterPagerAdapter extends PagerAdapter implements TitleProvider
 	@Override
 	public void startUpdate(View arg0) {
 		// TODO Auto-generated method stub
-	}
-
-	public String getTitle(int position) {
-		String[] tab = {"Dziś", "Jutro", "Tydzień", "Miesiąc", "Kwartał"};
-		return tab[position];
 	}
 }

@@ -1,6 +1,5 @@
 package pl.wtopolski.android.sunsetwidget;
 
-import com.viewpagerindicator.TitlePageIndicator;
 
 import pl.wtopolski.android.sunsetwidget.adapter.PresenterPagerAdapter;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
@@ -8,6 +7,7 @@ import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarActivity;
+import pl.wtopolski.android.sunsetwidget.view.PresenterPageIndicatorView;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
@@ -69,8 +69,9 @@ public class MainActivity extends ActionBarActivity {
         awesomePager = (ViewPager) findViewById(R.id.awesomepager);
         awesomePager.setAdapter(presenterPagerAdapter);
         
-        TitlePageIndicator tabPageIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
-        tabPageIndicator.setViewPager(awesomePager);
+        PresenterPageIndicatorView indicator = (PresenterPageIndicatorView)findViewById(R.id.indicator);
+        
+        awesomePager.setOnPageChangeListener(indicator);
     }
 
     @Override

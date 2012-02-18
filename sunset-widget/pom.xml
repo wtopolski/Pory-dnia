@@ -1,0 +1,47 @@
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>pl.wtopolski.android</groupId>
+	<artifactId>sunset-widget</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>SunsetWidget</name>
+	<organization>
+		<name>Wojciech Topolski</name>
+		<url>http://wtopolski.pl</url>
+	</organization>
+	<modules>
+		<module>sunset-widget-core</module>
+		<module>sunset-widget-app</module>
+	</modules>
+
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>android</groupId>
+				<artifactId>android</artifactId>
+				<version>4.0_r1</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>android.support</groupId>
+				<artifactId>compatibility-v4</artifactId>
+				<version>r4</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>org.springframework.maven.milestone</id>
+			<name>Spring Maven Milestone Repository</name>
+			<url>http://maven.springframework.org/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+</project>

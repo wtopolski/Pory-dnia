@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pory dnia</string>
+    <string name="show_all">Wszystkie</string>
+    <string name="show_favourites_only">Ulubione</string>
+    <string name="empty">Brak elementów do wyświetlenia</string>
+    
+    <string name="set_as_main">Ustaw jako główne</string>
+    <string name="add_to_favourites">Dodaj do ulubionych</string>
+    <string name="remove_from_favourites">Usuń z ulubionych</string>
+    
+    <!-- Notification -->
+    <string name="error_during_restoring_state_title">Problem</string>
+    <string name="error_during_restoring_state_msg">Wystąpił problem w trakcie inicjowania listy. Spróbuj jeszcze raz...</string>
+    <string name="error_during_restoring_state_ticker">Reinicjalizacja nie powiodła się</string>
+    
+    <string name="alternate_title">An alternate title that is long</string>
+    <string name="toggle_title">Toggle title</string>
+
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_list">List</string>
+    <string name="menu_share">Share</string>
+</resources>

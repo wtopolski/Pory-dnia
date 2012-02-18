@@ -1,4 +1,4 @@
-package pl.wtopolski.android.sunsetwidget.model;
+package pl.wtopolski.android.sunsetwidget.core.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

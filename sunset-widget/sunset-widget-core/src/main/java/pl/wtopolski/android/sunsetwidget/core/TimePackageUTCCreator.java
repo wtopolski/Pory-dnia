@@ -1,22 +1,22 @@
-package pl.wtopolski.android.sunsetwidget.util;
-
-import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
-import pl.wtopolski.android.sunsetwidget.model.TimePackage;
-import pl.wtopolski.android.sunsetwidget.model.ThreePack;
+package pl.wtopolski.android.sunsetwidget.core;
 
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import pl.wtopolski.android.sunsetwidget.core.model.ThreePack;
+import pl.wtopolski.android.sunsetwidget.core.model.TimeLocation;
+import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
+
 import static java.lang.Math.*;
 
 public class TimePackageUTCCreator {
 	
-    public TimePackage prepareTimePackage(final GPSLocation location) {
+    public TimePackage prepareTimePackage(final TimeLocation location) {
     	return prepareTimePackage(prepareCalendar(), location);
     }
 
-    public TimePackage prepareTimePackage(final Calendar calendar, final GPSLocation location) {
+    public TimePackage prepareTimePackage(final Calendar calendar, final TimeLocation location) {
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH) + 1;
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -39,7 +39,7 @@ public class TimePackageUTCCreator {
 	    return timePackageForNow;
 	}
     
-    private ThreePack<Calendar> createThreePackCalendar(final int year, final int month, final int day, final GPSLocation location) {
+    private ThreePack<Calendar> createThreePackCalendar(final int year, final int month, final int day, final TimeLocation location) {
     	ThreePack<Double> threePack = createThreePackDouble(year, month, day, location);
 	    Calendar sunrise = prepareCalendar(year, month, day, threePack.getSunrise());
 	    Calendar culmination = prepareCalendar(year, month, day, threePack.getCulmination());
@@ -47,7 +47,7 @@ public class TimePackageUTCCreator {
 	    return new ThreePack<Calendar>(sunrise, culmination, sunset);
     }
     
-    private ThreePack<Double> createThreePackDouble(final int year, final int month, final int day, final GPSLocation location) {
+    private ThreePack<Double> createThreePackDouble(final int year, final int month, final int day, final TimeLocation location) {
         final double req = -0.833d;
 
         final double J = 367 * year - (int) (7 * (year + (int) ((month + 9) / 12)) / 4) + (int) (275 * month / 9) + day - 730531.5;

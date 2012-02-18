@@ -5,9 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import pl.wtopolski.android.sunsetwidget.R;
+import pl.wtopolski.android.sunsetwidget.core.TimePackageUTCCreator;
+import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
-import pl.wtopolski.android.sunsetwidget.model.TimePackage;
-import pl.wtopolski.android.sunsetwidget.util.TimePackageUTCCreator;
 import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -51,7 +51,7 @@ public class PresenterPagerAdapter extends PagerAdapter {
     		calendarNow.add(Calendar.MONTH, 3);
     	}
         
-    	TimePackage times = calculator.prepareTimePackage(calendarNow, gpsLocation);
+    	TimePackage times = calculator.prepareTimePackage(calendarNow, gpsLocation.convertToTimeLocation());
        
         String sunrise = formatDate(times.getSunrise());
         String culmination = formatDate(times.getCulmination());

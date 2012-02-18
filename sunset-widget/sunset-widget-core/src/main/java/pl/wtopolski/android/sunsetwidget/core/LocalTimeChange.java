@@ -1,4 +1,4 @@
-package pl.wtopolski.android.sunsetwidget.util;
+package pl.wtopolski.android.sunsetwidget.core;
 
 public class LocalTimeChange {
 

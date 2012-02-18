@@ -1,6 +1,7 @@
 package pl.wtopolski.android.sunsetwidget.model;
 
 import pl.wtopolski.android.sunsetwidget.R;
+import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
 
 import java.util.Calendar;
 

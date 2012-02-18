@@ -1,4 +1,4 @@
-package pl.wtopolski.android.sunsetwidget.model;
+package pl.wtopolski.android.sunsetwidget.core.model;
 
 public class ThreePack<T> {
 	T sunrise;

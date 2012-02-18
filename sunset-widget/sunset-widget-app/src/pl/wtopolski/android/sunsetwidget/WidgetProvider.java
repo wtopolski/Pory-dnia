@@ -11,12 +11,12 @@ import android.widget.RemoteViews;
 
 import android.content.Intent;
 import android.app.PendingIntent;
+import pl.wtopolski.android.sunsetwidget.core.TimePackageUTCCreator;
+import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
 import pl.wtopolski.android.sunsetwidget.model.DayMode;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
-import pl.wtopolski.android.sunsetwidget.model.TimePackage;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
-import pl.wtopolski.android.sunsetwidget.util.TimePackageUTCCreator;
 
 public class WidgetProvider extends AppWidgetProvider {
     protected static final String LOG_TAG = WidgetProvider.class.getName();
@@ -32,7 +32,7 @@ public class WidgetProvider extends AppWidgetProvider {
         locationManager.setContext(context);
         GPSLocation mainLocation = locationManager.getMainLocation();
         
-        TimePackage times = calculator.prepareTimePackage(mainLocation);
+        TimePackage times = calculator.prepareTimePackage(mainLocation.convertToTimeLocation());
 
         String sunrise = formatDate(times.getSunrise());
         String culmination = formatDate(times.getCulmination());

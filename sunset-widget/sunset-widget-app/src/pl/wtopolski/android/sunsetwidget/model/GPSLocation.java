@@ -1,5 +1,7 @@
 package pl.wtopolski.android.sunsetwidget.model;
 
+import pl.wtopolski.android.sunsetwidget.core.model.TimeLocation;
+
 public class GPSLocation {
     private int id;
     private String name;
@@ -64,5 +66,9 @@ public class GPSLocation {
 	@Override
 	public String toString() {
 		return name + ", " + province;
+	}
+	
+	public TimeLocation convertToTimeLocation() {
+		return new TimeLocation(latitude, longitude);
 	}
 }

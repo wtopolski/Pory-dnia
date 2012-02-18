@@ -1,11 +1,11 @@
 package pl.wtopolski.android.sunsetwidget.core.model;
 
-public class ThreePack<T> {
+public class TimeData<T> {
 	T sunrise;
 	T culmination;
 	T sunset;
 
-	public ThreePack(T sunrise, T culmination, T sunset) {
+	public TimeData(T sunrise, T culmination, T sunset) {
 		super();
 		this.sunrise = sunrise;
 		this.culmination = culmination;

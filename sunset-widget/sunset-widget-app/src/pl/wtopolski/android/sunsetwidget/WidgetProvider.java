@@ -11,7 +11,7 @@ import android.widget.RemoteViews;
 
 import android.content.Intent;
 import android.app.PendingIntent;
-import pl.wtopolski.android.sunsetwidget.core.TimePackageUTCCreator;
+import pl.wtopolski.android.sunsetwidget.core.TimePackageCreator;
 import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
 import pl.wtopolski.android.sunsetwidget.model.DayMode;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
@@ -25,7 +25,7 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        TimePackageUTCCreator calculator = new TimePackageUTCCreator();
+        TimePackageCreator calculator = new TimePackageCreator();
     	Calendar calendarNow = calculator.prepareCalendar();
 
         LocationManager locationManager = new LocationManagerImpl();

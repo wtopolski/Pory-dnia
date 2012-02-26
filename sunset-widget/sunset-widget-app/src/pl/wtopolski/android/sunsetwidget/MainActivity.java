@@ -103,9 +103,6 @@ public class MainActivity extends ActionBarActivity {
                         }, 1000);
                 break;
             */
-            case R.id.menu_list:
-            	finishAndGoTo(LocationsListActivity.class);
-                break;
         }
         return super.onOptionsItemSelected(item);
     }

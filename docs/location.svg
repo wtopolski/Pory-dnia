@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="180"
+   height="180"
+   id="svg3020"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   style="display:inline"
+   inkscape:export-filename="/home/wtopolski/WorkspaceSunset/PoryDnia/sunset-widget/sunset-widget-app/res/drawable-hdpi/location.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
+   sodipodi:docname="Nowy dokument 3">
+  <defs
+     id="defs3022">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath942">
+      <path
+         inkscape:connector-curvature="0"
+         d="M 0,96 96,96 96,0 0,0 0,96 z"
+         id="path944" />
+    </clipPath>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.72788629"
+     inkscape:cx="350.75271"
+     inkscape:cy="251.4129"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1680"
+     inkscape:window-height="970"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3025">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline"
+     transform="translate(0,-872.36218)">
+    <g
+       id="g938"
+       transform="matrix(2.6243177,0,0,-2.6243177,-77.37369,1017.5382)"
+       inkscape:export-filename="/home/wtopolski/location.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       style="fill:#333333;fill-opacity:1">
+      <g
+         id="g940"
+         clip-path="url(#clipPath942)"
+         style="fill:#333333;fill-opacity:1"
+         inkscape:export-filename="/home/wtopolski/location_selected.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         transform="translate(15.777831,-26.975001)">
+        <g
+           id="g946"
+           transform="translate(65.3389,71.4639)"
+           style="fill:#333333;fill-opacity:1">
+          <path
+             d="m 0,0 c -2.334,4.063 -6.045,7.188 -10.961,8.836 -0.854,0.291 -1.729,0.521 -2.647,0.687 -0.958,0.168 -2,0.291 -3.083,0.355 l -0.646,0 -0.647,0 C -19.068,9.814 -20.11,9.691 -21.068,9.523 -21.986,9.357 -22.861,9.127 -23.715,8.836 -28.613,7.188 -32.342,4.063 -34.676,0 c -1.605,-2.792 -2.666,-6.271 -2.419,-10.525 0.107,-1.957 0.628,-3.707 1.23,-5.291 0.627,-1.563 1.356,-2.98 2.21,-4.334 3.252,-5.296 7.668,-10.005 10.169,-16.07 1.272,-3.082 2.397,-6.293 3.356,-9.709 0.935,-3.375 1.791,-6.961 2.146,-10.877 l 0.647,0 0.646,0 c 0.354,3.916 1.209,7.502 2.144,10.877 0.96,3.416 2.084,6.627 3.357,9.709 2.501,6.065 6.917,10.774 10.169,16.07 0.855,1.354 1.584,2.771 2.209,4.334 0.603,1.584 1.125,3.334 1.229,5.291 C 2.666,-6.271 1.604,-2.792 0,0 m -17.337,-16.776 c -4.168,0 -7.545,3.251 -7.545,7.273 0,4.021 3.377,7.273 7.545,7.273 4.166,0 7.542,-3.252 7.542,-7.273 0,-4.022 -3.376,-7.273 -7.542,-7.273"
+             style="fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none"
+             id="path948"
+             inkscape:connector-curvature="0" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

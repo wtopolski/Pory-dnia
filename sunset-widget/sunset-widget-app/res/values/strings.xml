@@ -20,4 +20,9 @@
     <string name="menu_refresh">Refresh</string>
     <string name="menu_list">List</string>
     <string name="menu_share">Share</string>
+    
+    <string name="dashboard_my_place">Moje miejsce</string>
+    <string name="dashboard_favorites">Ulubione</string>
+    <string name="dashboard_locations">Lokalizacje</string>
+    <string name="dashboard_settings">Ustawienia</string>
 </resources>

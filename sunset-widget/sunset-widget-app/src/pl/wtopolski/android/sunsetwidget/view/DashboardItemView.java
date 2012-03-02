@@ -26,12 +26,12 @@ public class DashboardItemView extends LinearLayout {
 		dashboardItemRoot = (LinearLayout) view.findViewById(R.id.dashboardItemRoot);
 		dashboardItemIcon = (ImageButton) view.findViewById(R.id.dashboardItemIcon);
 
-    	Typeface font = Typeface.createFromAsset(context.getAssets(), "DroidSans.ttf");
+    	Typeface font = Typeface.createFromAsset(context.getAssets(), "Roboto-Regular.ttf");
 		dashboardItemDescription = (TextView) view.findViewById(R.id.dashboardItemDescription);
 		dashboardItemDescription.setTypeface(font);
 	}
 	
-	public void setText(String describe) {
+	public void setText(int describe) {
 		dashboardItemDescription.setText(describe);
 	}
 	

@@ -1,21 +1,20 @@
 package pl.wtopolski.android.sunsetwidget;
 
+import pl.wtopolski.android.sunsetwidget.pref.GeneralPreferenceActivity;
 import pl.wtopolski.android.sunsetwidget.view.DashboardItemView;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 public class HomeFragment extends Fragment {
-	private DashboardItemView location;
-	private DashboardItemView favoriteList;
-	private DashboardItemView allList;
+	private DashboardItemView myPlace;
+	private DashboardItemView favorites;
+	private DashboardItemView locations;
 	private DashboardItemView settings;
 	
     @Override
@@ -27,10 +26,10 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	View view = inflater.inflate(R.layout.home_fragment, container, false);
     	
-    	location = (DashboardItemView) view.findViewById(R.id.location);
-    	location.setText("Moje miejsce");
-    	location.setIconSelector(R.drawable.dashboard_item_selector);
-    	location.setOnClickListener(new OnClickListener() {
+    	myPlace = (DashboardItemView) view.findViewById(R.id.my_place);
+    	myPlace.setText(R.string.dashboard_my_place);
+    	myPlace.setIconSelector(R.drawable.dashboard_location_selector);
+    	myPlace.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				Activity activity = getActivity();
 				Intent intent = new Intent(activity, MainActivity.class);
@@ -38,10 +37,10 @@ public class HomeFragment extends Fragment {
 			}
 		});
     	
-    	favoriteList = (DashboardItemView) view.findViewById(R.id.favorite_list);
-    	favoriteList.setText("Ulubione");
-    	favoriteList.setIconSelector(R.drawable.dashboard_item_selector);
-    	favoriteList.setOnClickListener(new OnClickListener() {
+    	favorites = (DashboardItemView) view.findViewById(R.id.favorites);
+    	favorites.setText(R.string.dashboard_favorites);
+    	favorites.setIconSelector(R.drawable.dashboard_favorite_selector);
+    	favorites.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				Activity activity = getActivity();
 				Intent intent = new Intent(activity, LocationsListActivity.class);
@@ -50,10 +49,10 @@ public class HomeFragment extends Fragment {
 			}
 		});
     	
-    	allList = (DashboardItemView) view.findViewById(R.id.all_list);
-    	allList.setText("Miasta");
-    	allList.setIconSelector(R.drawable.dashboard_item_selector);
-    	allList.setOnClickListener(new OnClickListener() {
+    	locations = (DashboardItemView) view.findViewById(R.id.locations);
+    	locations.setText(R.string.dashboard_locations);
+    	locations.setIconSelector(R.drawable.dashboard_list_selector);
+    	locations.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				Activity activity = getActivity();
 				Intent intent = new Intent(activity, LocationsListActivity.class);
@@ -63,11 +62,13 @@ public class HomeFragment extends Fragment {
 		});
     	
     	settings = (DashboardItemView) view.findViewById(R.id.settings);
-    	settings.setText("Ustawienia");
-    	settings.setIconSelector(R.drawable.dashboard_item_selector);
+    	settings.setText(R.string.dashboard_settings);
+    	settings.setIconSelector(R.drawable.dashboard_settings_selector);
     	settings.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				Toast.makeText(getActivity(), "settings", 500).show();
+				Activity activity = getActivity();
+				Intent intent = new Intent(activity, GeneralPreferenceActivity.class);
+				activity.startActivity(intent);
 			}
 		});
     	

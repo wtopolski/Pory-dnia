@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/white"
+    android:background="#fff6df"
     android:gravity="center"
     android:orientation="vertical" >
     
@@ -10,21 +10,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
-
+        
         <pl.wtopolski.android.sunsetwidget.view.DashboardItemView
-            android:id="@+id/location"
+            android:id="@+id/my_place"
             android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <pl.wtopolski.android.sunsetwidget.view.DashboardItemView
-            android:id="@+id/favorite_list"
+            android:id="@+id/favorites"
             android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <pl.wtopolski.android.sunsetwidget.view.DashboardItemView
-            android:id="@+id/all_list"
+            android:id="@+id/locations"
             android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" output="target/classes" path="src"/>
-	<classpathentry excluding="drawable/|layout/|values/|xml/|layout-land/|layout-land/" kind="src" path="res"/>
+	<classpathentry excluding="drawable/|layout/|values/|xml/|layout-land/|layout-land/|menu/" kind="src" path="res"/>
 	<classpathentry kind="src" path="res/layout"/>
 	<classpathentry kind="src" path="res/values"/>
 	<classpathentry kind="src" path="res/xml"/>
 	<classpathentry kind="src" path="res/layout-land"/>
+	<classpathentry kind="src" path="res/menu"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>

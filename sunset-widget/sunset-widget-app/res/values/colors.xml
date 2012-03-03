@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="actionbar_title_color">#eee</color>
-    <color name="actionbar_backgound_color">#cc0000</color>
-    
-    <drawable name="black">#000000</drawable>
-    
-    <drawable name="green_light">#ecfcbc</drawable>
     <drawable name="green">#24d000</drawable>
-    <drawable name="green_dark">#00a400</drawable>
-    
     <drawable name="orange">#f57900</drawable>
     
     <drawable name="gray_ccc">#cccccc</drawable>
     <drawable name="gray_aaa">#aaaaaa</drawable>
-    <drawable name="white">#ffffff</drawable>
+    
+    <color name="gray_dark">#333333</color>
+    <color name="gray_light">#999999</color>
     
     <color name="red_dark">#cc0000</color>
     <color name="red_light">#ff4444</color>
@@ -23,5 +17,8 @@
     
     <color name="orange_dark">#ff8800</color>
     <color name="orange_light">#ffbb33</color>
+    
+    <color name="green_dark">#669900</color>
+    <color name="green_light">#99cc00</color>
     
 </resources>

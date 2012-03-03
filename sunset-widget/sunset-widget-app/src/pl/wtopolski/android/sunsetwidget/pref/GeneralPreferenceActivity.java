@@ -1,10 +1,10 @@
 package pl.wtopolski.android.sunsetwidget.pref;
 
 import pl.wtopolski.android.sunsetwidget.R;
+import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarPreferenceActivity;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
-public class GeneralPreferenceActivity extends PreferenceActivity {
+public class GeneralPreferenceActivity extends ActionBarPreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

@@ -3,7 +3,6 @@ package pl.wtopolski.android.sunsetwidget.view;
 import pl.wtopolski.android.sunsetwidget.R;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DashboardItemView extends LinearLayout {
+	protected String LOG_TAG = this.getClass().getSimpleName();
 	
-	private LinearLayout dashboardItemRoot;
 	private ImageButton dashboardItemIcon;
 	private TextView dashboardItemDescription;
 
@@ -23,12 +22,14 @@ public class DashboardItemView extends LinearLayout {
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(R.layout.dashboard_item, this);
 		
-		dashboardItemRoot = (LinearLayout) view.findViewById(R.id.dashboardItemRoot);
 		dashboardItemIcon = (ImageButton) view.findViewById(R.id.dashboardItemIcon);
 
-    	Typeface font = Typeface.createFromAsset(context.getAssets(), "Roboto-Regular.ttf");
+    	Typeface fontTypeface = Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_name));
+    	int fontColor = context.getResources().getColor(R.color.red_dark);
+    	
 		dashboardItemDescription = (TextView) view.findViewById(R.id.dashboardItemDescription);
-		dashboardItemDescription.setTypeface(font);
+		dashboardItemDescription.setTypeface(fontTypeface);
+		dashboardItemDescription.setTextColor(fontColor);
 	}
 	
 	public void setText(int describe) {

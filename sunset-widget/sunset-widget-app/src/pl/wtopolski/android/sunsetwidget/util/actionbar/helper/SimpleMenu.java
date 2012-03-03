@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pl.wtopolski.android.sunsetwidget.util.actionbar;
+package pl.wtopolski.android.sunsetwidget.util.actionbar.helper;
 
 import android.content.ComponentName;
 import android.content.Context;

@@ -1,50 +1,46 @@
 package pl.wtopolski.android.sunsetwidget.util.actionbar;
 
-import pl.wtopolski.android.sunsetwidget.util.FlowManager;
+import pl.wtopolski.android.sunsetwidget.util.actionbar.helper.ActionBarHelper;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 public abstract class ActionBarListActivity extends ListActivity {
-    final ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
+    final ActionBarHelper helper = ActionBarHelper.createInstance(this);
 
     protected ActionBarHelper getActionBarHelper() {
-        return mActionBarHelper;
+        return helper;
     }
 
     @Override
     public MenuInflater getMenuInflater() {
-        return mActionBarHelper.getMenuInflater(super.getMenuInflater());
+        return helper.getMenuInflater(super.getMenuInflater());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActionBarHelper.onCreate(savedInstanceState);
+        helper.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mActionBarHelper.onPostCreate(savedInstanceState);
+        helper.onPostCreate(savedInstanceState);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean retValue = false;
-        retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
+        retValue |= helper.onCreateOptionsMenu(menu);
         retValue |= super.onCreateOptionsMenu(menu);
         return retValue;
     }
 
     @Override
     protected void onTitleChanged(CharSequence title, int color) {
-        mActionBarHelper.onTitleChanged(title, color);
+        helper.onTitleChanged(title, color);
         super.onTitleChanged(title, color);
-    }
-    
-    public void finishAndGoTo(Class<?> cls, Bundle... bundle) {
-    	FlowManager.finishAndGoTo(this, cls, bundle);
     }
 }

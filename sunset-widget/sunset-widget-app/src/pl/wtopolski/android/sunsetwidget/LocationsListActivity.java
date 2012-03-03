@@ -2,6 +2,7 @@ package pl.wtopolski.android.sunsetwidget;
 
 import pl.wtopolski.android.sunsetwidget.adapter.LocationListAdapter;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
+import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarListActivity;
@@ -126,11 +127,11 @@ public class LocationsListActivity extends ActionBarListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-            	finishAndGoTo(HomeActivity.class);
+            	//FlowManager.finishAndGoTo(this, HomeActivity.class, new Bundle());
                 break;
 
             case R.id.menu_favourite:
-            	finishAndGoTo(MainActivity.class);
+            	//FlowManager.finishAndGoTo(this, MainActivity.class, new Bundle());
                 break;
                 
             case R.id.show_all:

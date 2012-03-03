@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pl.wtopolski.android.sunsetwidget.util.actionbar;
+package pl.wtopolski.android.sunsetwidget.util.actionbar.helper;
 
 import android.app.Activity;
 import android.os.Build;
@@ -77,7 +77,7 @@ public abstract class ActionBarHelper {
     /**
      * Action bar helper code to be run in {@link Activity#onTitleChanged(CharSequence, int)}.
      */
-    protected void onTitleChanged(CharSequence title, int color) {
+    public void onTitleChanged(CharSequence title, int color) {
     }
 
     /**

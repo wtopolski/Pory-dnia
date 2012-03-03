@@ -12,9 +12,9 @@ public class HomeActivity extends ActionBarFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
         
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        Fragment productDetails = new HomeFragment();
-        fragmentTransaction.replace(R.id.mainFragement, productDetails);
-        fragmentTransaction.commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Fragment homeFragment = new HomeFragment();
+        transaction.replace(R.id.homeFragement, homeFragment);
+        transaction.commit();
     }
 }

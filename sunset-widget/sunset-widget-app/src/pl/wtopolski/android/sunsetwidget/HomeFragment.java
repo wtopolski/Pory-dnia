@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
     	myPlace.setText(R.string.dashboard_my_place);
     	myPlace.setIconSelector(R.drawable.dashboard_location_selector);
     	myPlace.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {
+			public void onClick(View view) {
 				Activity activity = getActivity();
 				Intent intent = new Intent(activity, MainActivity.class);
 				activity.startActivity(intent);
@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
     	favorites.setText(R.string.dashboard_favorites);
     	favorites.setIconSelector(R.drawable.dashboard_favorite_selector);
     	favorites.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {
+			public void onClick(View view) {
 				Activity activity = getActivity();
 				Intent intent = new Intent(activity, LocationsListActivity.class);
 		    	intent.putExtra(LocationsListActivity.SHOW_ACTION, LocationsListActivity.SHOW_FAVOURITES);
@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment {
     	locations.setText(R.string.dashboard_locations);
     	locations.setIconSelector(R.drawable.dashboard_list_selector);
     	locations.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {
+			public void onClick(View view) {
 				Activity activity = getActivity();
 				Intent intent = new Intent(activity, LocationsListActivity.class);
 		    	intent.putExtra(LocationsListActivity.SHOW_ACTION, LocationsListActivity.SHOW_ALL);
@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
     	settings.setText(R.string.dashboard_settings);
     	settings.setIconSelector(R.drawable.dashboard_settings_selector);
     	settings.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {
+			public void onClick(View view) {
 				Activity activity = getActivity();
 				Intent intent = new Intent(activity, GeneralPreferenceActivity.class);
 				activity.startActivity(intent);

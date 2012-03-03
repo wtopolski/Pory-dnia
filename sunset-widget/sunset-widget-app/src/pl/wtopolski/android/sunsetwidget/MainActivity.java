@@ -3,6 +3,7 @@ package pl.wtopolski.android.sunsetwidget;
 import pl.wtopolski.android.sunsetwidget.adapter.PresenterPagerAdapter;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
+import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarActivity;
@@ -88,7 +89,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-            	finishAndGoTo(HomeActivity.class);
+            	FlowManager.finishAndGoTo(this, HomeActivity.class, new Bundle());
                 break;
 
             /*

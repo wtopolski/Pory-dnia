@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pl.wtopolski.android.sunsetwidget.util.actionbar;
+package pl.wtopolski.android.sunsetwidget.util.actionbar.helper;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -24,6 +24,8 @@ import pl.wtopolski.android.sunsetwidget.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.InflateException;
 import android.view.Menu;
@@ -87,7 +89,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
         }
 
         LinearLayout.LayoutParams springLayoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.FILL_PARENT);
-        springLayoutParams.weight = 1;
+        springLayoutParams.weight = 1f;
 
         // Add Home button
         SimpleMenu tempMenu = new SimpleMenu(mActivity);
@@ -96,7 +98,9 @@ public class ActionBarHelperBase extends ActionBarHelper {
         addActionItemCompatFromMenuItem(homeItem);
 
         // Add title text
+        Typeface font = Typeface.createFromAsset(mActivity.getAssets(), "Roboto-Regular.ttf");
         TextView titleText = new TextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
+        titleText.setTypeface(font);
         titleText.setLayoutParams(springLayoutParams);
         titleText.setText(mActivity.getTitle());
         actionBarCompat.addView(titleText);
@@ -133,7 +137,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
     /**{@inheritDoc}*/
     @Override
-    protected void onTitleChanged(CharSequence title, int color) {
+    public void onTitleChanged(CharSequence title, int color) {
         TextView titleView = (TextView) mActivity.findViewById(R.id.actionbar_compat_title);
         if (titleView != null) {
             titleView.setText(title);
@@ -160,7 +164,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
      * Adds an action button to the compatibility action bar, using menu information from a {@link
      * android.view.MenuItem}. If the menu item ID is <code>menu_refresh</code>, the menu item's
      * state can be changed to show a loading spinner using
-     * {@link com.example.android.actionbarcompat.ActionBarHelperBase#setRefreshActionItemState(boolean)}.
+     * {@link pl.wtopolski.android.sunsetwidget.util.actionbar.helper.example.android.actionbarcompat.ActionBarHelperBase#setRefreshActionItemState(boolean)}.
      */
     private View addActionItemCompatFromMenuItem(final MenuItem item) {
         final int itemId = item.getItemId();
@@ -171,19 +175,17 @@ public class ActionBarHelperBase extends ActionBarHelper {
         }
 
         // Create the button
-        ImageButton actionButton = new ImageButton(mActivity, null,
-                itemId == android.R.id.home
-                        ? R.attr.actionbarCompatItemHomeStyle
-                        : R.attr.actionbarCompatItemStyle);
-        actionButton.setLayoutParams(new ViewGroup.LayoutParams(
-                (int) mActivity.getResources().getDimension(
-                        itemId == android.R.id.home
-                                ? R.dimen.actionbar_compat_button_home_width
-                                : R.dimen.actionbar_compat_button_width),
-                ViewGroup.LayoutParams.FILL_PARENT));
+        int defStyle = (itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
+        ImageButton actionButton = new ImageButton(mActivity, null, defStyle);
+        
+        int dimenId = (itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width : R.dimen.actionbar_compat_button_width);
+        int width = (int) mActivity.getResources().getDimension(dimenId);
+        actionButton.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.FILL_PARENT));
+        
         if (itemId == R.id.menu_refresh) {
             actionButton.setId(R.id.actionbar_compat_item_refresh);
         }
+        
         actionButton.setImageDrawable(item.getIcon());
         actionButton.setScaleType(ImageView.ScaleType.CENTER);
         actionButton.setContentDescription(item.getTitle());
@@ -196,15 +198,11 @@ public class ActionBarHelperBase extends ActionBarHelper {
         actionBar.addView(actionButton);
 
         if (item.getItemId() == R.id.menu_refresh) {
-            // Refresh buttons should be stateful, and allow for indeterminate progress indicators,
-            // so add those.
-            ProgressBar indicator = new ProgressBar(mActivity, null,
-                    R.attr.actionbarCompatProgressIndicatorStyle);
+            // Refresh buttons should be stateful, and allow for indeterminate progress indicators, so add those.
+            ProgressBar indicator = new ProgressBar(mActivity, null, R.attr.actionbarCompatProgressIndicatorStyle);
 
-            final int buttonWidth = mActivity.getResources().getDimensionPixelSize(
-                    R.dimen.actionbar_compat_button_width);
-            final int buttonHeight = mActivity.getResources().getDimensionPixelSize(
-                    R.dimen.actionbar_compat_height);
+            final int buttonWidth = mActivity.getResources().getDimensionPixelSize(R.dimen.actionbar_compat_button_width);
+            final int buttonHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.actionbar_compat_height);
             final int progressIndicatorWidth = buttonWidth / 2;
 
             LinearLayout.LayoutParams indicatorLayoutParams = new LinearLayout.LayoutParams(

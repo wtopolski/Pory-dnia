@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   
+    <string-array name="preferences_sun_altitude_entries">
+        <item>@string/preferences_sun_altitude_entries_1</item>
+        <item>@string/preferences_sun_altitude_entries_2</item>
+        <item>@string/preferences_sun_altitude_entries_3</item>
+        <item>@string/preferences_sun_altitude_entries_4</item>
+    </string-array>
+    
+    <string-array name="preferences_sun_altitude_values">
+        <item>@string/preferences_sun_altitude_values_1</item>
+        <item>@string/preferences_sun_altitude_values_2</item>
+        <item>@string/preferences_sun_altitude_values_3</item>
+        <item>@string/preferences_sun_altitude_values_4</item>
+    </string-array>
+   
+    <string-array name="preferences_presentation_view_entries">
+        <item>@string/preferences_presentation_entries_1</item>
+        <item>@string/preferences_presentation_entries_2</item>
+        <item>@string/preferences_presentation_entries_3</item>
+    </string-array>
+    
+    <string-array name="preferences_presentation_view_values">
+        <item>@string/preferences_presentation_values_1</item>
+        <item>@string/preferences_presentation_values_2</item>
+        <item>@string/preferences_presentation_values_3</item>
+    </string-array>
+    
+</resources>

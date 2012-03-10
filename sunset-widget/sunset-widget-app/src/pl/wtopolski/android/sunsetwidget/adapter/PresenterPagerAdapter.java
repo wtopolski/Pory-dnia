@@ -1,35 +1,31 @@
 package pl.wtopolski.android.sunsetwidget.adapter;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
-import pl.wtopolski.android.sunsetwidget.R;
-import pl.wtopolski.android.sunsetwidget.core.TimeChangeStrategy;
 import pl.wtopolski.android.sunsetwidget.core.TimePackageCreator;
 import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
+import pl.wtopolski.android.sunsetwidget.pref.ApplicationSettings;
+import pl.wtopolski.android.sunsetwidget.view.PresentationView;
 import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class PresenterPagerAdapter extends PagerAdapter {
     protected static final String LOG_TAG = PresenterPagerAdapter.class.getSimpleName();
-	private static final String DATE_DESCRIBE_PATTERN = "dd MMMM yyyy";
-	private static final String DAY_DESCRIBE_PATTERN = "EEEE";
 
     private static int NUM_VIEWS = 5;
-	private LayoutInflater layoutInflater;
 	private GPSLocation gpsLocation;
+	private Context context;
+	private PresentationView presentationView;
     
     public PresenterPagerAdapter(Context context, GPSLocation gpsLocation) {
     	this.gpsLocation = gpsLocation;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    	this.context = context;
+    	this.presentationView = ApplicationSettings.getPresentationViewSettings();
     }
 	
 	@Override
@@ -39,8 +35,6 @@ public class PresenterPagerAdapter extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(View collection, int position) {
-        View view = layoutInflater.inflate(R.layout.presenter_page, null);
-
     	TimePackageCreator calculator = new TimePackageCreator();
     	Calendar calendarNow = calculator.prepareCalendar();
     	
@@ -55,45 +49,11 @@ public class PresenterPagerAdapter extends PagerAdapter {
     	}
         
     	TimePackage times = calculator.prepareTimePackage(calendarNow, gpsLocation.convertToTimeLocation());
-    	TimeChangeStrategy.EUROPEAN_TIME.update(times);
-       
-        String sunrise = formatDate(times.getSunrise());
-        String culmination = formatDate(times.getCulmination());
-        String sunset = formatDate(times.getSunset());
-
-        TextView sunriseView = (TextView) view.findViewById(R.id.sunrise);
-        TextView culminationView = (TextView) view.findViewById(R.id.culmination);
-        TextView sunsetView = (TextView) view.findViewById(R.id.sunset);
-        TextView dateDescribe = (TextView) view.findViewById(R.id.dateDescribe);
-        TextView dayLength = (TextView) view.findViewById(R.id.dayLength);
-        TextView dayInYear = (TextView) view.findViewById(R.id.dayInYear);
-        TextView longerThanTheShortestDayOfYear = (TextView) view.findViewById(R.id.longerThanTheShortestDayOfYear);
-        TextView shorterThanTheLongestDayOfYear = (TextView) view.findViewById(R.id.shorterThanTheLongestDayOfYear);
-
-		final SimpleDateFormat dateDescribeFormater = new SimpleDateFormat(DATE_DESCRIBE_PATTERN);
-		final SimpleDateFormat dayDescribeFormater = new SimpleDateFormat(DAY_DESCRIBE_PATTERN);
-
-    	final String describe = dateDescribeFormater.format(times.getCulmination());
-    	final String dayName = dayDescribeFormater.format(times.getCulmination());
-        
-        sunriseView.setText(sunrise);
-        culminationView.setText(culmination);
-        sunsetView.setText(sunset);
-        dateDescribe.setText(dayName + ", " + describe);
-        dayLength.setText(TimePackage.getSunsetSunriseDiffDescribe(times.getLengthOfDay()));
-        dayInYear.setText(""+ times.getCurrentDayInYear());
-        longerThanTheShortestDayOfYear.setText(TimePackage.getSunsetSunriseDiffDescribe(times.getLongerThanTheShortestDayOfYear()));
-        shorterThanTheLongestDayOfYear.setText(TimePackage.getSunsetSunriseDiffDescribe(times.getShorterThanTheLongestDayOfYear()));
-        
+    	View view = presentationView.getView(context, times);
 		((ViewPager) collection).addView(view, 0);
 
 		return view;
 	}
-    
-    private String formatDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        return sdf.format(date);
-    }
 
 	@Override
 	public void destroyItem(View collection, int position, Object view) {

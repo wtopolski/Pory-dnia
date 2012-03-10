@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
+	
 	<PreferenceCategory
-		android:title="First Category"
-		android:key="first_category">
+		android:key="@string/preferences_counting_key"
+		android:title="@string/preferences_counting_title">
+		
 		<CheckBoxPreference
-			android:key="perform_updates"
-			android:summary="Enable or disable data updates"
-			android:title="Enable updates"
-			android:defaultValue="true" />
+			android:key="@string/preferences_use_est_key"
+			android:title="@string/preferences_use_est_title"
+			android:summary="@string/preferences_use_est_summary"
+			android:defaultValue="@string/preferences_use_est_default_value" />
+		
+		<ListPreference
+		    android:key="@string/preferences_sun_altitude_key"
+		    android:title="@string/preferences_sun_altitude_title"
+		    android:summary="@string/preferences_sun_altitude_summary"
+			android:defaultValue="@string/preferences_sun_altitude_default_value"
+			android:entries="@array/preferences_sun_altitude_entries"
+			android:entryValues="@array/preferences_sun_altitude_values" />
+		
 	</PreferenceCategory>
+	
 	<PreferenceCategory
-		android:title="Second Category"
-		android:key="second_category">
-		<EditTextPreference
-			android:key="welcome_message"
-			android:title="Welcome Message"
-			android:summary="Define the Welcome message to be shown"
-			android:dialogTitle="Welcome Message"
-			android:dialogMessage="Provide a message"
-			android:defaultValue="Default welcome message" />
+		android:key="@string/preferences_visualization_key"
+		android:title="@string/preferences_visualization_title">
+		
+		<ListPreference
+		    android:key="@string/preferences_presentation_view_key"
+		    android:title="@string/preferences_presentation_view_title"
+		    android:summary="@string/preferences_presentation_view_summary"
+			android:defaultValue="@string/preferences_presentation_view_default_value"
+			android:entries="@array/preferences_presentation_view_entries"
+			android:entryValues="@array/preferences_presentation_view_values" />
+		
 	</PreferenceCategory>
+	
 </PreferenceScreen>

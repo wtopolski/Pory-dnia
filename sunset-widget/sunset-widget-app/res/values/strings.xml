@@ -27,4 +27,45 @@
     <string name="dashboard_favorites">Ulubione</string>
     <string name="dashboard_locations">Lokalizacje</string>
     <string name="dashboard_settings">Ustawienia</string>
+    
+    <!-- Preference -->
+    <string name="preferences_counting_title">Obliczenia</string>
+    <string name="preferences_counting_key">preferences_counting</string>
+    
+    <string name="preferences_use_est_title">Zmiana czasu</string>
+    <string name="preferences_use_est_summary">Uwzględniaj zmianę na czas letni/zimowy</string>
+    <string name="preferences_use_est_key">preferences_use_est</string>
+    <string name="preferences_use_est_default_value">true</string>
+    
+    <string name="preferences_sun_altitude_title">Wysokość Słońca</string>
+    <string name="preferences_sun_altitude_summary">Okreść wysokość Słońca dla zmierzchu</string>
+    <string name="preferences_sun_altitude_key">preferences_sun_altitude</string>
+    <string name="preferences_sun_altitude_default_value">@string/preferences_sun_altitude_values_1</string>
+    
+    <string name="preferences_sun_altitude_entries_1">Oficjalna</string>
+    <string name="preferences_sun_altitude_entries_2">Zmierzch cywilny</string>
+    <string name="preferences_sun_altitude_entries_3">Zmierzch żeglarski</string>
+    <string name="preferences_sun_altitude_entries_4">Zmierzch astronomiczny</string>
+    
+    <string name="preferences_sun_altitude_values_1">OFFICIAL</string>
+    <string name="preferences_sun_altitude_values_2">CIVIL</string>
+    <string name="preferences_sun_altitude_values_3">NAUTICAL</string>
+    <string name="preferences_sun_altitude_values_4">ASTRONOMICAL</string>
+    
+    <string name="preferences_visualization_title">Wizualizacja</string>
+    <string name="preferences_visualization_key">preferences_visualization</string>
+    
+    <string name="preferences_presentation_view_key">preferences_presentation_view</string>
+    <string name="preferences_presentation_view_title">Sposób prezentacji</string>
+    <string name="preferences_presentation_view_summary">Wybierz jak mają być prezentowane dane</string>
+    <string name="preferences_presentation_view_default_value">@string/preferences_presentation_values_1</string>
+    
+    <string name="preferences_presentation_entries_1">Tablica</string>
+    <string name="preferences_presentation_entries_2">Zegar</string>
+    <string name="preferences_presentation_entries_3">Linia czasu</string>
+    
+    <string name="preferences_presentation_values_1">TABLE</string>
+    <string name="preferences_presentation_values_2">CLOCK</string>
+    <string name="preferences_presentation_values_3">TIME_LINE</string>
+    
 </resources>

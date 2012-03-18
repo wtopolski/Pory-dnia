@@ -2,24 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/background"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@android:id/list"
+    <FrameLayout
+        android:id="@+id/locationsListFragement"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:divider="@color/text_dark"
-        android:dividerHeight="1dip"
-        android:fastScrollEnabled="true" />
-
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:text="@string/empty"
-        android:textColor="@color/text_dark"
-        android:textSize="18sp" />
+        android:layout_height="fill_parent" />
 
 </LinearLayout>

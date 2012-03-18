@@ -46,8 +46,10 @@ public class LocationsListActivity extends ActionBarListActivity {
 
     	if (showAction) {
             showAll();
+            setTitle(R.string.dashboard_locations);
         } else {
             showFavouritesOnly();
+            setTitle(R.string.dashboard_favorites);
         }
     }
     
@@ -127,20 +129,8 @@ public class LocationsListActivity extends ActionBarListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-            	//FlowManager.finishAndGoTo(this, HomeActivity.class, new Bundle());
+            	FlowManager.goToHome(this);
                 break;
-
-            case R.id.menu_favourite:
-            	//FlowManager.finishAndGoTo(this, MainActivity.class, new Bundle());
-                break;
-                
-            case R.id.show_all:
-                showAll();
-            	break;
-            
-            case R.id.show_favourites_only:
-                showFavouritesOnly();
-            	break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -89,7 +89,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-            	FlowManager.finishAndGoTo(this, HomeActivity.class, new Bundle());
+            	FlowManager.goToHome(this);
                 break;
 
             /*

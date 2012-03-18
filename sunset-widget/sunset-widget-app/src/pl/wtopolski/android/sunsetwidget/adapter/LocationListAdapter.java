@@ -6,17 +6,18 @@ import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_NAME;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_PROVINCE;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_SELECTION;
+import pl.wtopolski.android.sunsetwidget.MyApplication;
 import pl.wtopolski.android.sunsetwidget.R;
-import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.model.SelectionType;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AlphabetIndexer;
 import android.widget.CursorAdapter;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -57,7 +58,8 @@ public class LocationListAdapter extends CursorAdapter implements SectionIndexer
         return view;
     }
 
-    @Override
+    @SuppressWarnings("unused")
+	@Override
     public void bindView(View view, Context context, Cursor cursor) {
         final int locationId = cursor.getInt(idColumn);
         String name = cursor.getString(nameColumn);
@@ -66,18 +68,23 @@ public class LocationListAdapter extends CursorAdapter implements SectionIndexer
         String province = cursor.getString(provinceColumn);
         int selection = cursor.getInt(selectionColumn);
 
-        GPSLocation location = new GPSLocation(locationId, name, latitude, longitude, province);
-        location.setType(SelectionType.getSelectionType(selection));
+        SelectionType selectionType = SelectionType.getSelectionType(selection);
 
-        RelativeLayout row = (RelativeLayout) view.findViewById(R.id.row);
-    	row.setBackgroundDrawable(context.getResources().getDrawable(location.getType().getBackgroundResource()));
-        
-        setTextOnView(view, cursor, R.id.firstLine, location.getName());
-        setTextOnView(view, cursor, R.id.secondLine, location.getProvince());
+        Typeface fontTypeface = MyApplication.getMyApplication().getTypeface();
+
+        setImageOnView(view, R.id.imageItem, selectionType.getImage());
+        setTextOnView(view, R.id.firstLine, fontTypeface, name);
+        setTextOnView(view, R.id.secondLine, fontTypeface, province);
     }
 
-    private void setTextOnView(View view, Cursor cursor, int resource, String value) {
+    private void setImageOnView(View view, int resource, int image) {
+        ImageView imageItem = (ImageView) view.findViewById(resource);
+        imageItem.setImageResource(image);
+	}
+
+	private void setTextOnView(View view, int resource, Typeface fontTypeface, String value) {
         TextView line = (TextView) view.findViewById(resource);
+        line.setTypeface(fontTypeface);
         line.setText(value);
     }
 

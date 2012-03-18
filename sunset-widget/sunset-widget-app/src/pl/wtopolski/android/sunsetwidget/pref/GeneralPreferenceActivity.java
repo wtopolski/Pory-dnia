@@ -1,6 +1,5 @@
 package pl.wtopolski.android.sunsetwidget.pref;
 
-import pl.wtopolski.android.sunsetwidget.HomeActivity;
 import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarPreferenceActivity;
@@ -27,7 +26,7 @@ public class GeneralPreferenceActivity extends ActionBarPreferenceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-            	FlowManager.finishAndGoTo(this, HomeActivity.class, new Bundle());
+            	FlowManager.goToHome(this);
                 break;
         }
         return super.onOptionsItemSelected(item);

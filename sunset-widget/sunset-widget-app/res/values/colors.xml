@@ -3,6 +3,10 @@
     <drawable name="green">#24d000</drawable>
     <drawable name="orange">#f57900</drawable>
     
+    <color name="background">#fff6df</color>
+    <color name="text_light">#666666</color>
+    <color name="text_dark">#000000</color>
+    
     <drawable name="gray_ccc">#cccccc</drawable>
     <drawable name="gray_aaa">#aaaaaa</drawable>
     

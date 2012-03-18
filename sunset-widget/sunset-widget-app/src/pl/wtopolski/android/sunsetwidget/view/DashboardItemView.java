@@ -1,5 +1,6 @@
 package pl.wtopolski.android.sunsetwidget.view;
 
+import pl.wtopolski.android.sunsetwidget.MyApplication;
 import pl.wtopolski.android.sunsetwidget.R;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -24,7 +25,7 @@ public class DashboardItemView extends LinearLayout {
 		
 		dashboardItemIcon = (ImageButton) view.findViewById(R.id.dashboardItemIcon);
 
-    	Typeface fontTypeface = Typeface.createFromAsset(context.getAssets(), context.getString(R.string.font_name));
+    	Typeface fontTypeface = MyApplication.getMyApplication().getTypeface();
     	int fontColor = context.getResources().getColor(R.color.red_dark);
     	
 		dashboardItemDescription = (TextView) view.findViewById(R.id.dashboardItemDescription);

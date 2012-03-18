@@ -1,6 +1,5 @@
 package pl.wtopolski.android.sunsetwidget.util.actionbar;
 
-import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.helper.ActionBarHelper;
 import android.app.Activity;
 import android.os.Bundle;
@@ -43,9 +42,5 @@ public abstract class ActionBarActivity extends Activity {
     protected void onTitleChanged(CharSequence title, int color) {
         helper.onTitleChanged(title, color);
         super.onTitleChanged(title, color);
-    }
-    
-    public void finishAndGoTo(Class<?> cls, Bundle... bundle) {
-    	FlowManager.finishAndGoTo(this, cls, bundle);
     }
 }

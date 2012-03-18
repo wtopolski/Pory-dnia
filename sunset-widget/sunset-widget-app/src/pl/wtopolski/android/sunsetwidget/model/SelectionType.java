@@ -10,8 +10,8 @@ public enum SelectionType {
 		}
 
 		@Override
-		public int getBackgroundResource() {
-			return R.drawable.locations_item_selector_none;
+		public int getImage() {
+			return R.drawable.favorite_list_none;
 		}
 	},
 	FAVOURITE {
@@ -21,8 +21,8 @@ public enum SelectionType {
 		}
 
 		@Override
-		public int getBackgroundResource() {
-			return R.drawable.locations_item_selector_favorite;
+		public int getImage() {
+			return R.drawable.favorite_list_yes;
 		}
 	},
 	SELECTED {
@@ -32,13 +32,13 @@ public enum SelectionType {
 		}
 
 		@Override
-		public int getBackgroundResource() {
-			return R.drawable.locations_item_selector_selected;
+		public int getImage() {
+			return R.drawable.favorite_list_main;
 		}
 	};
 	
 	public abstract int getValue();
-	public abstract int getBackgroundResource();
+	public abstract int getImage();
 	
 	public static SelectionType getSelectionType(int value) {
 		switch (value) {

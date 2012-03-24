@@ -5,9 +5,11 @@ import java.util.Date;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import pl.wtopolski.android.sunsetwidget.MyApplication;
 import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
 
@@ -22,25 +24,32 @@ public enum PresentationView {
 	        String culmination = formatDate(timePackage.getCulmination());
 	        String sunset = formatDate(timePackage.getSunset());
 
+	        Typeface tf = MyApplication.getMyApplication().getTypeface();
+	        
 	        TextView sunriseView = (TextView) view.findViewById(R.id.sunrise);
+	        sunriseView.setTypeface(tf);
+	        
 	        TextView culminationView = (TextView) view.findViewById(R.id.culmination);
+	        culminationView.setTypeface(tf);
+	        
 	        TextView sunsetView = (TextView) view.findViewById(R.id.sunset);
-	        TextView dateDescribe = (TextView) view.findViewById(R.id.dateDescribe);
+	        sunsetView.setTypeface(tf);
+	        
 	        TextView dayLength = (TextView) view.findViewById(R.id.dayLength);
+	        dayLength.setTypeface(tf);
+	        
 	        TextView dayInYear = (TextView) view.findViewById(R.id.dayInYear);
+	        dayInYear.setTypeface(tf);
+	        
 	        TextView longerThanTheShortestDayOfYear = (TextView) view.findViewById(R.id.longerThanTheShortestDayOfYear);
+	        longerThanTheShortestDayOfYear.setTypeface(tf);
+	        
 	        TextView shorterThanTheLongestDayOfYear = (TextView) view.findViewById(R.id.shorterThanTheLongestDayOfYear);
-
-			final SimpleDateFormat dateDescribeFormater = new SimpleDateFormat(DATE_DESCRIBE_PATTERN);
-			final SimpleDateFormat dayDescribeFormater = new SimpleDateFormat(DAY_DESCRIBE_PATTERN);
-
-	    	final String describe = dateDescribeFormater.format(timePackage.getCulmination());
-	    	final String dayName = dayDescribeFormater.format(timePackage.getCulmination());
+	        shorterThanTheLongestDayOfYear.setTypeface(tf);
 	        
 	        sunriseView.setText(sunrise);
 	        culminationView.setText(culmination);
 	        sunsetView.setText(sunset);
-	        dateDescribe.setText(dayName + ", " + describe);
 	        dayLength.setText(TimePackage.getSunsetSunriseDiffDescribe(timePackage.getLengthOfDay()));
 	        dayInYear.setText(""+ timePackage.getCurrentDayInYear());
 	        longerThanTheShortestDayOfYear.setText(TimePackage.getSunsetSunriseDiffDescribe(timePackage.getLongerThanTheShortestDayOfYear()));
@@ -70,9 +79,6 @@ public enum PresentationView {
 			return view;
 		}
 	};
-
-	private static final String DATE_DESCRIBE_PATTERN = "dd MMMM yyyy";
-	private static final String DAY_DESCRIBE_PATTERN = "EEEE";
 	
 	public abstract View getView(Context context, TimePackage timePackage);
 }

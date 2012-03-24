@@ -2,18 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/white"
+    android:background="@color/background"
     android:orientation="vertical" >
-
-     <TextView
-         android:id="@+id/dateDescribe"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:layout_marginLeft="5dip"
-         android:layout_marginRight="5dip"
-         android:gravity="center"
-         android:textColor="#5D8AA8"
-         android:textSize="20sp" />
             
     <LinearLayout
         android:layout_width="fill_parent"
@@ -44,7 +34,6 @@
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
                 android:gravity="center"
-                android:text="wschód"
                 android:textColor="#5D8AA8"
                 android:textSize="30sp" />
         </LinearLayout>
@@ -60,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
+                android:layout_marginTop="5dip"
                 android:gravity="center"
                 android:text="kulminacja:"
                 android:textColor="#000000"
@@ -72,7 +62,6 @@
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
                 android:gravity="center"
-                android:text="kulminacja"
                 android:textColor="#5D8AA8"
                 android:textSize="30sp" />
         </LinearLayout>
@@ -88,6 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
+                android:layout_marginTop="5dip"
                 android:gravity="center"
                 android:text="zachód:"
                 android:textColor="#000000"
@@ -100,7 +90,6 @@
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
                 android:gravity="center"
-                android:text="zachód"
                 android:textColor="#5D8AA8"
                 android:textSize="30sp" />
         </LinearLayout>
@@ -151,6 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
+                android:layout_marginTop="5dip"
                 android:gravity="center"
                 android:text="dzień w roku:"
                 android:textColor="#000000"

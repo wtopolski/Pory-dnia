@@ -18,6 +18,8 @@ public class PresenterPagerAdapter extends PagerAdapter {
     protected static final String LOG_TAG = PresenterPagerAdapter.class.getSimpleName();
 
     private static int NUM_VIEWS = 5;
+    private TimePackage[] timePackages;
+    
 	private GPSLocation gpsLocation;
 	private Context context;
 	private PresentationView presentationView;
@@ -26,6 +28,23 @@ public class PresenterPagerAdapter extends PagerAdapter {
     	this.gpsLocation = gpsLocation;
     	this.context = context;
     	this.presentationView = ApplicationSettings.getPresentationViewSettings();
+    	
+    	timePackages = new TimePackage[NUM_VIEWS];
+
+    	TimePackageCreator calculator = new TimePackageCreator();
+    	for (int position = 0; position < NUM_VIEWS; position++) {
+        	Calendar calendarNow = calculator.prepareCalendar();
+    		if (position == 0 || position == 1) {
+        		calendarNow.add(Calendar.HOUR, 24*position);
+        	} else if (position == 2) {
+        		calendarNow.add(Calendar.HOUR, 24*7);
+        	} else if (position == 3) {
+        		calendarNow.add(Calendar.MONTH, 1);
+        	} else {
+        		calendarNow.add(Calendar.MONTH, 3);
+        	}
+    		timePackages[position] = calculator.prepareTimePackage(calendarNow, gpsLocation.convertToTimeLocation());
+    	}
     }
 	
 	@Override
@@ -33,25 +52,14 @@ public class PresenterPagerAdapter extends PagerAdapter {
 		return NUM_VIEWS;
 	}
 
+	public TimePackage[] getTimePackages() {
+		return timePackages;
+	}
+	
 	@Override
 	public Object instantiateItem(View collection, int position) {
-    	TimePackageCreator calculator = new TimePackageCreator();
-    	Calendar calendarNow = calculator.prepareCalendar();
-    	
-    	if (position == 0 || position == 1) {
-    		calendarNow.add(Calendar.HOUR, 24*position);
-    	} else if (position == 2) {
-    		calendarNow.add(Calendar.HOUR, 24*7);
-    	} else if (position == 3) {
-    		calendarNow.add(Calendar.MONTH, 1);
-    	} else {
-    		calendarNow.add(Calendar.MONTH, 3);
-    	}
-        
-    	TimePackage times = calculator.prepareTimePackage(calendarNow, gpsLocation.convertToTimeLocation());
-    	View view = presentationView.getView(context, times);
+    	View view = presentationView.getView(context, timePackages[position]);
 		((ViewPager) collection).addView(view, 0);
-
 		return view;
 	}
 

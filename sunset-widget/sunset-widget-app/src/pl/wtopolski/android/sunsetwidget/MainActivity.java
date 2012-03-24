@@ -1,6 +1,9 @@
 package pl.wtopolski.android.sunsetwidget;
 
+import java.text.SimpleDateFormat;
+
 import pl.wtopolski.android.sunsetwidget.adapter.PresenterPagerAdapter;
+import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
 import pl.wtopolski.android.sunsetwidget.util.FlowManager;
@@ -15,28 +18,24 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
     protected static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private ViewPager awesomePager;
+    private ViewPager viewPager;
     private PresenterPagerAdapter presenterPagerAdapter;
     
     public static final String LOCATION_ID = "LOCATION_ID";
     public static final int LOCATION_UNKNOWN = -1;
-
-	private TextView cityView;
-	private TextView provinceView;
 	
     private LocationManager locationManager;
+
+	private static final String DATE_DESCRIBE_PATTERN = "dd MMMM yyyy";
+	private static final String DAY_DESCRIBE_PATTERN = "EEEE";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        cityView = (TextView) findViewById(R.id.city);
-        provinceView = (TextView) findViewById(R.id.province);
         
         boolean isContentLoaded = SharedPreferencesStorage.getBoolean(this, SharedPreferencesStorage.IS_CONTENT_LOADED);
         boolean isMainSelected = SharedPreferencesStorage.getBoolean(this, SharedPreferencesStorage.IS_MAIN_SELECTED);
@@ -59,21 +58,42 @@ public class MainActivity extends ActionBarActivity {
         }
         
         String name = gpsLocation.getName();
-    	cityView.setText(name);
-    	
-    	String province = gpsLocation.getProvince();
-    	provinceView.setText(province);
+    	setTitle(name);
 
         presenterPagerAdapter = new PresenterPagerAdapter(this, gpsLocation);
-        awesomePager = (ViewPager) findViewById(R.id.awesomepager);
-        awesomePager.setAdapter(presenterPagerAdapter);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setAdapter(presenterPagerAdapter);
         
-        PresenterPageIndicatorView indicator = (PresenterPageIndicatorView)findViewById(R.id.indicator);
+        TimePackage[] timePackage = presenterPagerAdapter.getTimePackages();
+        String[] tabs = prapareTabs(timePackage);
+
+        PresenterPageIndicatorView indicator = (PresenterPageIndicatorView)findViewById(R.id.presenterPageIndicator);
+        indicator.setTabNames(tabs);
         
-        awesomePager.setOnPageChangeListener(indicator);
+        viewPager.setOnPageChangeListener(indicator);
     }
 
-    @Override
+    private String[] prapareTabs(TimePackage[] timePackages) {
+		final SimpleDateFormat dateDescribeFormater = new SimpleDateFormat(DATE_DESCRIBE_PATTERN);
+		final SimpleDateFormat dayDescribeFormater = new SimpleDateFormat(DAY_DESCRIBE_PATTERN);
+		
+		String[] tabs = new String[] {"Dziś", "Jutro", "Tydzień", "Miesiąc", "Kwartał"};
+		
+		if (timePackages.length != tabs.length) {
+			throw new RuntimeException("Wrong size of arrays!");
+		}
+		
+		for (int index = 0; index < timePackages.length; index++) {
+	    	String describe = dateDescribeFormater.format(timePackages[index].getCulmination());
+	    	String dayName = dayDescribeFormater.format(timePackages[index].getCulmination());
+
+	    	tabs[index] = tabs[index] + " (" + dayName + " " + describe + ")";
+		}
+		
+		return tabs;
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main, menu);

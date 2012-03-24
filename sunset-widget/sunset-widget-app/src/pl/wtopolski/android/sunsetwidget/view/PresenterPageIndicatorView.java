@@ -1,5 +1,6 @@
 package pl.wtopolski.android.sunsetwidget.view;
 
+import pl.wtopolski.android.sunsetwidget.MyApplication;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -7,12 +8,15 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
 
-public class PresenterPageIndicatorView extends TextView implements OnPageChangeListener{
+public class PresenterPageIndicatorView extends TextView implements OnPageChangeListener {
     protected static final String LOG_TAG = PresenterPageIndicatorView.class.getSimpleName();
+    
+    private String[] tabNames;
 
 	public PresenterPageIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setText("init");
+		setTypeface(MyApplication.getMyApplication().getTypeface());
 	}
 
 	public void onPageScrollStateChanged(int state) {
@@ -27,6 +31,10 @@ public class PresenterPageIndicatorView extends TextView implements OnPageChange
 			Log.d(LOG_TAG, "==============> onPageScrollStateChanged: SCROLL_STATE_SETTLING");
 			break;
 		}
+	}
+	
+	public void setTabNames(String[] tabNames) {
+		this.tabNames = tabNames;
 	}
 
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -44,7 +52,6 @@ public class PresenterPageIndicatorView extends TextView implements OnPageChange
 	}
 
 	public String getTitle(int position) {
-		String[] tab = {"Dziś", "Jutro", "Tydzień", "Miesiąc", "Kwartał"};
-		return tab[position];
+		return tabNames[position];
 	}
 }

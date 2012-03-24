@@ -15,7 +15,7 @@
    version="1.1"
    inkscape:version="0.48.1 r9760"
    sodipodi:docname="fav_set.svg"
-   inkscape:export-filename="/home/wtopolski/WorkspaceSunset/PoryDnia/sunset-widget/sunset-widget-app/res/drawable/favorite_list_none.png"
+   inkscape:export-filename="/home/wtopolski/WorkspaceSunset/PoryDnia/sunset-widget/sunset-widget-app/res/drawable/favorite_list_main.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -68,7 +68,7 @@
     </g>
     <g
        id="g1478"
-       transform="matrix(0.87585128,0,0,-0.8643024,54.852803,1041.815)"
+       transform="matrix(0.87585128,0,0,-0.8643024,-33.487555,908.31188)"
        style="fill:#ff8800;fill-opacity:1">
       <path
          d="m 0,0 -18.347,11.005 -1.466,0.88 0,49.092 8.374,-19.686 0.668,-1.574 1.705,-0.151 21.31,-1.879 L -3.89,23.638 -5.18,22.515 -4.796,20.848 0,0 z M 19.173,39.938 -8.815,42.407 -19.813,68.263 -30.81,42.407 -58.798,39.938 -37.608,21.487 -43.911,-5.894 -19.813,8.56 4.282,-5.894 -2.017,21.487 19.173,39.938 z"
@@ -87,10 +87,11 @@
     </g>
     <g
        id="g1486"
-       transform="matrix(1.25,0,0,-1.25,185.56912,815.6863)">
+       transform="matrix(0.87292161,0,0,-0.87292161,37.501746,982.38077)"
+       style="fill:#ff8800;fill-opacity:1">
       <path
          d="M 0,0 11.035,-25.949 39.121,-28.424 17.857,-46.94 24.178,-74.42 0,-59.912 -24.179,-74.42 l 6.322,27.48 -21.268,18.516 28.089,2.475 L 0,0 z"
-         style="fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         style="fill:#ff8800;fill-opacity:1;fill-rule:nonzero;stroke:none"
          id="path1488"
          inkscape:connector-curvature="0" />
     </g>

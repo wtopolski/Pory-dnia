@@ -11,7 +11,7 @@ public enum SelectionType {
 
 		@Override
 		public int getImage() {
-			return R.drawable.favorite_list_none;
+			return R.drawable.list_none_selector;
 		}
 	},
 	FAVOURITE {
@@ -22,10 +22,10 @@ public enum SelectionType {
 
 		@Override
 		public int getImage() {
-			return R.drawable.favorite_list_yes;
+			return R.drawable.list_favorite_selector;
 		}
 	},
-	SELECTED {
+	MAIN {
 		@Override
 		public int getValue() {
 			return 2;
@@ -33,7 +33,7 @@ public enum SelectionType {
 
 		@Override
 		public int getImage() {
-			return R.drawable.favorite_list_main;
+			return R.drawable.list_main_selector;
 		}
 	};
 	
@@ -47,7 +47,7 @@ public enum SelectionType {
 		case 1:
 			return FAVOURITE;
 		case 2:
-			return SELECTED;
+			return MAIN;
 		default:
 			return NONE;
 		}

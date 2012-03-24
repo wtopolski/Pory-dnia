@@ -105,17 +105,17 @@ public class LocationManagerImpl implements LocationManager {
 	public boolean selectAsMain(GPSLocation location) {
         ContentValues values = new ContentValues(1);
         values.put(COLUMN_NAME_SELECTION, SelectionType.FAVOURITE.getValue());
-        context.getContentResolver().update(CONTENT_URI, values, COLUMN_NAME_SELECTION + "=?", new String[]{String.valueOf(SelectionType.SELECTED.getValue())});
+        context.getContentResolver().update(CONTENT_URI, values, COLUMN_NAME_SELECTION + "=?", new String[]{String.valueOf(SelectionType.MAIN.getValue())});
 		
 		Uri locationUri = ContentUris.withAppendedId(CONTENT_URI, location.getId());
         values = new ContentValues(1);
-        values.put(COLUMN_NAME_SELECTION, SelectionType.SELECTED.getValue());
+        values.put(COLUMN_NAME_SELECTION, SelectionType.MAIN.getValue());
         int count = context.getContentResolver().update(locationUri, values, null, null);
         return (count <= 0) ? false : true;
 	}
 
 	public GPSLocation getMainLocation() {
-		Cursor cursor = context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_NAME_SELECTION + "=?", new String[]{String.valueOf(SelectionType.SELECTED.getValue())}, DEFAULT_SORT_ORDER);
+		Cursor cursor = context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_NAME_SELECTION + "=?", new String[]{String.valueOf(SelectionType.MAIN.getValue())}, DEFAULT_SORT_ORDER);
         GPSLocation location = null;
 
         if (cursor.moveToFirst()) {

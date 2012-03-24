@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AlphabetIndexer;
 import android.widget.CursorAdapter;
@@ -34,10 +35,12 @@ public class LocationListAdapter extends CursorAdapter implements SectionIndexer
     
     private int layout;
     private AlphabetIndexer alphaIndexer;
+    private OnStarClickable onStarClickable;
 
-    public LocationListAdapter(Context context, int layout, Cursor cursor) {
+    public LocationListAdapter(Context context, int layout, Cursor cursor, OnStarClickable onStarClickable) {
         super(context, cursor);
         this.layout = layout;
+        this.onStarClickable = onStarClickable;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
         idColumn = cursor.getColumnIndex(_ID);
@@ -72,14 +75,19 @@ public class LocationListAdapter extends CursorAdapter implements SectionIndexer
 
         Typeface fontTypeface = MyApplication.getMyApplication().getTypeface();
 
-        setImageOnView(view, R.id.imageItem, selectionType.getImage());
+        setImageOnView(view, R.id.imageItem, selectionType.getImage(), locationId);
         setTextOnView(view, R.id.firstLine, fontTypeface, name);
         setTextOnView(view, R.id.secondLine, fontTypeface, province);
     }
 
-    private void setImageOnView(View view, int resource, int image) {
+    private void setImageOnView(View view, int resource, int image, final int locationId) {
         ImageView imageItem = (ImageView) view.findViewById(resource);
         imageItem.setImageResource(image);
+        imageItem.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				onStarClickable.onStarClicked(locationId);
+			}
+		});
 	}
 
 	private void setTextOnView(View view, int resource, Typeface fontTypeface, String value) {

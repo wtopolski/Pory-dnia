@@ -1,6 +1,8 @@
 package pl.wtopolski.android.sunsetwidget;
 
+import pl.wtopolski.android.sunsetwidget.adapter.ShowActionTypeGetable;
 import pl.wtopolski.android.sunsetwidget.adapter.LocationListAdapter;
+import pl.wtopolski.android.sunsetwidget.adapter.OnStarClickable;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
@@ -18,11 +20,12 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
-public class LocationsListFragment extends ListFragment {
+public class LocationsListFragment extends ListFragment implements OnStarClickable {
     protected static final String LOG_TAG = LocationsListFragment.class.getSimpleName();
     
     private LocationListAdapter adapter;
     private LocationManager locationManager;
+    private ShowActionTypeGetable showActionTypeGetable;
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,8 @@ public class LocationsListFragment extends ListFragment {
         locationManager = new LocationManagerImpl();
         locationManager.setContext(this.getActivity().getApplicationContext());
         
+		showActionTypeGetable = (ShowActionTypeGetable) getActivity();
+        
         showLocations();
             
         return view;
@@ -48,17 +53,15 @@ public class LocationsListFragment extends ListFragment {
 	}
 
     private void showLocations() {
-    	LocationListActivityInterface llai = (LocationListActivityInterface) getActivity();
-        
         Cursor cursor = null;
-    	if (llai.getShowAction()) {
+    	if (showActionTypeGetable.isShowAllAction()) {
             cursor = locationManager.getAllLocationsIdByCursor();
         } else {
             cursor = locationManager.getAllFavouritesLocationsIdByCursor();
         }
     	
     	this.getActivity().startManagingCursor(cursor);
-        adapter = new LocationListAdapter(this.getActivity(), R.layout.locations_item, cursor);
+        adapter = new LocationListAdapter(this.getActivity(), R.layout.locations_item, cursor, this);
         setListAdapter(adapter);
     }
     
@@ -69,6 +72,20 @@ public class LocationsListFragment extends ListFragment {
     	intent.putExtra(MainActivity.LOCATION_ID, (int)id);
     	startActivity(intent);
     }
+
+	public void onStarClicked(int locationId) {
+		GPSLocation location = locationManager.getLocation(locationId);
+		switch (location.getType()) {
+		case FAVOURITE:
+			locationManager.selectAsMain(location);
+			break;
+		case NONE:
+			locationManager.makeFavourite(location);
+			break;
+		case MAIN:
+			break;
+		}
+	}
     
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {

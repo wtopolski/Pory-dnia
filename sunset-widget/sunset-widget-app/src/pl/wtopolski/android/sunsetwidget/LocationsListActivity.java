@@ -1,5 +1,6 @@
 package pl.wtopolski.android.sunsetwidget;
 
+import pl.wtopolski.android.sunsetwidget.adapter.ShowActionTypeGetable;
 import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarFragmentActivity;
 import android.os.Bundle;
@@ -9,13 +10,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class LocationsListActivity extends ActionBarFragmentActivity implements LocationListActivityInterface {
+public class LocationsListActivity extends ActionBarFragmentActivity implements ShowActionTypeGetable {
     protected static final String LOG_TAG = LocationsListActivity.class.getSimpleName();
 
     public static String SHOW_ACTION = "SHOW_ACTION";
     public static boolean SHOW_ALL = true;
     public static boolean SHOW_FAVOURITES = false;
-    private boolean showAction = SHOW_ALL;
+    private boolean isShowAllAction = SHOW_ALL;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +24,12 @@ public class LocationsListActivity extends ActionBarFragmentActivity implements 
         setContentView(R.layout.locations);
         
         if (savedInstanceState != null) {
-    		showAction = savedInstanceState.getBoolean(SHOW_ACTION, SHOW_ALL);
+    		isShowAllAction = savedInstanceState.getBoolean(SHOW_ACTION, SHOW_ALL);
         } else if (getIntent().hasExtra(SHOW_ACTION)) {
-    		showAction = getIntent().getBooleanExtra(SHOW_ACTION, SHOW_ALL);
+    		isShowAllAction = getIntent().getBooleanExtra(SHOW_ACTION, SHOW_ALL);
         }
 
-    	if (showAction) {
+    	if (isShowAllAction) {
             setTitle(R.string.dashboard_locations);
         } else {
             setTitle(R.string.dashboard_favorites);
@@ -47,7 +48,7 @@ public class LocationsListActivity extends ActionBarFragmentActivity implements 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
-    	outState.putBoolean(SHOW_ACTION, showAction);
+    	outState.putBoolean(SHOW_ACTION, isShowAllAction);
     }
     
     @Override
@@ -67,7 +68,7 @@ public class LocationsListActivity extends ActionBarFragmentActivity implements 
         return super.onOptionsItemSelected(item);
     }
 
-	public boolean getShowAction() {
-		return showAction;
+	public boolean isShowAllAction() {
+		return isShowAllAction;
 	}
 }

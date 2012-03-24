@@ -17,7 +17,7 @@
         android:layout_centerVertical="true"
         android:padding="5dip"
         android:scaleType="fitCenter"
-        android:src="@drawable/favorite_list_yes" />
+        android:src="@drawable/list_none_selector" />
 
     <TextView
         android:id="@+id/secondLine"

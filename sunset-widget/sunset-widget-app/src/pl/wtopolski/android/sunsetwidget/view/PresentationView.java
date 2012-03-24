@@ -2,6 +2,7 @@ package pl.wtopolski.android.sunsetwidget.view;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -60,6 +61,8 @@ public enum PresentationView {
 
 	    private String formatDate(Date date) {
 	        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+	        // TODO In v3 use LocaleTimeZone
+	        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Warsaw"));
 	        return sdf.format(date);
 	    }
 	},

@@ -34,8 +34,6 @@ public class TimePackageCreator {
 
 		timePackageForSelectedDay.setLongerThanTheShortestDayOfYear(lengthOfSelectedDay - lengthOfShortestDay);
 		timePackageForSelectedDay.setShorterThanTheLongestDayOfYear(lengthOfLongestDay - lengthOfSelectedDay);
-
-//		config.getTimeChange().update(timePackageForSelectedDay);
 		
 		return timePackageForSelectedDay;
 	}

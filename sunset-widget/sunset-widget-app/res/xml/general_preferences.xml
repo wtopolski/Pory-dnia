@@ -6,12 +6,6 @@
 		android:key="@string/preferences_counting_key"
 		android:title="@string/preferences_counting_title">
 		
-		<CheckBoxPreference
-			android:key="@string/preferences_use_est_key"
-			android:title="@string/preferences_use_est_title"
-			android:summary="@string/preferences_use_est_summary"
-			android:defaultValue="@string/preferences_use_est_default_value" />
-		
 		<ListPreference
 		    android:key="@string/preferences_sun_altitude_key"
 		    android:title="@string/preferences_sun_altitude_title"

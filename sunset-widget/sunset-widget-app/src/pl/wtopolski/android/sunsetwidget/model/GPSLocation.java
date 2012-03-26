@@ -1,6 +1,5 @@
 package pl.wtopolski.android.sunsetwidget.model;
 
-import pl.wtopolski.android.sunsetwidget.core.model.TimeChange;
 import pl.wtopolski.android.sunsetwidget.core.model.TimeConfig;
 import pl.wtopolski.android.sunsetwidget.core.model.TimeZenit;
 import pl.wtopolski.android.sunsetwidget.pref.ApplicationSettings;
@@ -72,8 +71,7 @@ public class GPSLocation {
 	}
 	
 	public TimeConfig convertToTimeLocation() {
-    	TimeChange timeChange = ApplicationSettings.getTimeChangeSettings();
     	TimeZenit timeZenit = ApplicationSettings.getTimeZenitSettings();
-		return new TimeConfig(latitude, longitude, timeZenit, timeChange);
+		return new TimeConfig(latitude, longitude, timeZenit);
 	}
 }

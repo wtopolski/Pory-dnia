@@ -87,7 +87,7 @@ public class MainActivity extends ActionBarActivity {
 	    	String describe = dateDescribeFormater.format(timePackages[index].getCulmination());
 	    	String dayName = dayDescribeFormater.format(timePackages[index].getCulmination());
 
-	    	tabs[index] = tabs[index] + ":" + dayName + " " + describe;
+	    	tabs[index] = tabs[index] + ", " + getTitle() + ":" + dayName + " " + describe;
 		}
 		
 		return tabs;

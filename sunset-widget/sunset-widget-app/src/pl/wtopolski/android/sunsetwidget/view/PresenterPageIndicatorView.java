@@ -20,10 +20,13 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 	private String[] tabNames;
 	private int currenPageNumber;
 	private DisplayMetrics metrics;
-
+	
+	private Paint dotPaint;
+	private Paint dotStrokePaint;
 	private Paint primaryTextPaint;
 	private Paint secondaryTextPaint;
 	private int positionOffsetPixels;
+	private float positionOffset;
 
 	public PresenterPageIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -33,10 +36,21 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 
 		prepareDisplayMetrics();
 
+		dotPaint = new Paint();
+		dotPaint.setStyle(Style.FILL);
+		dotPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		dotPaint.setColor(Color.parseColor("#ffffff"));
+		
+		dotStrokePaint = new Paint();
+		dotStrokePaint.setStyle(Style.STROKE);
+		dotStrokePaint.setStrokeWidth(1f * metrics.density);
+		dotStrokePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		dotStrokePaint.setColor(Color.parseColor("#000000"));
+		
 		primaryTextPaint = new Paint();
 		primaryTextPaint.setStyle(Style.FILL);
 		primaryTextPaint.setTypeface(MyApplication.getMyApplication().getTypeface());
-		primaryTextPaint.setTextSize(20 * metrics.scaledDensity);
+		primaryTextPaint.setTextSize(20f * metrics.scaledDensity);
 		primaryTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		primaryTextPaint.setTextScaleX(1f);
 		primaryTextPaint.setColor(Color.parseColor("#000000"));
@@ -45,10 +59,10 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 		secondaryTextPaint = new Paint();
 		secondaryTextPaint.setStyle(Style.FILL);
 		secondaryTextPaint.setTypeface(MyApplication.getMyApplication().getTypeface());
-		secondaryTextPaint.setTextSize(13 * metrics.scaledDensity);
+		secondaryTextPaint.setTextSize(13f * metrics.scaledDensity);
 		secondaryTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		secondaryTextPaint.setTextScaleX(1f);
-		secondaryTextPaint.setColor(Color.parseColor("#666666"));
+		secondaryTextPaint.setColor(Color.parseColor("#333333"));
 		secondaryTextPaint.setTextAlign(Paint.Align.CENTER);
 
 		invalidate();
@@ -104,6 +118,46 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		drawTitles(canvas);
+		
+		float value = 2f * Math.abs(0.5f - positionOffset);
+		int alpha = (int)(value * 150f);
+		
+		dotPaint.setAlpha(alpha);
+		dotStrokePaint.setAlpha(alpha);
+		
+		for (int index = 0; index < currenPageNumber; index++) {
+			drawLeftDots(canvas, index + 1);
+		}
+		
+		if (tabNames != null) {
+			for (int index = tabNames.length - currenPageNumber - 1; index > 0; index--) {
+				drawRightDots(canvas, index);
+			}
+		}
+	}
+
+	private void drawRightDots(Canvas canvas, float xOffset) {
+		float radius = 3f * metrics.density;
+
+		float len = 3f * radius;
+		
+		float cy = getHeight() - len;
+		float cx = getWidth() - (len + metrics.density) * xOffset;
+		
+		canvas.drawCircle(cx, cy, radius, dotPaint);
+		canvas.drawCircle(cx, cy, radius, dotStrokePaint);
+	}
+	
+	private void drawLeftDots(Canvas canvas, float xOffset) {
+		float radius = 3f * metrics.density;
+
+		float len = 3f * radius;
+		
+		float cy = getHeight() - len;
+		float cx = (len + metrics.density) * xOffset;
+		
+		canvas.drawCircle(cx, cy, radius, dotPaint);
+		canvas.drawCircle(cx, cy, radius, dotStrokePaint);
 	}
 
 	private void drawTitles(Canvas canvas) {
@@ -118,12 +172,11 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 	private void drawText(Canvas canvas, int pageNumber, float xOffset) {
 		String[] value = getTitle(pageNumber).split(":");
 
-		float primaryTextYOffset = 23f * metrics.density;
+		float primaryTextYOffset = 22f * metrics.density;
 		canvas.drawText(value[0], xOffset, primaryTextYOffset, primaryTextPaint);
 
 		float secondaryTextYOffset = getHeight() - (3f * metrics.density);
-		canvas.drawText(value[1], xOffset, secondaryTextYOffset,
-				secondaryTextPaint);
+		canvas.drawText(value[1], xOffset, secondaryTextYOffset, secondaryTextPaint);
 	}
 
 	private float countXOffset() {
@@ -146,9 +199,9 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 		invalidate();
 	}
 
-	public void onPageScrolled(int position, float positionOffset,
-			int positionOffsetPixels) {
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 		this.currenPageNumber = position;
+		this.positionOffset = positionOffset;
 		this.positionOffsetPixels = positionOffsetPixels;
 		invalidate();
 	}

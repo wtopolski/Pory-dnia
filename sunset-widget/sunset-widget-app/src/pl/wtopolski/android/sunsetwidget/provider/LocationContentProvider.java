@@ -2,6 +2,7 @@ package pl.wtopolski.android.sunsetwidget.provider;
 
 import static android.provider.BaseColumns._ID;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.AUTHORITY;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_ID;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LATITUDE;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LONGITUDE;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_NAME;
@@ -12,22 +13,32 @@ import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.LOCATION_ID_PATH_POSITION;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_CONTENT;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_CONTENT_ID;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_SEARCH;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_SEARCH_ID;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.TABLE_NAME;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
+import pl.wtopolski.android.sunsetwidget.R;
+import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
+import pl.wtopolski.android.sunsetwidget.model.SelectionType;
+
+import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class LocationContentProvider extends ContentProvider {
     protected static final String LOG_TAG = LocationContentProvider.class.getSimpleName();
@@ -39,6 +50,8 @@ public class LocationContentProvider extends ContentProvider {
 
     private static final int LOCATIONS = 1;
     private static final int LOCATION_ID = 2;
+    private static final int SEARCH_QUERY = 3;
+    private static final int SEARCH_QUERY_ID = 4;
 
     private static final UriMatcher uriMatcher;
     private DatabaseHelper mOpenHelper;
@@ -47,9 +60,11 @@ public class LocationContentProvider extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, MATCHER_FOR_CONTENT, LOCATIONS);
         uriMatcher.addURI(AUTHORITY, MATCHER_FOR_CONTENT_ID, LOCATION_ID);
-
+        uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH, SEARCH_QUERY);
+        uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH_ID, SEARCH_QUERY_ID);
+        
         locationsProjectionMap = new HashMap<String, String>();
-        locationsProjectionMap.put(_ID, _ID);
+        locationsProjectionMap.put(COLUMN_NAME_ID, COLUMN_NAME_ID);
         locationsProjectionMap.put(COLUMN_NAME_NAME, COLUMN_NAME_NAME);
         locationsProjectionMap.put(COLUMN_NAME_LATITUDE, COLUMN_NAME_LATITUDE);
         locationsProjectionMap.put(COLUMN_NAME_LONGITUDE, COLUMN_NAME_LONGITUDE);
@@ -100,6 +115,19 @@ public class LocationContentProvider extends ContentProvider {
                 qb.setProjectionMap(locationsProjectionMap);
                 qb.appendWhere(_ID + "=" + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION));
                 break;
+            case SEARCH_QUERY:
+            case SEARCH_QUERY_ID:
+            	qb.setProjectionMap(locationsProjectionMap);
+            	projection = new String[] {
+                   COLUMN_NAME_ID,
+                   COLUMN_NAME_NAME + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_1,
+                   COLUMN_NAME_PROVINCE + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_2,
+                   R.drawable.location + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1
+                };
+            	String query = uri.getLastPathSegment();
+            	selection = COLUMN_NAME_NAME + " LIKE '" + query + "%'";
+            	selectionArgs = null;
+            	break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
@@ -109,8 +137,37 @@ public class LocationContentProvider extends ContentProvider {
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, orderBy);
         c.setNotificationUri(getContext().getContentResolver(), uri);
+
+        /*
+        if (uriMatcher.match(uri) == SEARCH_QUERY || uriMatcher.match(uri) == SEARCH_QUERY_ID) {
+            MatrixCursor mc = new MatrixCursor(COLUMNS);
+        	if (c.moveToFirst()) {
+        		do {
+	        		int idColumn = c.getColumnIndex(COLUMN_NAME_ID);
+	            	int nameColumn = c.getColumnIndex(COLUMN_NAME_NAME);
+	            	int provinceColumn = c.getColumnIndex(COLUMN_NAME_PROVINCE);
+	            	
+	            	Integer id = c.getInt(idColumn);
+	                String name = c.getString(nameColumn);
+	                String province = c.getString(provinceColumn);
+	                Integer icon = R.drawable.location;
+	
+	            	Object[] columnValues = new Object[] {id, name, province, icon};
+	            	mc.addRow(columnValues);
+        		} while (c.moveToNext());
+        	}
+        	return mc;
+        }*/
+        
         return c;
     }
+        
+    private static final String[] COLUMNS = new String[] {
+            "_id",
+            SearchManager.SUGGEST_COLUMN_TEXT_1,
+            SearchManager.SUGGEST_COLUMN_TEXT_2,
+            SearchManager.SUGGEST_COLUMN_ICON_1
+    };
 
     @Override
     public String getType(Uri uri) {
@@ -119,6 +176,9 @@ public class LocationContentProvider extends ContentProvider {
             return LocationData.Locations.CONTENT_TYPE;
         case LOCATION_ID:
             return LocationData.Locations.CONTENT_ITEM_TYPE;
+        case SEARCH_QUERY:
+        case SEARCH_QUERY_ID:
+        	return SearchManager.SUGGEST_MIME_TYPE;
         default:
             throw new IllegalArgumentException("Unknown URI " + uri);
     	}

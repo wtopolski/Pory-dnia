@@ -28,6 +28,9 @@
     <string name="dashboard_locations">Lokalizacje</string>
     <string name="dashboard_settings">Ustawienia</string>
     
+    <!-- Search -->
+    <string name="search_hint">Wyszukaj miejsce</string>
+    
     <!-- Preference -->
     <string name="preferences_counting_title">Obliczenia</string>
     <string name="preferences_counting_key">preferences_counting</string>

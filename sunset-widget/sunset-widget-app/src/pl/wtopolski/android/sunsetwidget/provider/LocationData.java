@@ -1,5 +1,6 @@
 package pl.wtopolski.android.sunsetwidget.provider;
 
+import android.app.SearchManager;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -28,7 +29,9 @@ public class LocationData {
 
         // FOR MATCHER
         public static final String MATCHER_FOR_CONTENT = PATH_SEGMENT;
-        public static final String MATCHER_FOR_CONTENT_ID = PATH_SEGMENT + "/#";
+        public static final String MATCHER_FOR_CONTENT_ID = MATCHER_FOR_CONTENT + "/#";
+        public static final String MATCHER_FOR_SEARCH = "quicksearch/" + SearchManager.SUGGEST_URI_PATH_QUERY;
+        public static final String MATCHER_FOR_SEARCH_ID = MATCHER_FOR_SEARCH + "/*";
 
         // COLUMN NAMES
         public static final String COLUMN_NAME_ID = BaseColumns._ID;

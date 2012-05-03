@@ -16,8 +16,10 @@
             android:launchMode="singleTop"
             android:name=".HomeActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action
+                    android:name="android.intent.action.MAIN" />
+                <category
+                    android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         
@@ -25,7 +27,8 @@
             android:label="@string/app_name"
             android:name=".MainActivity" >
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
+                <category
+                    android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         
@@ -33,15 +36,20 @@
             android:label="@string/app_name"
             android:name=".LocationsListActivity">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
+                <category
+                    android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
         </activity>
         
         <activity
             android:label="@string/app_name"
             android:name=".ConfListActivity">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
+                <category
+                    android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         
@@ -49,10 +57,24 @@
             android:label="@string/dashboard_settings"
             android:name=".pref.GeneralPreferenceActivity">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
+                <category
+                    android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
+        <activity
+            android:label="@string/app_name"
+            android:name=".SearchableActivity"
+            android:launchMode="singleTop" >
+	        <intent-filter>
+	            <action
+	                android:name="android.intent.action.SEARCH" />
+	        </intent-filter>
+	        <meta-data
+	            android:name="android.app.searchable"
+	            android:resource="@xml/searchable"/>
+	    </activity>
+        
         <!-- Broadcast Receiver that will process AppWidget updates -->
         <receiver android:name=".WidgetProvider" >
             <intent-filter >

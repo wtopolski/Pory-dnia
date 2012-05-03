@@ -11,6 +11,7 @@ import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarActivity;
 import pl.wtopolski.android.sunsetwidget.view.PresenterPageIndicatorView;
+import pl.wtopolski.android.sunsetwidget.view.PresenterPageIndicatorView.Item;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -29,7 +30,8 @@ public class MainActivity extends ActionBarActivity {
     public static final int LOCATION_UNKNOWN = -1;
 	
     private LocationManager locationManager;
-
+    private GPSLocation gpsLocation;
+    
 	private static final String DATE_DESCRIBE_PATTERN = "dd MMMM yyyy";
 	private static final String DAY_DESCRIBE_PATTERN = "EEEE";
 
@@ -47,8 +49,7 @@ public class MainActivity extends ActionBarActivity {
         
         locationManager = new LocationManagerImpl();
         locationManager.setContext(getApplicationContext());
-        GPSLocation gpsLocation = null;
-        
+
         Intent intent = getIntent();
         int locationId = intent.getIntExtra(LOCATION_ID, LOCATION_UNKNOWN);
         if (locationId == LOCATION_UNKNOWN) {
@@ -57,23 +58,21 @@ public class MainActivity extends ActionBarActivity {
         	gpsLocation = locationManager.getLocation(locationId);
         }
         
-        String name = gpsLocation.getName();
-    	setTitle(name);
+        setTitle("Miejsce");
 
         presenterPagerAdapter = new PresenterPagerAdapter(this, gpsLocation);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(presenterPagerAdapter);
         
-        TimePackage[] timePackage = presenterPagerAdapter.getTimePackages();
-        String[] tabs = prapareTabs(timePackage);
-
         PresenterPageIndicatorView indicator = (PresenterPageIndicatorView)findViewById(R.id.presenterPageIndicator);
-        indicator.setTabNames(tabs);
+        
+        TimePackage[] timePackage = presenterPagerAdapter.getTimePackages();
+        prapareTabs(timePackage, indicator);
         
         viewPager.setOnPageChangeListener(indicator);
     }
 
-    private String[] prapareTabs(TimePackage[] timePackages) {
+    private String[] prapareTabs(TimePackage[] timePackages, PresenterPageIndicatorView indicator) {
 		final SimpleDateFormat dateDescribeFormater = new SimpleDateFormat(DATE_DESCRIBE_PATTERN);
 		final SimpleDateFormat dayDescribeFormater = new SimpleDateFormat(DAY_DESCRIBE_PATTERN);
 		
@@ -86,8 +85,9 @@ public class MainActivity extends ActionBarActivity {
 		for (int index = 0; index < timePackages.length; index++) {
 	    	String describe = dateDescribeFormater.format(timePackages[index].getCulmination());
 	    	String dayName = dayDescribeFormater.format(timePackages[index].getCulmination());
-
-	    	tabs[index] = tabs[index] + ", " + getTitle() + ":" + dayName + " " + describe;
+	    	
+	    	Item item = indicator.new Item(tabs[index] + " - " + gpsLocation.getName(), dayName + " " + describe); 
+	    	indicator.addItem(item);
 		}
 		
 		return tabs;

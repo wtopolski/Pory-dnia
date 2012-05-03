@@ -1,7 +1,12 @@
 package pl.wtopolski.android.sunsetwidget.view;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import pl.wtopolski.android.sunsetwidget.MyApplication;
+import pl.wtopolski.android.sunsetwidget.R;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,36 +21,40 @@ import android.view.WindowManager;
 
 public class PresenterPageIndicatorView extends View implements OnPageChangeListener {
 	protected static final String LOG_TAG = PresenterPageIndicatorView.class.getSimpleName();
-
-	private String[] tabNames;
+	
+	private List<Item> items;
 	private int currenPageNumber;
+	private int positionOffsetPixels;
+	private float positionOffset;
+	
 	private DisplayMetrics metrics;
 	
 	private Paint dotPaint;
 	private Paint dotStrokePaint;
 	private Paint primaryTextPaint;
 	private Paint secondaryTextPaint;
-	private int positionOffsetPixels;
-	private float positionOffset;
 
 	public PresenterPageIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		currenPageNumber = 0;
-		positionOffsetPixels = 0;
-
+		items = new LinkedList<Item>();
 		prepareDisplayMetrics();
-
+		
+		TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.PresenterPageIndicatorView);
+		int primaryTextPaintColor = typedArray.getColor(R.styleable.PresenterPageIndicatorView_primaryTextColor, Color.BLACK);
+		int secondaryTextPaintColor = typedArray.getColor(R.styleable.PresenterPageIndicatorView_secondaryTextColor, Color.BLACK);
+		typedArray.recycle();
+		
 		dotPaint = new Paint();
 		dotPaint.setStyle(Style.FILL);
 		dotPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		dotPaint.setColor(Color.parseColor("#ffffff"));
+		dotPaint.setColor(Color.WHITE);
 		
 		dotStrokePaint = new Paint();
 		dotStrokePaint.setStyle(Style.STROKE);
 		dotStrokePaint.setStrokeWidth(1f * metrics.density);
 		dotStrokePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		dotStrokePaint.setColor(Color.parseColor("#000000"));
+		dotStrokePaint.setColor(Color.BLACK);
 		
 		primaryTextPaint = new Paint();
 		primaryTextPaint.setStyle(Style.FILL);
@@ -53,7 +62,7 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 		primaryTextPaint.setTextSize(20f * metrics.scaledDensity);
 		primaryTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		primaryTextPaint.setTextScaleX(1f);
-		primaryTextPaint.setColor(Color.parseColor("#000000"));
+		primaryTextPaint.setColor(primaryTextPaintColor);
 		primaryTextPaint.setTextAlign(Paint.Align.CENTER);
 
 		secondaryTextPaint = new Paint();
@@ -62,7 +71,7 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 		secondaryTextPaint.setTextSize(13f * metrics.scaledDensity);
 		secondaryTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		secondaryTextPaint.setTextScaleX(1f);
-		secondaryTextPaint.setColor(Color.parseColor("#333333"));
+		secondaryTextPaint.setColor(secondaryTextPaintColor);
 		secondaryTextPaint.setTextAlign(Paint.Align.CENTER);
 
 		invalidate();
@@ -76,8 +85,7 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		setMeasuredDimension(measureWidth(widthMeasureSpec),
-				measureHeight(heightMeasureSpec));
+		setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
 	}
 
 	protected int measureWidth(int measureSpec) {
@@ -117,66 +125,55 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		drawTitles(canvas);
-		
-		float value = 2f * Math.abs(0.5f - positionOffset);
-		int alpha = (int)(value * 150f);
-		
-		dotPaint.setAlpha(alpha);
-		dotStrokePaint.setAlpha(alpha);
-		
-		for (int index = 0; index < currenPageNumber; index++) {
-			drawLeftDots(canvas, index + 1);
-		}
-		
-		if (tabNames != null) {
-			for (int index = tabNames.length - currenPageNumber - 1; index > 0; index--) {
-				drawRightDots(canvas, index);
+		if (!items.isEmpty()) {
+			drawTitles(canvas);
+			
+			int alpha = countAlpha();
+			dotPaint.setAlpha(alpha);
+			dotStrokePaint.setAlpha(alpha);
+			
+			for (int index = 0; index < currenPageNumber; index++) {
+				drawDot(canvas, index + 1, 0);
+			}
+			
+			for (int index = items.size() - currenPageNumber - 1; index > 0; index--) {
+				drawDot(canvas, index, getWidth());
 			}
 		}
-	}
-
-	private void drawRightDots(Canvas canvas, float xOffset) {
-		float radius = 3f * metrics.density;
-
-		float len = 3f * radius;
-		
-		float cy = getHeight() - len;
-		float cx = getWidth() - (len + metrics.density) * xOffset;
-		
-		canvas.drawCircle(cx, cy, radius, dotPaint);
-		canvas.drawCircle(cx, cy, radius, dotStrokePaint);
-	}
-	
-	private void drawLeftDots(Canvas canvas, float xOffset) {
-		float radius = 3f * metrics.density;
-
-		float len = 3f * radius;
-		
-		float cy = getHeight() - len;
-		float cx = (len + metrics.density) * xOffset;
-		
-		canvas.drawCircle(cx, cy, radius, dotPaint);
-		canvas.drawCircle(cx, cy, radius, dotStrokePaint);
 	}
 
 	private void drawTitles(Canvas canvas) {
 		float xOffset = countXOffset();
 		drawText(canvas, currenPageNumber, xOffset);
-		if (currenPageNumber + 1 < tabNames.length) {
+		if (currenPageNumber + 1 < items.size()) {
 			xOffset += getWidth();
 			drawText(canvas, currenPageNumber + 1, xOffset);
 		}
 	}
 
 	private void drawText(Canvas canvas, int pageNumber, float xOffset) {
-		String[] value = getTitle(pageNumber).split(":");
+		Item item = items.get(pageNumber);
 
-		float primaryTextYOffset = 22f * metrics.density;
-		canvas.drawText(value[0], xOffset, primaryTextYOffset, primaryTextPaint);
+		float primaryTextYOffset = 21f * metrics.density;
+		canvas.drawText(item.getPrimaryText(), xOffset, primaryTextYOffset, primaryTextPaint);
 
 		float secondaryTextYOffset = getHeight() - (3f * metrics.density);
-		canvas.drawText(value[1], xOffset, secondaryTextYOffset, secondaryTextPaint);
+		canvas.drawText(item.getSecondaryText(), xOffset, secondaryTextYOffset, secondaryTextPaint);
+	}
+
+	private int countAlpha() {
+		return (int)(Math.abs(0.5f - positionOffset) * 240f);
+	}
+
+	private void drawDot(Canvas canvas, int dotNumber, int xOffset) {
+		float radius = 3f * metrics.density;
+		float len = 3f * radius;
+		
+		float cy = getHeight() - len;
+		float cx = Math.abs((float)xOffset - (len + metrics.density) * (float)dotNumber);
+		
+		canvas.drawCircle(cx, cy, radius, dotPaint);
+		canvas.drawCircle(cx, cy, radius, dotStrokePaint);
 	}
 
 	private float countXOffset() {
@@ -194,8 +191,8 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 		}
 	}
 
-	public void setTabNames(String[] tabNames) {
-		this.tabNames = tabNames;
+	public void addItem(Item value) {
+		items.add(value);
 		invalidate();
 	}
 
@@ -228,11 +225,22 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 		invalidate();
 	}
 
-	public String getTitle(int position) {
-		if (tabNames != null) {
-			return tabNames[position];
-		} else {
-			return "";
+	public class Item {
+		private final String primaryText;
+		private final String secondaryText;
+
+		public Item(String primaryText, String secondaryText) {
+			super();
+			this.primaryText = primaryText;
+			this.secondaryText = secondaryText;
+		}
+
+		public String getPrimaryText() {
+			return primaryText;
+		}
+
+		public String getSecondaryText() {
+			return secondaryText;
 		}
 	}
 }

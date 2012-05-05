@@ -1,6 +1,5 @@
 package pl.wtopolski.android.sunsetwidget.provider;
 
-import static android.provider.BaseColumns._ID;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.AUTHORITY;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_ID;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LATITUDE;
@@ -17,12 +16,7 @@ import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_SEARCH_ID;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.TABLE_NAME;
 
-import java.util.Arrays;
 import java.util.HashMap;
-
-import pl.wtopolski.android.sunsetwidget.R;
-import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
-import pl.wtopolski.android.sunsetwidget.model.SelectionType;
 
 import android.app.SearchManager;
 import android.content.ContentProvider;
@@ -31,14 +25,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 public class LocationContentProvider extends ContentProvider {
     protected static final String LOG_TAG = LocationContentProvider.class.getSimpleName();
@@ -80,7 +72,7 @@ public class LocationContentProvider extends ContentProvider {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + TABLE_NAME + " ("
-                    + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_NAME_NAME + " TEXT,"
                     + COLUMN_NAME_LATITUDE + " REAL,"
                     + COLUMN_NAME_LONGITUDE + " REAL,"
@@ -106,28 +98,18 @@ public class LocationContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(TABLE_NAME);
+        qb.setProjectionMap(locationsProjectionMap);
 
         switch (uriMatcher.match(uri)) {
             case LOCATIONS:
-                qb.setProjectionMap(locationsProjectionMap);
                 break;
             case LOCATION_ID:
-                qb.setProjectionMap(locationsProjectionMap);
-                qb.appendWhere(_ID + "=" + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION));
+                qb.appendWhere(COLUMN_NAME_ID + "=" + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION));
                 break;
             case SEARCH_QUERY:
             case SEARCH_QUERY_ID:
-            	qb.setProjectionMap(locationsProjectionMap);
-            	projection = new String[] {
-                   COLUMN_NAME_ID,
-                   COLUMN_NAME_ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA,
-                   COLUMN_NAME_NAME + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_1,
-                   COLUMN_NAME_PROVINCE + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_2,
-                   R.drawable.location + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1
-                };
-            	String query = uri.getLastPathSegment();
-            	selection = COLUMN_NAME_NAME + " LIKE '" + query + "%'";
-            	selectionArgs = null;
+            	projection = LocationData.Locations.SEARCH_LOCATION_PROJECTION;
+            	selection = COLUMN_NAME_NAME + " LIKE '" + uri.getLastPathSegment() + "%'";
             	break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
@@ -138,7 +120,6 @@ public class LocationContentProvider extends ContentProvider {
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, orderBy);
         c.setNotificationUri(getContext().getContentResolver(), uri);
-
         return c;
     }
 
@@ -209,7 +190,7 @@ public class LocationContentProvider extends ContentProvider {
                 count = db.delete(TABLE_NAME, where, whereArgs);
                 break;
             case LOCATION_ID:
-                String finalWhere = _ID + " = " + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
+                String finalWhere = COLUMN_NAME_ID + " = " + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
 
                 if (!TextUtils.isEmpty(where)) {
                     finalWhere = finalWhere + " AND " + where;
@@ -236,7 +217,7 @@ public class LocationContentProvider extends ContentProvider {
                 count = db.update(TABLE_NAME, contentValues, where, whereArgs);
                 break;
             case LOCATION_ID:
-                String finalWhere = _ID + " = " + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
+                String finalWhere = COLUMN_NAME_ID + " = " + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
 
                 if (!TextUtils.isEmpty(where)) {
                     finalWhere = finalWhere + " AND " + where;

@@ -41,7 +41,6 @@ public class SearchableActivity extends Activity {
 		
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			doMySearch(query);
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 			Intent outputIntent = new Intent(this, MainActivity.class);
 			outputIntent.putExtra(MainActivity.LOCATION_ID, Integer.valueOf(intent.getDataString()));
@@ -49,15 +48,8 @@ public class SearchableActivity extends Activity {
 			startActivity(outputIntent);
 		}
 	}
-
-	private void doMySearch(String query) {
-		// TODO Auto-generated method stub
-		Toast.makeText(this, "query: " + query, Toast.LENGTH_SHORT).show();
-		showResults(query);
-	}
 	
 	private void showResults(String query) {
-
         Cursor cursor = managedQuery(LocationData.Locations.CONTENT_URI, null, null, new String[] {query}, null);
 
         if (cursor == null) {

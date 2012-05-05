@@ -46,6 +46,15 @@
         
         <activity
             android:label="@string/app_name"
+            android:name=".FavoritesListActivity">
+            <intent-filter>
+                <category
+                    android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:label="@string/app_name"
             android:name=".ConfListActivity">
             <intent-filter>
                 <category

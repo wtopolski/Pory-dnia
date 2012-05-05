@@ -10,16 +10,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class LocationsListActivity extends ActionBarFragmentActivity {
-    protected static final String LOG_TAG = LocationsListActivity.class.getSimpleName();
-    
-    private final static String FRAGMENT_TAG = "LOCATIONS_FRAGMENT_TAG";
-    
+public class FavoritesListActivity extends ActionBarFragmentActivity {
+    protected static final String LOG_TAG = FavoritesListActivity.class.getSimpleName();
+    private final static String FRAGMENT_TAG = "FAVORITES_FRAGMENT_TAG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.locations);
-        setTitle(R.string.dashboard_locations);
+        setTitle(R.string.dashboard_favorites);
         
         if (savedInstanceState != null) {
         	@SuppressWarnings("unused")
@@ -27,7 +26,7 @@ public class LocationsListActivity extends ActionBarFragmentActivity {
         } else {
         	FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         	LocationsListFragment locationsListFragment = new LocationsListFragment();
-        	locationsListFragment.setMode(Mode.LOCATIONS);
+        	locationsListFragment.setMode(Mode.FAVOURITES);
             transaction.replace(R.id.locationsListFragement, locationsListFragment, FRAGMENT_TAG);
             transaction.commit();
         }
@@ -36,7 +35,7 @@ public class LocationsListActivity extends ActionBarFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.locations, menu);
+        menuInflater.inflate(R.menu.favorites, menu);
         return super.onCreateOptionsMenu(menu);
     }
     

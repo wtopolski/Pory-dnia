@@ -40,11 +40,11 @@ public class LocationManagerImpl implements LocationManager {
         return uri;
     }
 
-    public Cursor getAllLocationsIdByCursor() {
+    public Cursor getAllLocationsByCursor() {
         return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, null, null, DEFAULT_SORT_ORDER);
     }
 
-    public Cursor getAllFavouritesLocationsIdByCursor() {
+    public Cursor getAllFavouritesByCursor() {
     	return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_NAME_SELECTION + ">=?", new String[]{String.valueOf(SelectionType.FAVOURITE.getValue())}, DEFAULT_SORT_ORDER);
     }
 

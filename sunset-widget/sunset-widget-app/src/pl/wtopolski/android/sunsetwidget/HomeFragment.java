@@ -43,8 +43,7 @@ public class HomeFragment extends Fragment {
     	favorites.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				Activity activity = getActivity();
-				Intent intent = new Intent(activity, LocationsListActivity.class);
-		    	intent.putExtra(LocationsListActivity.SHOW_ACTION, LocationsListActivity.SHOW_FAVOURITES);
+				Intent intent = new Intent(activity, FavoritesListActivity.class);
 				activity.startActivity(intent);
 			}
 		});
@@ -56,7 +55,6 @@ public class HomeFragment extends Fragment {
 			public void onClick(View view) {
 				Activity activity = getActivity();
 				Intent intent = new Intent(activity, LocationsListActivity.class);
-		    	intent.putExtra(LocationsListActivity.SHOW_ACTION, LocationsListActivity.SHOW_ALL);
 				activity.startActivity(intent);
 			}
 		});

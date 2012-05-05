@@ -5,6 +5,7 @@
     
     <string name="show_all">Wszystkie</string>
     <string name="show_favourites_only">Ulubione</string>
+    <string name="menu_search">Szukaj</string>
     <string name="empty">Brak elementów do wyświetlenia</string>
     
     <string name="set_as_main">Ustaw jako główne</string>

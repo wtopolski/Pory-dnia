@@ -24,7 +24,6 @@ import pl.wtopolski.android.sunsetwidget.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.InflateException;
@@ -268,6 +267,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
                             showAsAction = parser.getAttributeIntValue(MENU_RES_NAMESPACE,
                                     MENU_ATTR_SHOW_AS_ACTION, -1);
+                            showAsAction = 2; // TODO
                             if (showAsAction == MenuItem.SHOW_AS_ACTION_ALWAYS ||
                                     showAsAction == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
                                 mActionItemIds.add(itemId);

@@ -46,6 +46,9 @@ public class LocationsListActivity extends ActionBarFragmentActivity {
             case android.R.id.home:
             	FlowManager.goToHome(this);
                 break;
+            case R.id.menu_search_item:
+            	onSearchRequested();
+            	break;
         }
         return super.onOptionsItemSelected(item);
     }

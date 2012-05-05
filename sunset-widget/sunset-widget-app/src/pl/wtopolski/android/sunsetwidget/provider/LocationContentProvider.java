@@ -120,6 +120,7 @@ public class LocationContentProvider extends ContentProvider {
             	qb.setProjectionMap(locationsProjectionMap);
             	projection = new String[] {
                    COLUMN_NAME_ID,
+                   COLUMN_NAME_ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA,
                    COLUMN_NAME_NAME + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_1,
                    COLUMN_NAME_PROVINCE + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_2,
                    R.drawable.location + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1
@@ -138,36 +139,8 @@ public class LocationContentProvider extends ContentProvider {
         Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, orderBy);
         c.setNotificationUri(getContext().getContentResolver(), uri);
 
-        /*
-        if (uriMatcher.match(uri) == SEARCH_QUERY || uriMatcher.match(uri) == SEARCH_QUERY_ID) {
-            MatrixCursor mc = new MatrixCursor(COLUMNS);
-        	if (c.moveToFirst()) {
-        		do {
-	        		int idColumn = c.getColumnIndex(COLUMN_NAME_ID);
-	            	int nameColumn = c.getColumnIndex(COLUMN_NAME_NAME);
-	            	int provinceColumn = c.getColumnIndex(COLUMN_NAME_PROVINCE);
-	            	
-	            	Integer id = c.getInt(idColumn);
-	                String name = c.getString(nameColumn);
-	                String province = c.getString(provinceColumn);
-	                Integer icon = R.drawable.location;
-	
-	            	Object[] columnValues = new Object[] {id, name, province, icon};
-	            	mc.addRow(columnValues);
-        		} while (c.moveToNext());
-        	}
-        	return mc;
-        }*/
-        
         return c;
     }
-        
-    private static final String[] COLUMNS = new String[] {
-            "_id",
-            SearchManager.SUGGEST_COLUMN_TEXT_1,
-            SearchManager.SUGGEST_COLUMN_TEXT_2,
-            SearchManager.SUGGEST_COLUMN_ICON_1
-    };
 
     @Override
     public String getType(Uri uri) {

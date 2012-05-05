@@ -5,5 +5,6 @@
     android:hint="@string/search_hint"
     android:searchSuggestPath="quicksearch"
     android:searchSuggestThreshold="1"
-    android:searchSuggestAuthority="pl.wtopolski.sunsetwidget.contentprovider" >
+    android:searchSuggestAuthority="pl.wtopolski.sunsetwidget.contentprovider"
+    android:searchSuggestIntentAction="android.intent.action.VIEW" >
 </searchable>

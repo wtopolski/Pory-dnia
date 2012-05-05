@@ -1,13 +1,12 @@
 package pl.wtopolski.android.sunsetwidget;
 
-import pl.wtopolski.android.sunsetwidget.provider.LocationContentProvider;
 import pl.wtopolski.android.sunsetwidget.provider.LocationData;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -38,9 +37,16 @@ public class SearchableActivity extends Activity {
 	}
 
 	private void handleIntent(Intent intent) {
+		Log.d("wtopolski", "intent.getAction(): " + intent.getAction());
+		
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			doMySearch(query);
+		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			Intent outputIntent = new Intent(this, MainActivity.class);
+			outputIntent.putExtra(MainActivity.LOCATION_ID, Integer.valueOf(intent.getDataString()));
+			finish();
+			startActivity(outputIntent);
 		}
 	}
 

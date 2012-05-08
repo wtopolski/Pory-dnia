@@ -21,6 +21,8 @@ import android.widget.ListView;
 
 public class LocationsListFragment extends ListFragment implements OnStarClickable {
 	protected static final String LOG_TAG = LocationsListFragment.class.getSimpleName();
+	
+	private static final String MODE_KEY = "MODE_KEY";
 
 	private LocationListAdapter adapter;
 	private LocationManager locationManager;
@@ -36,6 +38,10 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 		if (mode == null) {
 			mode = Mode.LOCATIONS;
 		}
+		
+		if (savedInstanceState != null) {
+			mode = (Mode) savedInstanceState.getSerializable(MODE_KEY);
+		}
 	}
 
 	public void setMode(Mode mode) {
@@ -49,6 +55,12 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 		locationManager.setContext(this.getActivity().getApplicationContext());
 		showLocations();
 		return view;
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable(MODE_KEY, mode);
 	}
 
 	@Override

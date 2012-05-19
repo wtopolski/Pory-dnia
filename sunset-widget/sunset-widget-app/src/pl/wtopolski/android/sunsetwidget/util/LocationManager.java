@@ -10,8 +10,8 @@ public interface LocationManager {
     void setContext(Context context, LocationManagerListener listener);
     void deleteAll();
     Uri addLocation(GPSLocation loc);
-    Cursor getAllLocationsByCursor();
-    Cursor getAllFavouritesByCursor();
+    Cursor getAllLocationsByCursor(String query);
+    Cursor getAllFavouritesByCursor(String query);
     GPSLocation getLocation(int id);
     boolean makeNoFavourite(GPSLocation location);
     boolean makeFavourite(GPSLocation location);

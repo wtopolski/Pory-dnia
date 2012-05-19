@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.TextUtils;
 
 public class LocationManagerImpl implements LocationManager {
     protected Context context;
@@ -40,11 +41,19 @@ public class LocationManagerImpl implements LocationManager {
         return uri;
     }
 
-    public Cursor getAllLocationsByCursor() {
-        return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, null, null, DEFAULT_SORT_ORDER);
+    public Cursor getAllLocationsByCursor(String query) {
+    	String selection = null;
+    	String[] selectionArgs = null;
+    	
+    	if (!TextUtils.isEmpty(query)) {
+        	selection = COLUMN_NAME_NAME + " LIKE ?";
+        	selectionArgs = new String[] {query + "%"};
+    	}
+    	
+        return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, selection, selectionArgs, DEFAULT_SORT_ORDER);
     }
 
-    public Cursor getAllFavouritesByCursor() {
+    public Cursor getAllFavouritesByCursor(String query) {
     	return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_NAME_SELECTION + ">=?", new String[]{String.valueOf(SelectionType.FAVOURITE.getValue())}, DEFAULT_SORT_ORDER);
     }
 

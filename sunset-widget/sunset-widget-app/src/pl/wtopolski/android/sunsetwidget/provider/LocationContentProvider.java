@@ -109,7 +109,8 @@ public class LocationContentProvider extends ContentProvider {
             case SEARCH_QUERY:
             case SEARCH_QUERY_ID:
             	projection = LocationData.Locations.SEARCH_LOCATION_PROJECTION;
-            	selection = COLUMN_NAME_NAME + " LIKE '" + uri.getLastPathSegment() + "%'";
+            	selection = COLUMN_NAME_NAME + " LIKE ?";
+            	selectionArgs = new String[] {uri.getLastPathSegment() + "%"};
             	break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);

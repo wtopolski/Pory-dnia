@@ -70,7 +70,7 @@ public class ConfListActivity extends ActionBarListActivity implements RestoreNa
         
     	locationManager = new LocationManagerImpl();
         locationManager.setContext(this);
-        Cursor cursor = locationManager.getAllLocationsByCursor();
+        Cursor cursor = locationManager.getAllLocationsByCursor("");
         startManagingCursor(cursor);
         LocationListAdapter adapter = new LocationListAdapter(this, R.layout.locations_item, cursor, null);
         setListAdapter(adapter);

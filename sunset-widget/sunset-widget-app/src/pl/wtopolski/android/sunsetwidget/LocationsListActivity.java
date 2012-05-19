@@ -44,7 +44,7 @@ public class LocationsListActivity extends ActionBarFragmentActivity {
 	private void handleIntent(Intent intent) {
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			// TODO with locationsListFragment
+			locationsListFragment.setQuery(query);
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 			Intent outputIntent = new Intent(this, MainActivity.class);
 			outputIntent.putExtra(MainActivity.LOCATION_ID, Integer.valueOf(intent.getDataString()));

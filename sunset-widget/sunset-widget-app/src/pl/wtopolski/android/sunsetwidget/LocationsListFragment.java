@@ -23,13 +23,28 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 	protected static final String LOG_TAG = LocationsListFragment.class.getSimpleName();
 	
 	private static final String MODE_KEY = "MODE_KEY";
+	private static final String QUERY_KEY = "QUERY_KEY";
 
 	private LocationListAdapter adapter;
 	private LocationManager locationManager;
 	private Mode mode;
+	private String query;
 
 	public enum Mode {
-		LOCATIONS, FAVOURITES, SEARCHED
+		LOCATIONS {
+			@Override
+			public Cursor getCursor(LocationManager locationManager, String query) {
+				return locationManager.getAllLocationsByCursor(query);
+			}
+		}, 
+		FAVOURITES {
+			@Override
+			public Cursor getCursor(LocationManager locationManager, String query) {
+				return locationManager.getAllFavouritesByCursor(query);
+			}
+		};
+		
+		public abstract Cursor getCursor(LocationManager locationManager, String query);
 	};
 
 	@Override
@@ -38,14 +53,23 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 		if (mode == null) {
 			mode = Mode.LOCATIONS;
 		}
+		query = "";
 		
 		if (savedInstanceState != null) {
 			mode = (Mode) savedInstanceState.getSerializable(MODE_KEY);
+			query = savedInstanceState.getString(QUERY_KEY);
 		}
 	}
 
 	public void setMode(Mode mode) {
 		this.mode = mode;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+		if (locationManager != null) {
+			showLocations();
+		}
 	}
 
 	@Override
@@ -61,6 +85,7 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putSerializable(MODE_KEY, mode);
+		outState.putSerializable(QUERY_KEY, query);
 	}
 
 	@Override
@@ -70,17 +95,7 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 	}
 
 	private void showLocations() {
-		Cursor cursor = null;
-
-		switch (mode) {
-		case LOCATIONS:
-			cursor = locationManager.getAllLocationsByCursor();
-			break;
-		case FAVOURITES:
-			cursor = locationManager.getAllFavouritesByCursor();
-			break;
-		}
-
+		Cursor cursor = mode.getCursor(locationManager, query);
 		this.getActivity().startManagingCursor(cursor);
 		adapter = new LocationListAdapter(this.getActivity(), R.layout.locations_item, cursor, this);
 		setListAdapter(adapter);

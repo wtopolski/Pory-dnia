@@ -23,7 +23,7 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 	protected static final String LOG_TAG = PresenterPageIndicatorView.class.getSimpleName();
 	
 	private List<Item> items;
-	private int currenPageNumber;
+	private int currentPageNumber;
 	private int positionOffsetPixels;
 	private float positionOffset;
 	
@@ -131,23 +131,16 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 			int alpha = countAlpha();
 			dotPaint.setAlpha(alpha);
 			dotStrokePaint.setAlpha(alpha);
-			
-			for (int index = 0; index < currenPageNumber; index++) {
-				drawDot(canvas, index + 1, 0);
-			}
-			
-			for (int index = items.size() - currenPageNumber - 1; index > 0; index--) {
-				drawDot(canvas, index, getWidth());
-			}
+			drawDots(canvas);
 		}
 	}
 
 	private void drawTitles(Canvas canvas) {
 		float xOffset = countXOffset();
-		drawText(canvas, currenPageNumber, xOffset);
-		if (currenPageNumber + 1 < items.size()) {
+		drawText(canvas, currentPageNumber, xOffset);
+		if (currentPageNumber + 1 < items.size()) {
 			xOffset += getWidth();
-			drawText(canvas, currenPageNumber + 1, xOffset);
+			drawText(canvas, currentPageNumber + 1, xOffset);
 		}
 	}
 
@@ -163,6 +156,25 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 
 	private int countAlpha() {
 		return (int)(Math.abs(0.5f - positionOffset) * 240f);
+	}
+
+	private void drawDots(Canvas canvas) {
+		int localCurrentPageNumber = currentPageNumber;
+		if (shouldMoveDot()) {
+			localCurrentPageNumber += 1;
+		}
+		
+		for (int index = 0; index < localCurrentPageNumber; index++) {
+			drawDot(canvas, index + 1, 0);
+		}
+		
+		for (int index = items.size() - localCurrentPageNumber - 1; index > 0; index--) {
+			drawDot(canvas, index, getWidth());
+		}
+	}
+
+	private boolean shouldMoveDot() {
+		return (0.5f - positionOffset) < 0;
 	}
 
 	private void drawDot(Canvas canvas, int dotNumber, int xOffset) {
@@ -197,7 +209,7 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 	}
 
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-		this.currenPageNumber = position;
+		this.currentPageNumber = position;
 		this.positionOffset = positionOffset;
 		this.positionOffsetPixels = positionOffsetPixels;
 		invalidate();
@@ -209,7 +221,7 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 	protected Parcelable onSaveInstanceState() {
 		Parcelable superState = super.onSaveInstanceState();
 		PresenterPageIndicatorViewMemory memory = new PresenterPageIndicatorViewMemory(superState);
-		memory.setPageNumber(currenPageNumber);
+		memory.setPageNumber(currentPageNumber);
 		return memory;
 	}
 
@@ -221,7 +233,7 @@ public class PresenterPageIndicatorView extends View implements OnPageChangeList
 
 		PresenterPageIndicatorViewMemory memory = (PresenterPageIndicatorViewMemory) state;
 		super.onRestoreInstanceState(memory.getSuperState());
-		currenPageNumber = memory.getPageNumber();
+		currentPageNumber = memory.getPageNumber();
 		invalidate();
 	}
 

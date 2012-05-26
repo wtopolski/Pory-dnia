@@ -1,4 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>sunset-widget</artifactId>
@@ -13,26 +17,95 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<url>https://market.android.com/details?id=pl.wtopolski.android.sunsetwidget</url>
 	
+	<properties>
+		<android.manifest.versionName>${buildNumber}</android.manifest.versionName>
+	</properties>
+	
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<finalName>${project.artifactId}</finalName>
+		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
 				<version>3.2.0</version>
 				<configuration>
+					<extractDuplicates>true</extractDuplicates>
+					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
 					<sdk>
-						<platform>14</platform>
+						<platform>7</platform>
 					</sdk>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+					<manifest>
+						<debuggable>true</debuggable>
+					</manifest>
 				</configuration>
+				<executions>
+					<execution>
+						<id>manifestUpdate</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>manifest-update</goal>
+						</goals>
+					</execution>
+				</executions>
 				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>true</doCheck>
+					<doUpdate>true</doUpdate>
+					<format>{0,number}</format>
+					<items>
+						<item>buildNumber</item>
+					</items>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	
+	<profiles>
+		<profile>
+			<id>realise</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+						<artifactId>android-maven-plugin</artifactId>
+						<version>3.2.0</version>
+						<inherited>true</inherited>
+						<configuration>
+							<manifest>
+								<versionCodeUpdateFromVersion>1</versionCodeUpdateFromVersion>
+								<versionCodeAutoIncrement>true</versionCodeAutoIncrement>
+								<debuggable>false</debuggable>
+							</manifest>
+						</configuration>
+						<executions>
+							<execution>
+								<id>manifestUpdate</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>manifest-update</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	<dependencies>
 		<dependency>
 			<groupId>android</groupId>

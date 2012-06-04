@@ -27,14 +27,16 @@ public class LocationManagerImpl implements LocationManager {
         context.getContentResolver().delete(CONTENT_URI, null, null);
     }
 
-    public Uri addLocation(GPSLocation loc) {
+    public Uri addLocation(GPSLocation location) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME_NAME, loc.getName());
-        values.put(COLUMN_NAME_LATITUDE, loc.getLatitude());
-        values.put(COLUMN_NAME_LONGITUDE, loc.getLongitude());
-        values.put(COLUMN_NAME_PROVINCE, loc.getProvince());
-        values.put(COLUMN_NAME_SELECTION, loc.getType().getValue());
+        values.put(COLUMN_NAME, location.getName());
+        values.put(COLUMN_SIMPLE_NAME, location.getName().toLowerCase());
+        values.put(COLUMN_LATITUDE, location.getLatitude());
+        values.put(COLUMN_LONGITUDE, location.getLongitude());
+        values.put(COLUMN_PROVINCE, location.getProvince());
+        values.put(COLUMN_SELECTION, location.getType().getValue());
         Uri uri = context.getContentResolver().insert(CONTENT_URI, values);
+        
         if (listener != null && uri != null) {
         	listener.addedLocation();
         }
@@ -46,7 +48,7 @@ public class LocationManagerImpl implements LocationManager {
     	String[] selectionArgs = null;
     	
     	if (!TextUtils.isEmpty(query)) {
-        	selection = COLUMN_NAME_NAME + " LIKE ?";
+        	selection = COLUMN_SIMPLE_NAME + " LIKE ?";
         	selectionArgs = new String[] {query + "%"};
     	}
     	
@@ -54,7 +56,7 @@ public class LocationManagerImpl implements LocationManager {
     }
 
     public Cursor getAllFavouritesByCursor(String query) {
-    	return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_NAME_SELECTION + ">=?", new String[]{String.valueOf(SelectionType.FAVOURITE.getValue())}, DEFAULT_SORT_ORDER);
+    	return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_SELECTION + ">=?", new String[]{String.valueOf(SelectionType.FAVOURITE.getValue())}, DEFAULT_SORT_ORDER);
     }
 
     public GPSLocation getLocation(int id) {
@@ -63,11 +65,11 @@ public class LocationManagerImpl implements LocationManager {
         GPSLocation location = null;
 
         if (cursor.moveToFirst()) {
-            int nameColumn = cursor.getColumnIndex(COLUMN_NAME_NAME);
-            int latitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LATITUDE);
-            int longitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LONGITUDE);
-            int provinceColumn = cursor.getColumnIndex(COLUMN_NAME_PROVINCE);
-            int selectionColumn = cursor.getColumnIndex(COLUMN_NAME_SELECTION);
+            int nameColumn = cursor.getColumnIndex(COLUMN_NAME);
+            int latitudeColumn = cursor.getColumnIndex(COLUMN_LATITUDE);
+            int longitudeColumn = cursor.getColumnIndex(COLUMN_LONGITUDE);
+            int provinceColumn = cursor.getColumnIndex(COLUMN_PROVINCE);
+            int selectionColumn = cursor.getColumnIndex(COLUMN_SELECTION);
 
             String name = cursor.getString(nameColumn);
             double latitude = cursor.getDouble(latitudeColumn);
@@ -91,7 +93,7 @@ public class LocationManagerImpl implements LocationManager {
         }
         
         ContentValues values = new ContentValues(1);
-        values.put(COLUMN_NAME_SELECTION, SelectionType.NONE.getValue());
+        values.put(COLUMN_SELECTION, SelectionType.NONE.getValue());
 
         int count = context.getContentResolver().update(locationUri, values, null, null);
         return (count <= 0) ? false : true;
@@ -105,7 +107,7 @@ public class LocationManagerImpl implements LocationManager {
         }
         
         ContentValues values = new ContentValues(1);
-        values.put(COLUMN_NAME_SELECTION, SelectionType.FAVOURITE.getValue());
+        values.put(COLUMN_SELECTION, SelectionType.FAVOURITE.getValue());
 
         int count = context.getContentResolver().update(locationUri, values, null, null);
         return (count <= 0) ? false : true;
@@ -113,27 +115,27 @@ public class LocationManagerImpl implements LocationManager {
 
 	public boolean selectAsMain(GPSLocation location) {
         ContentValues values = new ContentValues(1);
-        values.put(COLUMN_NAME_SELECTION, SelectionType.FAVOURITE.getValue());
-        context.getContentResolver().update(CONTENT_URI, values, COLUMN_NAME_SELECTION + "=?", new String[]{String.valueOf(SelectionType.MAIN.getValue())});
+        values.put(COLUMN_SELECTION, SelectionType.FAVOURITE.getValue());
+        context.getContentResolver().update(CONTENT_URI, values, COLUMN_SELECTION + "=?", new String[]{String.valueOf(SelectionType.MAIN.getValue())});
 		
 		Uri locationUri = ContentUris.withAppendedId(CONTENT_URI, location.getId());
         values = new ContentValues(1);
-        values.put(COLUMN_NAME_SELECTION, SelectionType.MAIN.getValue());
+        values.put(COLUMN_SELECTION, SelectionType.MAIN.getValue());
         int count = context.getContentResolver().update(locationUri, values, null, null);
         return (count <= 0) ? false : true;
 	}
 
 	public GPSLocation getMainLocation() {
-		Cursor cursor = context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_NAME_SELECTION + "=?", new String[]{String.valueOf(SelectionType.MAIN.getValue())}, DEFAULT_SORT_ORDER);
+		Cursor cursor = context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_SELECTION + "=?", new String[]{String.valueOf(SelectionType.MAIN.getValue())}, DEFAULT_SORT_ORDER);
         GPSLocation location = null;
 
         if (cursor.moveToFirst()) {
-            int idColumn = cursor.getColumnIndex(COLUMN_NAME_ID);
-            int nameColumn = cursor.getColumnIndex(COLUMN_NAME_NAME);
-            int latitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LATITUDE);
-            int longitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LONGITUDE);
-            int provinceColumn = cursor.getColumnIndex(COLUMN_NAME_PROVINCE);
-            int selectionColumn = cursor.getColumnIndex(COLUMN_NAME_SELECTION);
+            int idColumn = cursor.getColumnIndex(COLUMN_ID);
+            int nameColumn = cursor.getColumnIndex(COLUMN_NAME);
+            int latitudeColumn = cursor.getColumnIndex(COLUMN_LATITUDE);
+            int longitudeColumn = cursor.getColumnIndex(COLUMN_LONGITUDE);
+            int provinceColumn = cursor.getColumnIndex(COLUMN_PROVINCE);
+            int selectionColumn = cursor.getColumnIndex(COLUMN_SELECTION);
 
             int id = cursor.getInt(idColumn);
             String name = cursor.getString(nameColumn);

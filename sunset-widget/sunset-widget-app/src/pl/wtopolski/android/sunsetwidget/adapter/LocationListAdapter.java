@@ -1,11 +1,6 @@
 package pl.wtopolski.android.sunsetwidget.adapter;
 
-import static android.provider.BaseColumns._ID;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LATITUDE;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_LONGITUDE;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_NAME;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_PROVINCE;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME_SELECTION;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.*;
 import pl.wtopolski.android.sunsetwidget.MyApplication;
 import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.model.SelectionType;
@@ -43,12 +38,12 @@ public class LocationListAdapter extends CursorAdapter implements SectionIndexer
         this.onStarClickable = onStarClickable;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
-        idColumn = cursor.getColumnIndex(_ID);
-        nameColumn = cursor.getColumnIndex(COLUMN_NAME_NAME);
-        latitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LATITUDE);
-        longitudeColumn = cursor.getColumnIndex(COLUMN_NAME_LONGITUDE);
-        provinceColumn = cursor.getColumnIndex(COLUMN_NAME_PROVINCE);
-        selectionColumn = cursor.getColumnIndex(COLUMN_NAME_SELECTION);
+        idColumn = cursor.getColumnIndex(COLUMN_ID);
+        nameColumn = cursor.getColumnIndex(COLUMN_NAME);
+        latitudeColumn = cursor.getColumnIndex(COLUMN_LATITUDE);
+        longitudeColumn = cursor.getColumnIndex(COLUMN_LONGITUDE);
+        provinceColumn = cursor.getColumnIndex(COLUMN_PROVINCE);
+        selectionColumn = cursor.getColumnIndex(COLUMN_SELECTION);
         
         alphaIndexer = new AlphabetIndexer(cursor, nameColumn, " ABCDEFGHIJKLŁMNOPRSŚTUWZŻ");
         alphaIndexer.setCursor(cursor);
@@ -72,7 +67,6 @@ public class LocationListAdapter extends CursorAdapter implements SectionIndexer
         int selection = cursor.getInt(selectionColumn);
 
         SelectionType selectionType = SelectionType.getSelectionType(selection);
-
         Typeface fontTypeface = MyApplication.getMyApplication().getTypeface();
 
         setImageOnView(view, R.id.imageItem, selectionType.getImage(), locationId);

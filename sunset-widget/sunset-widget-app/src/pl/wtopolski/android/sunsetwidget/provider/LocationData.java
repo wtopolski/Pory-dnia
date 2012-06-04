@@ -35,36 +35,38 @@ public class LocationData {
 		public static final String MATCHER_FOR_SEARCH_ID = MATCHER_FOR_SEARCH + "/*";
 
 		// COLUMN NAMES
-		public static final String COLUMN_NAME_ID = BaseColumns._ID;
-		public static final String COLUMN_NAME_NAME = "name";
-		public static final String COLUMN_NAME_LATITUDE = "latitude";
-		public static final String COLUMN_NAME_LONGITUDE = "longitude";
-		public static final String COLUMN_NAME_PROVINCE = "province";
-		public static final String COLUMN_NAME_SELECTION = "selection";
+		public static final String COLUMN_ID = BaseColumns._ID;
+		public static final String COLUMN_NAME = "name";
+		public static final String COLUMN_SIMPLE_NAME = "simple_name";
+		public static final String COLUMN_LATITUDE = "latitude";
+		public static final String COLUMN_LONGITUDE = "longitude";
+		public static final String COLUMN_PROVINCE = "province";
+		public static final String COLUMN_SELECTION = "selection";
 
 		// TYPES
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.locations.place";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.locations.place";
 
 		// SORT
-		public static final String DEFAULT_SORT_ORDER = COLUMN_NAME_NAME + " COLLATE LOCALIZED ASC";
+		public static final String DEFAULT_SORT_ORDER = COLUMN_NAME + " COLLATE LOCALIZED ASC";
 
 		// STANDARD PROJECTION
 		public static final String[] STANDARD_LOCATION_PROJECTION = new String[] {
-			COLUMN_NAME_ID,
-			COLUMN_NAME_NAME,
-			COLUMN_NAME_LATITUDE,
-			COLUMN_NAME_LONGITUDE,
-			COLUMN_NAME_PROVINCE,
-			COLUMN_NAME_SELECTION
+			COLUMN_ID,
+			COLUMN_NAME,
+			COLUMN_SIMPLE_NAME,
+			COLUMN_LATITUDE,
+			COLUMN_LONGITUDE,
+			COLUMN_PROVINCE,
+			COLUMN_SELECTION
 		};
 
 		// SEARCH PROJECTION
 		public static final String[] SEARCH_LOCATION_PROJECTION = new String[] {
-			COLUMN_NAME_ID,
-			COLUMN_NAME_ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA,
-			COLUMN_NAME_NAME + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_1,
-			COLUMN_NAME_PROVINCE + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_2,
+			COLUMN_ID,
+			COLUMN_ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA,
+			COLUMN_NAME + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_1,
+			COLUMN_PROVINCE + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_2,
 			R.drawable.location + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1
 		};
 	}

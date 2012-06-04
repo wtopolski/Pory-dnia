@@ -28,209 +28,202 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 public class LocationContentProvider extends ContentProvider {
-    protected static final String LOG_TAG = LocationContentProvider.class.getSimpleName();
+	protected static final String LOG_TAG = LocationContentProvider.class.getSimpleName();
 
-    private static final String DATABASE_NAME = "locations.db";
-    private static final int DATABASE_VERSION = 1;
+	private static final String DATABASE_NAME = "locations.db";
+	private static final int DATABASE_VERSION = 1;
 
-    private static HashMap<String, String> locationsProjectionMap;
+	private static HashMap<String, String> locationsProjectionMap;
 
-    private static final int LOCATIONS = 1;
-    private static final int LOCATION_ID = 2;
-    private static final int SEARCH_QUERY = 3;
-    private static final int SEARCH_QUERY_ID = 4;
+	private static final int LOCATIONS = 1;
+	private static final int LOCATION_ID = 2;
+	private static final int SEARCH_QUERY = 3;
+	private static final int SEARCH_QUERY_ID = 4;
 
-    private static final UriMatcher uriMatcher;
-    private DatabaseHelper mOpenHelper;
+	private static final UriMatcher uriMatcher;
+	private DatabaseHelper mOpenHelper;
 
-    static {
-        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, MATCHER_FOR_CONTENT, LOCATIONS);
-        uriMatcher.addURI(AUTHORITY, MATCHER_FOR_CONTENT_ID, LOCATION_ID);
-        uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH, SEARCH_QUERY);
-        uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH_ID, SEARCH_QUERY_ID);
-        
-        locationsProjectionMap = new HashMap<String, String>();
-        locationsProjectionMap.put(COLUMN_ID, COLUMN_ID);
-        locationsProjectionMap.put(COLUMN_NAME, COLUMN_NAME);
-        locationsProjectionMap.put(COLUMN_SIMPLE_NAME, COLUMN_SIMPLE_NAME);
-        locationsProjectionMap.put(COLUMN_LATITUDE, COLUMN_LATITUDE);
-        locationsProjectionMap.put(COLUMN_LONGITUDE, COLUMN_LONGITUDE);
-        locationsProjectionMap.put(COLUMN_PROVINCE, COLUMN_PROVINCE);
-        locationsProjectionMap.put(COLUMN_SELECTION, COLUMN_SELECTION);
-    }
+	static {
+		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_CONTENT, LOCATIONS);
+		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_CONTENT_ID, LOCATION_ID);
+		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH, SEARCH_QUERY);
+		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH_ID, SEARCH_QUERY_ID);
 
-    static class DatabaseHelper extends SQLiteOpenHelper {
-        DatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
+		locationsProjectionMap = new HashMap<String, String>();
+		locationsProjectionMap.put(COLUMN_ID, COLUMN_ID);
+		locationsProjectionMap.put(COLUMN_NAME, COLUMN_NAME);
+		locationsProjectionMap.put(COLUMN_SIMPLE_NAME, COLUMN_SIMPLE_NAME);
+		locationsProjectionMap.put(COLUMN_LATITUDE, COLUMN_LATITUDE);
+		locationsProjectionMap.put(COLUMN_LONGITUDE, COLUMN_LONGITUDE);
+		locationsProjectionMap.put(COLUMN_PROVINCE, COLUMN_PROVINCE);
+		locationsProjectionMap.put(COLUMN_SELECTION, COLUMN_SELECTION);
+	}
 
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE " + TABLE_NAME + " ("
-                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_NAME + " TEXT,"
-                    + COLUMN_SIMPLE_NAME + " TEXT,"
-                    + COLUMN_LATITUDE + " REAL,"
-                    + COLUMN_LONGITUDE + " REAL,"
-                    + COLUMN_PROVINCE + " TEXT,"
-                    + COLUMN_SELECTION + " INTEGER"
-                    + ");");
-        }
+	static class DatabaseHelper extends SQLiteOpenHelper {
+		DatabaseHelper(Context context) {
+			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		}
 
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-            onCreate(db);
-        }
-    }
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT," + COLUMN_SIMPLE_NAME + " TEXT,"
+					+ COLUMN_LATITUDE + " REAL," + COLUMN_LONGITUDE + " REAL," + COLUMN_PROVINCE + " TEXT," + COLUMN_SELECTION + " INTEGER" + ");");
+		}
 
-    @Override
-    public boolean onCreate() {
-        mOpenHelper = new DatabaseHelper(getContext());
-        return true;
-    }
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+			onCreate(db);
+		}
+	}
 
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(TABLE_NAME);
-        qb.setProjectionMap(locationsProjectionMap);
+	@Override
+	public boolean onCreate() {
+		mOpenHelper = new DatabaseHelper(getContext());
+		return true;
+	}
 
-        switch (uriMatcher.match(uri)) {
-            case LOCATIONS:
-                break;
-            case LOCATION_ID:
-                qb.appendWhere(COLUMN_ID + "=" + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION));
-                break;
-            case SEARCH_QUERY:
-            case SEARCH_QUERY_ID:
-            	projection = LocationData.Locations.SEARCH_LOCATION_PROJECTION;
-            	selection = COLUMN_SIMPLE_NAME + " LIKE ?";
-            	selectionArgs = new String[] {uri.getLastPathSegment() + "%"};
-            	break;
-            default:
-                throw new IllegalArgumentException("Unknown URI " + uri);
-        }
+	@Override
+	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+		qb.setTables(TABLE_NAME);
+		qb.setProjectionMap(locationsProjectionMap);
 
-        String orderBy = (TextUtils.isEmpty(sortOrder)) ? DEFAULT_SORT_ORDER : sortOrder;
+		switch (uriMatcher.match(uri)) {
+		case LOCATIONS:
+			break;
+		case LOCATION_ID:
+			qb.appendWhere(COLUMN_ID + "=" + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION));
+			break;
+		case SEARCH_QUERY:
+		case SEARCH_QUERY_ID:
+			projection = LocationData.Locations.SEARCH_LOCATION_PROJECTION;
+			selection = COLUMN_SIMPLE_NAME + " LIKE ?";
+			selectionArgs = new String[] { uri.getLastPathSegment() + "%" };
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
 
-        SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-        Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, orderBy);
-        c.setNotificationUri(getContext().getContentResolver(), uri);
-        return c;
-    }
+		String orderBy = (TextUtils.isEmpty(sortOrder)) ? DEFAULT_SORT_ORDER : sortOrder;
 
-    @Override
-    public String getType(Uri uri) {
-    	switch (uriMatcher.match(uri)) {
-        case LOCATIONS:
-            return LocationData.Locations.CONTENT_TYPE;
-        case LOCATION_ID:
-            return LocationData.Locations.CONTENT_ITEM_TYPE;
-        case SEARCH_QUERY:
-        case SEARCH_QUERY_ID:
-        	return SearchManager.SUGGEST_MIME_TYPE;
-        default:
-            throw new IllegalArgumentException("Unknown URI " + uri);
-    	}
-    }
+		SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+		Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, orderBy);
+		c.setNotificationUri(getContext().getContentResolver(), uri);
+		return c;
+	}
 
-    @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        if (uriMatcher.match(uri) != LOCATIONS) {
-            throw new IllegalArgumentException("Unknown URI " + uri);
-        }
+	@Override
+	public String getType(Uri uri) {
+		switch (uriMatcher.match(uri)) {
+		case LOCATIONS:
+			return LocationData.Locations.CONTENT_TYPE;
+		case LOCATION_ID:
+			return LocationData.Locations.CONTENT_ITEM_TYPE;
+		case SEARCH_QUERY:
+		case SEARCH_QUERY_ID:
+			return SearchManager.SUGGEST_MIME_TYPE;
+		default:
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
+	}
 
-        ContentValues values = (contentValues != null) ? new ContentValues(contentValues) : new ContentValues();
+	@Override
+	public Uri insert(Uri uri, ContentValues contentValues) {
+		if (uriMatcher.match(uri) != LOCATIONS) {
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
 
-        if (values.containsKey(COLUMN_NAME) == false) {
-            throw new SQLException("No name");
-        }
+		ContentValues values = (contentValues != null) ? new ContentValues(contentValues) : new ContentValues();
 
-        if (values.containsKey(COLUMN_SIMPLE_NAME) == false) {
-            throw new SQLException("No simple name");
-        }
-        
-        if (values.containsKey(COLUMN_PROVINCE) == false) {
-            throw new SQLException("No province");
-        }
+		if (values.containsKey(COLUMN_NAME) == false) {
+			throw new SQLException("No name");
+		}
 
-        if (values.containsKey(COLUMN_LATITUDE) == false) {
-            throw new SQLException("No latitude");
-        }
+		if (values.containsKey(COLUMN_SIMPLE_NAME) == false) {
+			throw new SQLException("No simple name");
+		}
 
-        if (values.containsKey(COLUMN_LONGITUDE) == false) {
-            throw new SQLException("No longitude");
-        }
+		if (values.containsKey(COLUMN_PROVINCE) == false) {
+			throw new SQLException("No province");
+		}
 
-        if (values.containsKey(COLUMN_SELECTION) == false) {
-            throw new SQLException("No selected");
-        }
+		if (values.containsKey(COLUMN_LATITUDE) == false) {
+			throw new SQLException("No latitude");
+		}
 
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		if (values.containsKey(COLUMN_LONGITUDE) == false) {
+			throw new SQLException("No longitude");
+		}
 
-        long rowId = db.insertOrThrow(TABLE_NAME, null, values);
-        if (rowId > 0) {
-            Uri pattern = Uri.parse(CONTENT_URI + "/");
-            Uri noteUri = ContentUris.withAppendedId(pattern, rowId);
-            getContext().getContentResolver().notifyChange(noteUri, null);
-            return noteUri;
-        }
+		if (values.containsKey(COLUMN_SELECTION) == false) {
+			throw new SQLException("No selected");
+		}
 
-        throw new SQLException("Failed to insert row into " + uri);
-    }
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-    @Override
-    public int delete(Uri uri, String where, String[] whereArgs) {
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        int count;
+		long rowId = db.insertOrThrow(TABLE_NAME, null, values);
+		if (rowId > 0) {
+			Uri pattern = Uri.parse(CONTENT_URI + "/");
+			Uri noteUri = ContentUris.withAppendedId(pattern, rowId);
+			getContext().getContentResolver().notifyChange(noteUri, null);
+			return noteUri;
+		}
 
-        switch (uriMatcher.match(uri)) {
-            case LOCATIONS:
-                count = db.delete(TABLE_NAME, where, whereArgs);
-                break;
-            case LOCATION_ID:
-                String finalWhere = COLUMN_ID + " = " + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
+		throw new SQLException("Failed to insert row into " + uri);
+	}
 
-                if (!TextUtils.isEmpty(where)) {
-                    finalWhere = finalWhere + " AND " + where;
-                }
+	@Override
+	public int delete(Uri uri, String where, String[] whereArgs) {
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		int count;
 
-                count = db.delete(TABLE_NAME, finalWhere, whereArgs);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI " + uri);
-        }
+		switch (uriMatcher.match(uri)) {
+		case LOCATIONS:
+			count = db.delete(TABLE_NAME, where, whereArgs);
+			break;
+		case LOCATION_ID:
+			String finalWhere = COLUMN_ID + " = " + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
 
-        getContext().getContentResolver().notifyChange(uri, null);
-        return count;
-    }
+			if (!TextUtils.isEmpty(where)) {
+				finalWhere = finalWhere + " AND " + where;
+			}
 
-    @Override
-    public int update(Uri uri, ContentValues contentValues, String where, String[] whereArgs) {
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        int count;
+			count = db.delete(TABLE_NAME, finalWhere, whereArgs);
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
 
-        switch (uriMatcher.match(uri)) {
-            case LOCATIONS:
-                count = db.update(TABLE_NAME, contentValues, where, whereArgs);
-                break;
-            case LOCATION_ID:
-                String finalWhere = COLUMN_ID + " = " + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
+		getContext().getContentResolver().notifyChange(uri, null);
+		return count;
+	}
 
-                if (!TextUtils.isEmpty(where)) {
-                    finalWhere = finalWhere + " AND " + where;
-                }
+	@Override
+	public int update(Uri uri, ContentValues contentValues, String where, String[] whereArgs) {
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		int count;
 
-                count = db.update(TABLE_NAME, contentValues, finalWhere, whereArgs);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI " + uri);
-        }
+		switch (uriMatcher.match(uri)) {
+		case LOCATIONS:
+			count = db.update(TABLE_NAME, contentValues, where, whereArgs);
+			break;
+		case LOCATION_ID:
+			String finalWhere = COLUMN_ID + " = " + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION);
 
-        getContext().getContentResolver().notifyChange(uri, null);
+			if (!TextUtils.isEmpty(where)) {
+				finalWhere = finalWhere + " AND " + where;
+			}
 
-        return count;
-    }
+			count = db.update(TABLE_NAME, contentValues, finalWhere, whereArgs);
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
+
+		getContext().getContentResolver().notifyChange(uri, null);
+
+		return count;
+	}
 }

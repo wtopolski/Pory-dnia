@@ -1,6 +1,19 @@
 package pl.wtopolski.android.sunsetwidget.util;
 
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.*;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_ID;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_LATITUDE;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_LONGITUDE;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_NAME;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_PROVINCE;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_SELECTION;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.COLUMN_SIMPLE_NAME;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.CONTENT_URI;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.DEFAULT_SORT_ORDER;
+import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.STANDARD_LOCATION_PROJECTION;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.model.SelectionType;
 import android.content.ContentUris;
@@ -56,8 +69,25 @@ public class LocationManagerImpl implements LocationManager {
 	}
 
 	public Cursor getAllFavouritesByCursor(String query) {
-		return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, COLUMN_SELECTION + ">=?",
-				new String[] { String.valueOf(SelectionType.FAVOURITE.getValue()) }, DEFAULT_SORT_ORDER);
+		StringBuilder selection = new StringBuilder();
+		selection.append(COLUMN_SELECTION);
+		selection.append(">=?");
+		
+		List<String> selectionArgs = new ArrayList<String>();
+		selectionArgs.add(String.valueOf(SelectionType.FAVOURITE.getValue()));
+		
+		if (!TextUtils.isEmpty(query)) {
+			selection.append(" AND ");
+			selection.append(COLUMN_SIMPLE_NAME);
+			selection.append(" LIKE ?");
+			
+			selectionArgs.add(query + "%");
+		}
+		
+		String[] selectionArray = new String[selectionArgs.size()];
+		selectionArray = selectionArgs.toArray(selectionArray);
+		
+		return context.getContentResolver().query(CONTENT_URI, STANDARD_LOCATION_PROJECTION, selection.toString(), selectionArray, DEFAULT_SORT_ORDER);
 	}
 
 	public GPSLocation getLocation(int id) {

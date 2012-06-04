@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<searchable
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:label="@string/app_name"
+    android:hint="@string/search_hint"
+    android:searchSuggestPath="@string/search_suggest_locations_path"
+    android:searchSuggestThreshold="1"
+    android:searchSuggestAuthority="pl.wtopolski.sunsetwidget.contentprovider"
+    android:searchSuggestIntentAction="android.intent.action.VIEW" >
+</searchable>

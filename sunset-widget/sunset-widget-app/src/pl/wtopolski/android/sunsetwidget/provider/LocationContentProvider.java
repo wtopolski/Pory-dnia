@@ -2,27 +2,19 @@ package pl.wtopolski.android.sunsetwidget.provider;
 
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.AUTHORITY;
 import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.*;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.CONTENT_URI;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.DEFAULT_SORT_ORDER;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.LOCATION_ID_PATH_POSITION;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_CONTENT;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_CONTENT_ID;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_SEARCH;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.MATCHER_FOR_SEARCH_ID;
-import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.TABLE_NAME;
 
 import java.util.HashMap;
+
+import pl.wtopolski.android.sunsetwidget.model.SelectionType;
 
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -30,25 +22,26 @@ import android.text.TextUtils;
 public class LocationContentProvider extends ContentProvider {
 	protected static final String LOG_TAG = LocationContentProvider.class.getSimpleName();
 
-	private static final String DATABASE_NAME = "locations.db";
-	private static final int DATABASE_VERSION = 1;
-
-	private static HashMap<String, String> locationsProjectionMap;
+	private HashMap<String, String> locationsProjectionMap;
+	private UriMatcher uriMatcher;
+	private DatabaseHelper mOpenHelper;
 
 	private static final int LOCATIONS = 1;
 	private static final int LOCATION_ID = 2;
-	private static final int SEARCH_QUERY = 3;
-	private static final int SEARCH_QUERY_ID = 4;
+	private static final int SEARCH_LOCATIONS_QUERY = 3;
+	private static final int SEARCH_LOCATIONS_QUERY_ID = 4;
+	private static final int SEARCH_FAVORITES_QUERY = 5;
+	private static final int SEARCH_FAVORITES_QUERY_ID = 6;
 
-	private static final UriMatcher uriMatcher;
-	private DatabaseHelper mOpenHelper;
-
-	static {
+	@Override
+	public boolean onCreate() {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_CONTENT, LOCATIONS);
 		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_CONTENT_ID, LOCATION_ID);
-		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH, SEARCH_QUERY);
-		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH_ID, SEARCH_QUERY_ID);
+		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH_LOCATIONS, SEARCH_LOCATIONS_QUERY);
+		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH_LOCATIONS_ID, SEARCH_LOCATIONS_QUERY_ID);
+		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH_FAVORITES, SEARCH_FAVORITES_QUERY);
+		uriMatcher.addURI(AUTHORITY, MATCHER_FOR_SEARCH_FAVORITES_ID, SEARCH_FAVORITES_QUERY_ID);
 
 		locationsProjectionMap = new HashMap<String, String>();
 		locationsProjectionMap.put(COLUMN_ID, COLUMN_ID);
@@ -58,28 +51,7 @@ public class LocationContentProvider extends ContentProvider {
 		locationsProjectionMap.put(COLUMN_LONGITUDE, COLUMN_LONGITUDE);
 		locationsProjectionMap.put(COLUMN_PROVINCE, COLUMN_PROVINCE);
 		locationsProjectionMap.put(COLUMN_SELECTION, COLUMN_SELECTION);
-	}
-
-	static class DatabaseHelper extends SQLiteOpenHelper {
-		DatabaseHelper(Context context) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		}
-
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT," + COLUMN_SIMPLE_NAME + " TEXT,"
-					+ COLUMN_LATITUDE + " REAL," + COLUMN_LONGITUDE + " REAL," + COLUMN_PROVINCE + " TEXT," + COLUMN_SELECTION + " INTEGER" + ");");
-		}
-
-		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-			onCreate(db);
-		}
-	}
-
-	@Override
-	public boolean onCreate() {
+		
 		mOpenHelper = new DatabaseHelper(getContext());
 		return true;
 	}
@@ -96,11 +68,17 @@ public class LocationContentProvider extends ContentProvider {
 		case LOCATION_ID:
 			qb.appendWhere(COLUMN_ID + "=" + uri.getPathSegments().get(LOCATION_ID_PATH_POSITION));
 			break;
-		case SEARCH_QUERY:
-		case SEARCH_QUERY_ID:
+		case SEARCH_LOCATIONS_QUERY:
+		case SEARCH_LOCATIONS_QUERY_ID:
 			projection = LocationData.Locations.SEARCH_LOCATION_PROJECTION;
 			selection = COLUMN_SIMPLE_NAME + " LIKE ?";
 			selectionArgs = new String[] { uri.getLastPathSegment() + "%" };
+			break;
+		case SEARCH_FAVORITES_QUERY:
+		case SEARCH_FAVORITES_QUERY_ID:
+			projection = LocationData.Locations.SEARCH_LOCATION_PROJECTION;
+			selection = COLUMN_SIMPLE_NAME + " LIKE ? AND " + COLUMN_SELECTION + ">=?";
+			selectionArgs = new String[] { uri.getLastPathSegment() + "%", String.valueOf(SelectionType.FAVOURITE.getValue())};
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -121,8 +99,8 @@ public class LocationContentProvider extends ContentProvider {
 			return LocationData.Locations.CONTENT_TYPE;
 		case LOCATION_ID:
 			return LocationData.Locations.CONTENT_ITEM_TYPE;
-		case SEARCH_QUERY:
-		case SEARCH_QUERY_ID:
+		case SEARCH_LOCATIONS_QUERY:
+		case SEARCH_LOCATIONS_QUERY_ID:
 			return SearchManager.SUGGEST_MIME_TYPE;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

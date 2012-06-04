@@ -31,8 +31,10 @@ public class LocationData {
 		// FOR MATCHER
 		public static final String MATCHER_FOR_CONTENT = PATH_SEGMENT;
 		public static final String MATCHER_FOR_CONTENT_ID = MATCHER_FOR_CONTENT + "/#";
-		public static final String MATCHER_FOR_SEARCH = "quicksearch/" + SearchManager.SUGGEST_URI_PATH_QUERY;
-		public static final String MATCHER_FOR_SEARCH_ID = MATCHER_FOR_SEARCH + "/*";
+		public static final String MATCHER_FOR_SEARCH_LOCATIONS = "quick_search_locations/" + SearchManager.SUGGEST_URI_PATH_QUERY;
+		public static final String MATCHER_FOR_SEARCH_LOCATIONS_ID = MATCHER_FOR_SEARCH_LOCATIONS + "/*";
+		public static final String MATCHER_FOR_SEARCH_FAVORITES = "quick_search_favorites/" + SearchManager.SUGGEST_URI_PATH_QUERY;
+		public static final String MATCHER_FOR_SEARCH_FAVORITES_ID = MATCHER_FOR_SEARCH_FAVORITES + "/*";
 
 		// COLUMN NAMES
 		public static final String COLUMN_ID = BaseColumns._ID;

@@ -31,6 +31,8 @@
     
     <!-- Search -->
     <string name="search_hint">Wyszukaj miejsce</string>
+    <string name="search_suggest_locations_path">quick_search_locations</string>
+    <string name="search_suggest_favorites_path">quick_search_favorites</string>
     
     <!-- Preference -->
     <string name="preferences_counting_title">Obliczenia</string>

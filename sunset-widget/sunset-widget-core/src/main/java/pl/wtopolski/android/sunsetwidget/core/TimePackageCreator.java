@@ -22,16 +22,10 @@ public class TimePackageCreator {
 		this.config = config;
 		int year = prepareCalendar().get(Calendar.YEAR);
 		
-		this.winterSolstice = createTimePackage(year, 12, 21, config); // 21 December
-		this.autumnalEquinox = createTimePackage(year, 9, 22, config); // 22 September
-		this.summerSolstice = createTimePackage(year, 6, 21, config); // 21 June
-		this.springEquinox = createTimePackage(year, 3, 20, config); // 20 March
-
-		System.out.println("wtopolski year: " + year);
-		System.out.println("wtopolski winterSolstice: " + winterSolstice.getCurrentDayInYear());
-		System.out.println("wtopolski autumnalEquinox: " + autumnalEquinox.getCurrentDayInYear());
-		System.out.println("wtopolski summerSolstice: " + summerSolstice.getCurrentDayInYear());
-		System.out.println("wtopolski springEquinox: " + springEquinox.getCurrentDayInYear());
+		this.winterSolstice = createTimePackage(year, 12, 21, config);
+		this.autumnalEquinox = createTimePackage(year, 9, 22, config);
+		this.summerSolstice = createTimePackage(year, 6, 21, config);
+		this.springEquinox = createTimePackage(year, 3, 20, config);
 	}
 
 	public Calendar prepareCalendar() {
@@ -53,17 +47,16 @@ public class TimePackageCreator {
 		long lengthOfShortestDay = winterSolstice.getLengthOfDay();
 		long lengthOfLongestDay = summerSolstice.getLengthOfDay();
 
-		selectedDay.setSeason(determineSeason(selectedDay));
+		selectedDay.setSeason(determineSeason(selectedDay.getCurrentDayInYear()));
 		selectedDay.setLongerThanTheShortestDayOfYear(lengthOfSelectedDay - lengthOfShortestDay);
 		selectedDay.setShorterThanTheLongestDayOfYear(lengthOfLongestDay - lengthOfSelectedDay);
 		
 		return selectedDay;
 	}
 
-	private Season determineSeason(TimePackage selectedDay) {
+	protected Season determineSeason(int currentDayInYear) {
 		Season result = null;
 		
-		int currentDayInYear = selectedDay.getCurrentDayInYear();
 		int winterStartDay = winterSolstice.getCurrentDayInYear();
 		int springStartDay = springEquinox.getCurrentDayInYear();
 		int summerStartDay = summerSolstice.getCurrentDayInYear();

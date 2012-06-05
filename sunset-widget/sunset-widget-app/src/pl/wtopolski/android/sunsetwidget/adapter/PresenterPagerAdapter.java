@@ -17,21 +17,19 @@ import android.widget.LinearLayout;
 public class PresenterPagerAdapter extends PagerAdapter {
     protected static final String LOG_TAG = PresenterPagerAdapter.class.getSimpleName();
 
-    private static int NUM_VIEWS = 5;
+    private static int NUM_VIEWS = 6;
     private TimePackage[] timePackages;
     
-	private GPSLocation gpsLocation;
 	private Context context;
 	private PresentationView presentationView;
     
     public PresenterPagerAdapter(Context context, GPSLocation gpsLocation) {
-    	this.gpsLocation = gpsLocation;
     	this.context = context;
     	this.presentationView = ApplicationSettings.getPresentationViewSettings();
     	
     	timePackages = new TimePackage[NUM_VIEWS];
 
-    	TimePackageCreator calculator = new TimePackageCreator();
+    	TimePackageCreator calculator = new TimePackageCreator(gpsLocation.convertToTimeLocation());
     	for (int position = 0; position < NUM_VIEWS; position++) {
         	Calendar calendarNow = calculator.prepareCalendar();
     		if (position == 0 || position == 1) {
@@ -40,10 +38,12 @@ public class PresenterPagerAdapter extends PagerAdapter {
         		calendarNow.add(Calendar.HOUR, 24*7);
         	} else if (position == 3) {
         		calendarNow.add(Calendar.MONTH, 1);
-        	} else {
+        	} else if (position == 4) {
         		calendarNow.add(Calendar.MONTH, 3);
+        	} else {
+        		calendarNow.add(Calendar.MONTH, 6);
         	}
-    		timePackages[position] = calculator.prepareTimePackage(calendarNow, gpsLocation.convertToTimeLocation());
+    		timePackages[position] = calculator.prepareTimePackage(calendarNow);
     	}
     }
 	

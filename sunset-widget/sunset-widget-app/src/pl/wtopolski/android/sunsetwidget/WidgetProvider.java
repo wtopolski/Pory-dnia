@@ -25,14 +25,13 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        TimePackageCreator calculator = new TimePackageCreator();
-    	Calendar calendarNow = calculator.prepareCalendar();
-
         LocationManager locationManager = new LocationManagerImpl();
         locationManager.setContext(context);
         GPSLocation mainLocation = locationManager.getMainLocation();
-        
-        TimePackage times = calculator.prepareTimePackage(mainLocation.convertToTimeLocation());
+
+        TimePackageCreator calculator = new TimePackageCreator(mainLocation.convertToTimeLocation());
+    	Calendar calendarNow = calculator.prepareCalendar();
+        TimePackage times = calculator.prepareTimePackage();
 
         String sunrise = formatDate(times.getSunrise());
         String culmination = formatDate(times.getCulmination());

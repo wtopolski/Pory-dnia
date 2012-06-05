@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
 		final SimpleDateFormat dateDescribeFormater = new SimpleDateFormat(DATE_DESCRIBE_PATTERN);
 		final SimpleDateFormat dayDescribeFormater = new SimpleDateFormat(DAY_DESCRIBE_PATTERN);
 		
-		String[] tabs = new String[] {"Dziś", "Jutro", "Tydzień", "Miesiąc", "Kwartał"};
+		String[] tabs = new String[] {"Dziś", "Jutro", "Tydzień", "Miesiąc", "Kwartał", "Pół roku"};
 		
 		if (timePackages.length != tabs.length) {
 			throw new RuntimeException("Wrong size of arrays!");

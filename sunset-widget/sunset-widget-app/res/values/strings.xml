@@ -12,6 +12,11 @@
     <string name="add_to_favourites">Dodaj do ulubionych</string>
     <string name="remove_from_favourites">Usuń z ulubionych</string>
     
+    <string name="winter">Zima</string>
+    <string name="autumn">Jesień</string>
+    <string name="spring">Wiosna</string>
+    <string name="summer">Lato</string>
+    
     <!-- Notification -->
     <string name="error_during_restoring_state_title">Problem</string>
     <string name="error_during_restoring_state_msg">Wystąpił problem w trakcie inicjowania listy. Spróbuj jeszcze raz...</string>

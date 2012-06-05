@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import pl.wtopolski.android.sunsetwidget.core.model.Season;
 import pl.wtopolski.android.sunsetwidget.core.model.TimeData;
 import pl.wtopolski.android.sunsetwidget.core.model.TimeConfig;
 import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
@@ -11,31 +12,79 @@ import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
 import static java.lang.Math.*;
 
 public class TimePackageCreator {
-	public TimePackage prepareTimePackage(final TimeConfig location) {
-		return prepareTimePackage(prepareCalendar(), location);
+	private final TimePackage winterSolstice;
+	private final TimePackage autumnalEquinox;
+	private final TimePackage summerSolstice;
+	private final TimePackage springEquinox;
+	private final TimeConfig config;
+	
+	public TimePackageCreator(TimeConfig config) {
+		this.config = config;
+		int year = prepareCalendar().get(Calendar.YEAR);
+		
+		this.winterSolstice = createTimePackage(year, 12, 21, config); // 21 December
+		this.autumnalEquinox = createTimePackage(year, 9, 22, config); // 22 September
+		this.summerSolstice = createTimePackage(year, 6, 21, config); // 21 June
+		this.springEquinox = createTimePackage(year, 3, 20, config); // 20 March
+
+		System.out.println("wtopolski year: " + year);
+		System.out.println("wtopolski winterSolstice: " + winterSolstice.getCurrentDayInYear());
+		System.out.println("wtopolski autumnalEquinox: " + autumnalEquinox.getCurrentDayInYear());
+		System.out.println("wtopolski summerSolstice: " + summerSolstice.getCurrentDayInYear());
+		System.out.println("wtopolski springEquinox: " + springEquinox.getCurrentDayInYear());
 	}
 
-	public TimePackage prepareTimePackage(final Calendar calendar, final TimeConfig config) {
+	public Calendar prepareCalendar() {
+		return Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.ENGLISH);
+	}
+
+	public TimePackage prepareTimePackage() {
+		return prepareTimePackage(prepareCalendar());
+	}
+
+	public TimePackage prepareTimePackage(final Calendar calendar) {
 		final int year = calendar.get(Calendar.YEAR);
 		final int month = calendar.get(Calendar.MONTH) + 1;
 		final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-		TimeData<Calendar> forSelectedDay = createTimeDataCalendar(year, month, day, config);
-		TimePackage timePackageForSelectedDay = new TimePackage(forSelectedDay);
-		long lengthOfSelectedDay = timePackageForSelectedDay.getLengthOfDay();
-
-		TimeData<Calendar> forShortestDay = createTimeDataCalendar(year, 12, 21, config);
-		TimePackage timePackageShortestDay = new TimePackage(forShortestDay);
-		long lengthOfShortestDay = timePackageShortestDay.getLengthOfDay();
-
-		TimeData<Calendar> forLongestDay = createTimeDataCalendar(year, 6, 21, config);
-		TimePackage timePackageLongestDay = new TimePackage(forLongestDay);
-		long lengthOfLongestDay = timePackageLongestDay.getLengthOfDay();
-
-		timePackageForSelectedDay.setLongerThanTheShortestDayOfYear(lengthOfSelectedDay - lengthOfShortestDay);
-		timePackageForSelectedDay.setShorterThanTheLongestDayOfYear(lengthOfLongestDay - lengthOfSelectedDay);
+		TimePackage selectedDay = createTimePackage(year, month, day, config);
 		
-		return timePackageForSelectedDay;
+		long lengthOfSelectedDay = selectedDay.getLengthOfDay();
+		long lengthOfShortestDay = winterSolstice.getLengthOfDay();
+		long lengthOfLongestDay = summerSolstice.getLengthOfDay();
+
+		selectedDay.setSeason(determineSeason(selectedDay));
+		selectedDay.setLongerThanTheShortestDayOfYear(lengthOfSelectedDay - lengthOfShortestDay);
+		selectedDay.setShorterThanTheLongestDayOfYear(lengthOfLongestDay - lengthOfSelectedDay);
+		
+		return selectedDay;
+	}
+
+	private Season determineSeason(TimePackage selectedDay) {
+		Season result = null;
+		
+		int currentDayInYear = selectedDay.getCurrentDayInYear();
+		int winterStartDay = winterSolstice.getCurrentDayInYear();
+		int springStartDay = springEquinox.getCurrentDayInYear();
+		int summerStartDay = summerSolstice.getCurrentDayInYear();
+		int autumnStartDay = autumnalEquinox.getCurrentDayInYear();
+		
+		if (currentDayInYear >= winterStartDay || currentDayInYear < springStartDay) {
+			result = Season.WINTER;
+		} else if (currentDayInYear >= springStartDay && currentDayInYear < summerStartDay) {
+			result = Season.SPRING;
+		} else if (currentDayInYear >= summerStartDay && currentDayInYear < autumnStartDay) {
+			result = Season.SUMMER;
+		} else if (currentDayInYear >= autumnStartDay && currentDayInYear < winterStartDay) {
+			result = Season.AUTUMN;
+		}
+		
+		return result;
+	}
+
+	private TimePackage createTimePackage(int year, int month, int day, TimeConfig config) {
+		TimeData<Calendar> data = createTimeDataCalendar(year, month, day, config);
+		return new TimePackage(data);
 	}
 
 	private TimeData<Calendar> createTimeDataCalendar(final int year, final int month, final int day, final TimeConfig config) {
@@ -75,9 +124,5 @@ public class TimePackageCreator {
 		calendar.set(Calendar.MINUTE, minutes);
 		calendar.set(Calendar.SECOND, 0);
 		return calendar;
-	}
-
-	public Calendar prepareCalendar() {
-		return Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.ENGLISH);
 	}
 }

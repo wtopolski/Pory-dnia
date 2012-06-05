@@ -13,6 +13,7 @@ import android.widget.TextView;
 import pl.wtopolski.android.sunsetwidget.MyApplication;
 import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
+import pl.wtopolski.android.sunsetwidget.model.SeasonAdapter;
 
 public enum PresentationView {
 	TABLE {
@@ -26,6 +27,9 @@ public enum PresentationView {
 	        String sunset = formatDate(timePackage.getSunset());
 
 	        Typeface tf = MyApplication.getMyApplication().getTypeface();
+	        
+	        TextView seasonView = (TextView) view.findViewById(R.id.season);
+	        seasonView.setTypeface(tf);
 	        
 	        TextView sunriseView = (TextView) view.findViewById(R.id.sunrise);
 	        sunriseView.setTypeface(tf);
@@ -48,6 +52,9 @@ public enum PresentationView {
 	        TextView shorterThanTheLongestDayOfYear = (TextView) view.findViewById(R.id.shorterThanTheLongestDayOfYear);
 	        shorterThanTheLongestDayOfYear.setTypeface(tf);
 	        
+	        int seasonName = SeasonAdapter.getSeasonName(timePackage.getSeason());
+	        
+	        seasonView.setText(seasonName);
 	        sunriseView.setText(sunrise);
 	        culminationView.setText(culmination);
 	        sunsetView.setText(sunset);

@@ -11,6 +11,7 @@ public class TimePackage {
 	private final long lengthOfDay;
 	private long longerThanTheShortestDayOfYear;
 	private long shorterThanTheLongestDayOfYear;
+	private Season season;
 
 	public TimePackage(TimeData<Calendar> threePack) {
 		Calendar sunrise = threePack.getSunrise();
@@ -44,6 +45,10 @@ public class TimePackage {
 		return lengthOfDay;
 	}
 
+	public Season getSeason() {
+		return season;
+	}
+
 	public long getLongerThanTheShortestDayOfYear() {
 		return longerThanTheShortestDayOfYear;
 	}
@@ -70,6 +75,10 @@ public class TimePackage {
 
 	public void setSunset(Date sunset) {
 		this.sunset = sunset;
+	}
+
+	public void setSeason(Season season) {
+		this.season = season;
 	}
 
 	public static String getSunsetSunriseDiffDescribe(long diffInMillis) {

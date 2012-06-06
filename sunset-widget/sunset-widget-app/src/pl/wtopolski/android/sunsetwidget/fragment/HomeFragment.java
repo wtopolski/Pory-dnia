@@ -1,5 +1,9 @@
-package pl.wtopolski.android.sunsetwidget;
+package pl.wtopolski.android.sunsetwidget.fragment;
 
+import pl.wtopolski.android.sunsetwidget.FavoritesListActivity;
+import pl.wtopolski.android.sunsetwidget.LocationsListActivity;
+import pl.wtopolski.android.sunsetwidget.MainActivity;
+import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.pref.GeneralPreferenceActivity;
 import pl.wtopolski.android.sunsetwidget.view.DashboardItemView;
 import android.app.Activity;

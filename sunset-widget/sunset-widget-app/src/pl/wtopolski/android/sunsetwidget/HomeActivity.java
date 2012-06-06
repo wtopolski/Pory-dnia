@@ -1,5 +1,6 @@
 package pl.wtopolski.android.sunsetwidget;
 
+import pl.wtopolski.android.sunsetwidget.fragment.HomeFragment;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarFragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -1,6 +1,7 @@
 package pl.wtopolski.android.sunsetwidget;
 
-import pl.wtopolski.android.sunsetwidget.LocationsListFragment.Mode;
+import pl.wtopolski.android.sunsetwidget.fragment.LocationsListFragment;
+import pl.wtopolski.android.sunsetwidget.fragment.LocationsListFragment.Mode;
 import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarFragmentActivity;
 import android.app.SearchManager;

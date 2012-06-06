@@ -1,5 +1,7 @@
-package pl.wtopolski.android.sunsetwidget;
+package pl.wtopolski.android.sunsetwidget.fragment;
 
+import pl.wtopolski.android.sunsetwidget.MainActivity;
+import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.adapter.LocationListAdapter;
 import pl.wtopolski.android.sunsetwidget.adapter.OnStarClickable;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
@@ -10,12 +12,12 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 

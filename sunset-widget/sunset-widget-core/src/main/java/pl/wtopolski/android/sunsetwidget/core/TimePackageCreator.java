@@ -12,50 +12,57 @@ import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
 import static java.lang.Math.*;
 
 public class TimePackageCreator {
-	private final TimePackage winterSolstice;
-	private final TimePackage autumnalEquinox;
-	private final TimePackage summerSolstice;
-	private final TimePackage springEquinox;
+	private TimePackage winterSolstice;
+	private TimePackage autumnalEquinox;
+	private TimePackage summerSolstice;
+	private TimePackage springEquinox;
 	private final TimeConfig config;
+	private int year;
 	
 	public TimePackageCreator(TimeConfig config) {
 		this.config = config;
-		int year = prepareCalendar().get(Calendar.YEAR);
-		
-		this.winterSolstice = createTimePackage(year, 12, 21, config);
-		this.autumnalEquinox = createTimePackage(year, 9, 22, config);
-		this.summerSolstice = createTimePackage(year, 6, 21, config);
-		this.springEquinox = createTimePackage(year, 3, 20, config);
 	}
 
 	public Calendar prepareCalendar() {
 		return Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.ENGLISH);
 	}
 
-	public TimePackage prepareTimePackage() {
-		return prepareTimePackage(prepareCalendar());
-	}
-
 	public TimePackage prepareTimePackage(final Calendar calendar) {
 		final int year = calendar.get(Calendar.YEAR);
 		final int month = calendar.get(Calendar.MONTH) + 1;
 		final int day = calendar.get(Calendar.DAY_OF_MONTH);
-
+		
+		prepareBorders(year);
+		
 		TimePackage selectedDay = createTimePackage(year, month, day, config);
+		int currentDayInYear = selectedDay.getCurrentDayInYear();
 		
 		long lengthOfSelectedDay = selectedDay.getLengthOfDay();
 		long lengthOfShortestDay = winterSolstice.getLengthOfDay();
 		long lengthOfLongestDay = summerSolstice.getLengthOfDay();
 
-		selectedDay.setSeason(determineSeason(selectedDay.getCurrentDayInYear()));
+		selectedDay.setSeason(determineSeason(year, currentDayInYear));
 		selectedDay.setLongerThanTheShortestDayOfYear(lengthOfSelectedDay - lengthOfShortestDay);
 		selectedDay.setShorterThanTheLongestDayOfYear(lengthOfLongestDay - lengthOfSelectedDay);
 		
 		return selectedDay;
 	}
 
-	protected Season determineSeason(int currentDayInYear) {
+	private void prepareBorders(int year) {
+		if (this.year != year || winterSolstice == null) {
+			this.year = year;
+			
+			this.winterSolstice = createTimePackage(year, 12, 21, config);
+			this.autumnalEquinox = createTimePackage(year, 9, 22, config);
+			this.summerSolstice = createTimePackage(year, 6, 21, config);
+			this.springEquinox = createTimePackage(year, 3, 20, config);
+		}
+	}
+
+	protected Season determineSeason(int year, int currentDayInYear) {
 		Season result = null;
+		
+		prepareBorders(year);
 		
 		int winterStartDay = winterSolstice.getCurrentDayInYear();
 		int springStartDay = springEquinox.getCurrentDayInYear();
@@ -92,7 +99,7 @@ public class TimePackageCreator {
 		final double req = config.getTimeZenit().getValue();
 		final double J = 367 * year - (int) (7 * (year + (int) ((month + 9) / 12)) / 4) + (int) (275 * month / 9) + day - 730531.5;
 		final double Cent = J / 36525;
-		final double L = (4.8949504201433 + 628.331969753199 * Cent) % 6.28318530718; // modulo
+		final double L = (4.8949504201433 + 628.331969753199 * Cent) % 6.28318530718;
 		final double G = (6.2400408 + 628.3019501 * Cent) % 6.28318530718;
 		final double O = 0.409093 - 0.0002269 * Cent;
 		final double F = 0.033423 * sin(G) + 0.00034907 * sin(2 * G);

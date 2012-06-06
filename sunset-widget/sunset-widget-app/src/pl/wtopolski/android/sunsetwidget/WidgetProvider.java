@@ -31,7 +31,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
         TimePackageCreator calculator = new TimePackageCreator(mainLocation.convertToTimeLocation());
     	Calendar calendarNow = calculator.prepareCalendar();
-        TimePackage times = calculator.prepareTimePackage();
+        TimePackage times = calculator.prepareTimePackage(calendarNow);
 
         String sunrise = formatDate(times.getSunrise());
         String culmination = formatDate(times.getCulmination());

@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/background"
-    android:gravity="center"
-    android:orientation="vertical" >
-    
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal" >
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/background"
+	android:gravity="center"
+	android:orientation="vertical" >
 
-        <pl.wtopolski.android.sunsetwidget.view.DashboardItemView
-            android:id="@+id/my_place"
-            android:layout_margin="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="20dp"
+		android:orientation="horizontal" >
 
-        <pl.wtopolski.android.sunsetwidget.view.DashboardItemView
-            android:id="@+id/favorites"
-            android:layout_margin="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        
-    </LinearLayout>
+		<pl.wtopolski.android.sunsetwidget.view.DashboardItemView
+			android:id="@+id/place"
+			android:layout_margin="10dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+		<pl.wtopolski.android.sunsetwidget.view.DashboardItemView
+			android:id="@+id/favorites"
+			android:layout_margin="10dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+		
+	</LinearLayout>
 
-        <pl.wtopolski.android.sunsetwidget.view.DashboardItemView
-            android:id="@+id/locations"
-            android:layout_margin="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal" >
 
-        <pl.wtopolski.android.sunsetwidget.view.DashboardItemView
-            android:id="@+id/settings"
-            android:layout_margin="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        
-    </LinearLayout>
+		<pl.wtopolski.android.sunsetwidget.view.DashboardItemView
+			android:id="@+id/locations"
+			android:layout_margin="10dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+		<pl.wtopolski.android.sunsetwidget.view.DashboardItemView
+			android:id="@+id/settings"
+			android:layout_margin="10dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+	</LinearLayout>
 
 </LinearLayout>

@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <FrameLayout
-        android:id="@+id/listFragment"
+        android:id="@+id/locationsListFragement"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

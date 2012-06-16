@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sunsetwidget="http://schemas.android.com/apk/res/pl.wtopolski.android.sunsetwidget"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background"
+    android:orientation="vertical" >
+
+    <pl.wtopolski.android.sunsetwidget.view.PresenterPageIndicatorView
+        android:id="@+id/presenterPageIndicator"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_weight="0"
+        android:background="@color/blue_dark"
+        sunsetwidget:primaryTextColor="@android:color/white"
+        sunsetwidget:secondaryTextColor="#dddddd" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:background="@color/background"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" />
+
+</LinearLayout>

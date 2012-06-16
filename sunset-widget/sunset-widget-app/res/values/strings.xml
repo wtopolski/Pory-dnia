@@ -33,6 +33,11 @@
     <string name="dashboard_favorites">Ulubione</string>
     <string name="dashboard_locations">Lokalizacje</string>
     <string name="dashboard_settings">Ustawienia</string>
+    <string name="place">Miejsce</string>
+    
+    <string name="favorites_title">@string/dashboard_favorites</string>
+    <string name="locations_title">@string/dashboard_locations</string>
+    
     
     <!-- Search -->
     <string name="search_hint">Wyszukaj miejsce</string>

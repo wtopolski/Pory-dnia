@@ -18,7 +18,10 @@ import pl.wtopolski.android.sunsetwidget.model.SeasonAdapter;
 public enum PresentationView {
 	TABLE {
 		@Override
-		public View getView(Context context, TimePackage timePackage) {
+		public View getView(TimePackage timePackage) {
+			Context context = MyApplication.getMyApplication().getApplicationContext();
+			Typeface tf = MyApplication.getMyApplication().getTypeface();
+			
 			LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View view = layoutInflater.inflate(R.layout.presenter_page, null);
 
@@ -26,7 +29,6 @@ public enum PresentationView {
 			String culmination = formatDate(timePackage.getCulmination());
 			String sunset = formatDate(timePackage.getSunset());
 
-			Typeface tf = MyApplication.getMyApplication().getTypeface();
 
 			TextView seasonView = (TextView) view.findViewById(R.id.season);
 			seasonView.setTypeface(tf);
@@ -75,20 +77,20 @@ public enum PresentationView {
 	},
 	CLOCK {
 		@Override
-		public View getView(Context context, TimePackage timePackage) {
-			View view = TABLE.getView(context, timePackage);
+		public View getView(TimePackage timePackage) {
+			View view = TABLE.getView(timePackage);
 			view.setBackgroundColor(Color.GREEN);
 			return view;
 		}
 	},
 	TIME_LINE {
 		@Override
-		public View getView(Context context, TimePackage timePackage) {
-			View view = TABLE.getView(context, timePackage);
+		public View getView(TimePackage timePackage) {
+			View view = TABLE.getView(timePackage);
 			view.setBackgroundColor(Color.BLUE);
 			return view;
 		}
 	};
 
-	public abstract View getView(Context context, TimePackage timePackage);
+	public abstract View getView(TimePackage timePackage);
 }

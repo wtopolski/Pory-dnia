@@ -1,16 +1,16 @@
 package pl.wtopolski.android.sunsetwidget.fragment;
 
-import pl.wtopolski.android.sunsetwidget.MainActivity;
 import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.adapter.LocationListAdapter;
 import pl.wtopolski.android.sunsetwidget.adapter.OnStarClickable;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.util.LocationManager;
 import pl.wtopolski.android.sunsetwidget.util.LocationManagerImpl;
-import android.content.Intent;
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -24,11 +24,12 @@ import android.widget.ListView;
 public class LocationsListFragment extends ListFragment implements OnStarClickable {
 	protected static final String LOG_TAG = LocationsListFragment.class.getSimpleName();
 	
-	private static final String MODE_KEY = "MODE_KEY";
-	private static final String QUERY_KEY = "QUERY_KEY";
+	public static final String MODE_KEY = "MODE_KEY";
+	public static final String QUERY_KEY = "QUERY_KEY";
 
 	private LocationListAdapter adapter;
 	private LocationManager locationManager;
+	private OnLocationSelectedListener listener;
 	private Mode mode;
 	private String query;
 
@@ -48,23 +49,24 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 		
 		public abstract Cursor getCursor(LocationManager locationManager, String query);
 	};
+	
+    public interface OnLocationSelectedListener {
+        public void onLocationSelected(int id);
+    }
+    
+    @Override
+    public void onAttach(Activity activity) {
+    	super.onAttach(activity);
+    	if (activity instanceof OnLocationSelectedListener) {
+    		listener = (OnLocationSelectedListener) activity;
+    	} else {
+    		throw new ClassCastException(activity.toString() + " must implement " + OnLocationSelectedListener.class.getName());
+    	}
+    }
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (mode == null) {
-			mode = Mode.LOCATIONS;
-		}
-		query = "";
-		
-		if (savedInstanceState != null) {
-			mode = (Mode) savedInstanceState.getSerializable(MODE_KEY);
-			query = savedInstanceState.getString(QUERY_KEY);
-		}
-	}
-
-	public void setMode(Mode mode) {
-		this.mode = mode;
 	}
 
 	public void setQuery(String query) {
@@ -76,11 +78,33 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.locations_fragment, container, false);
 		locationManager = new LocationManagerImpl();
 		locationManager.setContext(this.getActivity().getApplicationContext());
+		return inflater.inflate(R.layout.locations_fragment, container, false);
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		registerForContextMenu(getListView());
+
+		Bundle bundle = getArguments();
+		if (savedInstanceState != null) {
+			bundle = savedInstanceState;
+		}
+
+		mode = (Mode) bundle.getSerializable(MODE_KEY);
+		query = bundle.getString(QUERY_KEY);
+		
+		if (mode == null) {
+			mode = Mode.LOCATIONS;
+		}
+		
+		if (TextUtils.isEmpty(query)) {
+			query = "";
+		}
+		
 		showLocations();
-		return view;
 	}
 	
 	@Override
@@ -88,12 +112,6 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 		super.onSaveInstanceState(outState);
 		outState.putSerializable(MODE_KEY, mode);
 		outState.putSerializable(QUERY_KEY, query);
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		registerForContextMenu(getListView());
 	}
 
 	private void showLocations() {
@@ -106,9 +124,8 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 	@Override
 	public void onListItemClick(ListView l, View view, int position, long id) {
 		super.onListItemClick(l, view, position, id);
-		Intent intent = new Intent(this.getActivity(), MainActivity.class);
-		intent.putExtra(MainActivity.LOCATION_ID, (int) id);
-		startActivity(intent);
+		getListView().setItemChecked(position, true);
+		listener.onLocationSelected((int)id);
 	}
 
 	public void onStarClicked(int locationId) {

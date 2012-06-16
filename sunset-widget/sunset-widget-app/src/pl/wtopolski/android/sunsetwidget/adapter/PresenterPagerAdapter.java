@@ -7,7 +7,6 @@ import pl.wtopolski.android.sunsetwidget.core.model.TimePackage;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.pref.ApplicationSettings;
 import pl.wtopolski.android.sunsetwidget.view.PresentationView;
-import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -20,11 +19,9 @@ public class PresenterPagerAdapter extends PagerAdapter {
 	private static int NUM_VIEWS = 6;
 	private TimePackage[] timePackages;
 
-	private Context context;
 	private PresentationView presentationView;
 
-	public PresenterPagerAdapter(Context context, GPSLocation gpsLocation) {
-		this.context = context;
+	public PresenterPagerAdapter(GPSLocation gpsLocation) {
 		this.presentationView = ApplicationSettings.getPresentationViewSettings();
 
 		timePackages = new TimePackage[NUM_VIEWS];
@@ -58,7 +55,7 @@ public class PresenterPagerAdapter extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(View collection, int position) {
-		View view = presentationView.getView(context, timePackages[position]);
+		View view = presentationView.getView(timePackages[position]);
 		((ViewPager) collection).addView(view, 0);
 		return view;
 	}

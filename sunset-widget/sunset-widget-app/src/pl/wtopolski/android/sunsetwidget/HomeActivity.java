@@ -18,7 +18,6 @@ public class HomeActivity extends ActionBarFragmentActivity {
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
 		Fragment homeFragment = new HomeFragment();
 		transaction.replace(R.id.homeFragment, homeFragment);
-		transaction.addToBackStack(null);
 		transaction.commit();
 	}
 }

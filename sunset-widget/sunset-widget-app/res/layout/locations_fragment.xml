@@ -9,7 +9,7 @@
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:divider="@color/text_dark"
+        android:divider="@color/gray_light"
         android:dividerHeight="1dip"
         android:fastScrollEnabled="true" />
 

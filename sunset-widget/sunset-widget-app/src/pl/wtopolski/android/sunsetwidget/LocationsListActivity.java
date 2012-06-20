@@ -45,15 +45,19 @@ public class LocationsListActivity extends ActionBarFragmentActivity implements 
             transaction.commit();
         }
         
-    	if (isDualPanel() && mainFragment == null) {
-            Bundle arguments = new Bundle();
-            arguments.putInt(MainFragment.LOCATION_ID, MainFragment.LOCATION_UNKNOWN);
-            
-        	FragmentTransaction transaction = fragmentManager.beginTransaction();
-        	mainFragment = new MainFragment();
-        	mainFragment.setArguments(arguments);
-        	transaction.add(R.id.mainFragment, mainFragment, MAIN_FRAGMENT_TAG);
-            transaction.commit();
+    	if (isDualPanel()) {
+    		if (mainFragment == null) {
+	            Bundle arguments = new Bundle();
+	            arguments.putInt(MainFragment.LOCATION_ID, MainFragment.LOCATION_UNKNOWN);
+	            
+	        	FragmentTransaction transaction = fragmentManager.beginTransaction();
+	        	mainFragment = new MainFragment();
+	        	mainFragment.setArguments(arguments);
+	        	transaction.add(R.id.mainFragment, mainFragment, MAIN_FRAGMENT_TAG);
+	            transaction.commit();
+    		}
+    	} else {
+    		resetAllCommitedTransaction();
     	}
         
 		handleIntent(getIntent());
@@ -69,9 +73,7 @@ public class LocationsListActivity extends ActionBarFragmentActivity implements 
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			listFragment.setQuery(query);
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			Intent outputIntent = new Intent(this, MainActivity.class);
-			outputIntent.putExtra(MainFragment.LOCATION_ID, Integer.valueOf(intent.getDataString()));
-			startActivity(outputIntent);
+			onLocationSelected(Integer.valueOf(intent.getDataString()));
 		}
 	}
     
@@ -111,6 +113,12 @@ public class LocationsListActivity extends ActionBarFragmentActivity implements 
 			Intent intent = new Intent(this, MainActivity.class);
 			intent.putExtras(arguments);
 			startActivity(intent);
+		}
+	}
+
+	private void resetAllCommitedTransaction() {
+		for (int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+			fragmentManager.popBackStack();
 		}
 	}
 	

@@ -72,6 +72,9 @@ public abstract class ActionBarHelper {
      */
     public void onTitleChanged(CharSequence title, int color) {
     }
+    
+    public void setHomeButtonEnabled(boolean enabled) {
+    }
 
     /**
      * Sets the indeterminate loading state of the item with ID {@link R.id.menu_refresh}.

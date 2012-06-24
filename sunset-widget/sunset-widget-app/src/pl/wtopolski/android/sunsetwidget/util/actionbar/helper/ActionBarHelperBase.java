@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -49,9 +50,9 @@ import java.util.Set;
 public class ActionBarHelperBase extends ActionBarHelper {
     private static final String MENU_RES_NAMESPACE = "http://schemas.android.com/apk/res/android";
     private static final String MENU_ATTR_ID = "id";
-    private static final String MENU_ATTR_SHOW_AS_ACTION = "showAsAction";
 
     protected Set<Integer> mActionItemIds = new HashSet<Integer>();
+    private View homeItem;
 
     protected ActionBarHelperBase(Activity activity) {
         super(activity);
@@ -89,12 +90,12 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
         LinearLayout.LayoutParams springLayoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.FILL_PARENT);
         springLayoutParams.weight = 1f;
-
+        
         // Add Home button
         SimpleMenu tempMenu = new SimpleMenu(mActivity);
-        SimpleMenuItem homeItem = new SimpleMenuItem(tempMenu, android.R.id.home, 0, mActivity.getString(R.string.app_name));
-        homeItem.setIcon(R.drawable.ic_home);
-        addActionItemCompatFromMenuItem(homeItem);
+        SimpleMenuItem simpleHomeItem = new SimpleMenuItem(tempMenu, R.id.home, 0, mActivity.getString(R.string.app_name));
+        simpleHomeItem.setIcon(R.drawable.ic_home);
+        homeItem = addActionItemCompatFromMenuItem(simpleHomeItem);
 
         // Add title text
         Typeface font = Typeface.createFromAsset(mActivity.getAssets(), "Roboto-Regular.ttf");
@@ -158,6 +159,10 @@ public class ActionBarHelperBase extends ActionBarHelper {
     private ViewGroup getActionBarCompat() {
         return (ViewGroup) mActivity.findViewById(R.id.actionbar_compat);
     }
+    
+    public void setHomeButtonEnabled(boolean enabled) {
+    	homeItem.setEnabled(enabled);
+    }
 
     /**
      * Adds an action button to the compatibility action bar, using menu information from a {@link
@@ -172,13 +177,21 @@ public class ActionBarHelperBase extends ActionBarHelper {
         if (actionBar == null) {
             return null;
         }
+        
+        if (itemId == R.id.home && !mActivity.isTaskRoot()) {
+	        ImageView image = new ImageView(mActivity);
+	        int width = (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_navigation_array_width);
+	        image.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.FILL_PARENT));
+	        image.setImageResource(R.drawable.ic_navigation_previous);
+	        image.setScaleType(ScaleType.CENTER_INSIDE);
+	        actionBar.addView(image);
+        }
 
         // Create the button
-        int defStyle = (itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
+        int defStyle = (itemId == R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
         ImageButton actionButton = new ImageButton(mActivity, null, defStyle);
         
-        int dimenId = (itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width : R.dimen.actionbar_compat_button_width);
-        int width = (int) mActivity.getResources().getDimension(dimenId);
+        int width = (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_button_width);
         actionButton.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.FILL_PARENT));
         
         if (itemId == R.id.menu_refresh) {
@@ -193,7 +206,6 @@ public class ActionBarHelperBase extends ActionBarHelper {
                 mActivity.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
             }
         });
-
         actionBar.addView(actionButton);
 
         if (item.getItemId() == R.id.menu_refresh) {
@@ -249,7 +261,6 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
                 int eventType = parser.getEventType();
                 int itemId;
-                int showAsAction;
 
                 boolean eof = false;
                 while (!eof) {
@@ -259,19 +270,12 @@ public class ActionBarHelperBase extends ActionBarHelper {
                                 break;
                             }
 
-                            itemId = parser.getAttributeResourceValue(MENU_RES_NAMESPACE,
-                                    MENU_ATTR_ID, 0);
+                            itemId = parser.getAttributeResourceValue(MENU_RES_NAMESPACE, MENU_ATTR_ID, 0);
                             if (itemId == 0) {
                                 break;
                             }
 
-                            showAsAction = parser.getAttributeIntValue(MENU_RES_NAMESPACE,
-                                    MENU_ATTR_SHOW_AS_ACTION, -1);
-                            showAsAction = 2; // TODO
-                            if (showAsAction == MenuItem.SHOW_AS_ACTION_ALWAYS ||
-                                    showAsAction == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
-                                mActionItemIds.add(itemId);
-                            }
+                            mActionItemIds.add(itemId);
                             break;
 
                         case XmlPullParser.END_DOCUMENT:

@@ -1,28 +1,31 @@
 package pl.wtopolski.android.sunsetwidget.util;
 
-import pl.wtopolski.android.sunsetwidget.HomeActivity;
+import pl.wtopolski.android.sunsetwidget.MyApplication;
+import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 
 public class FlowManager {
-	public static void finishAndGoTo(Activity ctx, Class<?> cls) {
-		finishAndGoTo(ctx, cls, null);
-	}
-	
-	public static void finishAndGoTo(Activity ctx, Class<?> cls, Bundle bundle) {
-		Intent intent = new Intent(ctx, cls);
-		if (bundle != null) {
-			intent.putExtras(bundle);
+	public static void goToParent(Activity ctx, Class<?> cls) {
+		Intent upIntent = new Intent(ctx, cls);
+		if (NavUtils.shouldUpRecreateTask(ctx, upIntent)) {
+			TaskStackBuilder.from(ctx)
+//			.addNextIntent(new Intent(this, MyGreatGrandParentActivity.class))
+//			.addNextIntent(new Intent(this, MyGrandParentActivity.class))
+			.addNextIntent(upIntent).startActivities();
+			ctx.finish();
+		} else {
+			NavUtils.navigateUpTo(ctx, upIntent);
 		}
-		ctx.finish();
-		ctx.startActivity(intent);
 	}
 	
-	public static void goToHome(Activity ctx) {
-		Intent intent = new Intent(ctx, HomeActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		ctx.finish();
-		ctx.startActivity(intent);
+	public static boolean shouldGoToInitActivity() {
+		Context context = MyApplication.getMyApplication().getApplicationContext();
+		boolean isContentLoaded = SharedPreferencesStorage.getBoolean(context, SharedPreferencesStorage.IS_CONTENT_LOADED);
+        boolean isMainSelected = SharedPreferencesStorage.getBoolean(context, SharedPreferencesStorage.IS_MAIN_SELECTED);
+        return (!isContentLoaded || !isMainSelected);
 	}
 }

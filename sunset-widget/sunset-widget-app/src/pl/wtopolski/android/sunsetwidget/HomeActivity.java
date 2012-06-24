@@ -20,4 +20,10 @@ public class HomeActivity extends ActionBarFragmentActivity {
 		transaction.replace(R.id.homeFragment, homeFragment);
 		transaction.commit();
 	}
+	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		getActionBarHelper().setHomeButtonEnabled(false);
+	}
 }

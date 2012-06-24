@@ -18,7 +18,6 @@ package pl.wtopolski.android.sunsetwidget.util.actionbar.helper;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.view.ActionProvider;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -124,16 +123,6 @@ public class SimpleMenuItem implements MenuItem {
         return null;
     }
 
-    public MenuItem setActionProvider(ActionProvider actionProvider) {
-        // Noop
-        return this;
-    }
-
-    public ActionProvider getActionProvider() {
-        // Noop
-        return null;
-    }
-
     public boolean expandActionView() {
         // Noop
         return false;
@@ -147,11 +136,6 @@ public class SimpleMenuItem implements MenuItem {
     public boolean isActionViewExpanded() {
         // Noop
         return false;
-    }
-
-    public MenuItem setOnActionExpandListener(OnActionExpandListener onActionExpandListener) {
-        // Noop
-        return this;
     }
 
     public MenuItem setIntent(Intent intent) {

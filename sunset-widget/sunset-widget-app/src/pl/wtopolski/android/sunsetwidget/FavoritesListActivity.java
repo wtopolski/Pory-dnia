@@ -18,6 +18,7 @@ public class FavoritesListActivity extends ActionBarFragmentActivity implements 
     protected static final String LOG_TAG = FavoritesListActivity.class.getSimpleName();
     
     private final static String FRAGMENT_TAG = "FAVORITES_FRAGMENT_TAG";
+    
     private LocationsListFragment listFragment;
 
     @Override
@@ -69,8 +70,8 @@ public class FavoritesListActivity extends ActionBarFragmentActivity implements 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-            	FlowManager.goToHome(this);
+            case R.id.home:
+            	FlowManager.goToParent(this, HomeActivity.class);
                 break;
             case R.id.menu_search_item:
             	onSearchRequested();

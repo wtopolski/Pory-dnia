@@ -56,8 +56,8 @@ public class MainActivity extends ActionBarFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home: {
-            	FlowManager.goToHome(this);
+            case R.id.home: {
+            	FlowManager.goToParent(this, HomeActivity.class);
                 return true;
             }
             default: {

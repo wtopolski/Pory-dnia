@@ -3,6 +3,7 @@ package pl.wtopolski.android.sunsetwidget;
 import pl.wtopolski.android.sunsetwidget.fragment.LocationsListFragment;
 import pl.wtopolski.android.sunsetwidget.fragment.LocationsListFragment.Mode;
 import pl.wtopolski.android.sunsetwidget.fragment.MainFragment;
+import pl.wtopolski.android.sunsetwidget.fragment.OnLocationsSelected;
 import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarFragmentActivity;
 import android.app.SearchManager;
@@ -14,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class LocationsListActivity extends ActionBarFragmentActivity implements LocationsListFragment.OnLocationSelectedListener {
+public class LocationsListActivity extends ActionBarFragmentActivity implements OnLocationsSelected {
     protected static final String LOG_TAG = LocationsListActivity.class.getSimpleName();
     
     public final static String LIST_FRAGMENT_TAG = "LIST_FRAGMENT_TAG";

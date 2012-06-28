@@ -20,6 +20,6 @@
         android:gravity="center"
         android:text="@string/empty"
         android:textColor="@color/text_dark"
-        android:textSize="18sp" />
+        android:textSize="@dimen/normal_text_size" />
 
 </LinearLayout>

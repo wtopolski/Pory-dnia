@@ -76,10 +76,16 @@ public class LocationListAdapter extends CursorAdapter implements SectionIndexer
 
 	private void setImageOnView(View view, int resource, int image, final int locationId) {
 		ImageView imageItem = (ImageView) view.findViewById(resource);
+		if (imageItem == null) {
+			return;
+		}
+		
 		imageItem.setImageResource(image);
 		imageItem.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
-				onStarClickable.onStarClicked(locationId);
+				if (onStarClickable != null) {
+					onStarClickable.onStarClicked(locationId);
+				}
 			}
 		});
 	}

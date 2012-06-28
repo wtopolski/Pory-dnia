@@ -38,6 +38,8 @@
     <string name="favorites_title">@string/dashboard_favorites</string>
     <string name="locations_title">@string/dashboard_locations</string>
     
+    <string name="init_list_message">lub wybierz z listy</string>
+    <string name="init_list_get_gps">Pobierz lokalizacje GPS</string>
     
     <!-- Search -->
     <string name="search_hint">Wyszukaj miejsce</string>

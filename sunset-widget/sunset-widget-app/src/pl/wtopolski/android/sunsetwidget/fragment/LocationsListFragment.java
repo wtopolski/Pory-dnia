@@ -29,7 +29,7 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 
 	private LocationListAdapter adapter;
 	private LocationManager locationManager;
-	private OnLocationSelectedListener listener;
+	private OnLocationsSelected listener;
 	private Mode mode;
 	private String query;
 
@@ -49,18 +49,14 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 		
 		public abstract Cursor getCursor(LocationManager locationManager, String query);
 	};
-	
-    public interface OnLocationSelectedListener {
-        public void onLocationSelected(int id);
-    }
     
     @Override
     public void onAttach(Activity activity) {
     	super.onAttach(activity);
-    	if (activity instanceof OnLocationSelectedListener) {
-    		listener = (OnLocationSelectedListener) activity;
+    	if (activity instanceof OnLocationsSelected) {
+    		listener = (OnLocationsSelected) activity;
     	} else {
-    		throw new ClassCastException(activity.toString() + " must implement " + OnLocationSelectedListener.class.getName());
+    		throw new ClassCastException(activity.toString() + " must implement " + OnLocationsSelected.class.getName());
     	}
     }
 

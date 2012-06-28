@@ -79,7 +79,6 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		locationManager = new LocationManagerImpl();
-		locationManager.setContext(this.getActivity().getApplicationContext());
 		return inflater.inflate(R.layout.locations_fragment, container, false);
 	}
 

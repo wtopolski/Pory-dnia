@@ -14,6 +14,7 @@ import static pl.wtopolski.android.sunsetwidget.provider.LocationData.Locations.
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.wtopolski.android.sunsetwidget.MyApplication;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import pl.wtopolski.android.sunsetwidget.model.SelectionType;
 import android.content.ContentUris;
@@ -22,18 +23,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class LocationManagerImpl implements LocationManager {
 	protected Context context;
-	private LocationManagerListener listener;
 
-	public void setContext(Context context) {
-		setContext(context, null);
-	}
-
-	public void setContext(Context context, LocationManagerListener listener) {
-		this.context = context;
-		this.listener = listener;
+	public LocationManagerImpl() {
+		context = MyApplication.getMyApplication().getApplicationContext();
 	}
 
 	public void deleteAll() {
@@ -49,11 +45,18 @@ public class LocationManagerImpl implements LocationManager {
 		values.put(COLUMN_PROVINCE, location.getProvince());
 		values.put(COLUMN_SELECTION, location.getType().getValue());
 		Uri uri = context.getContentResolver().insert(CONTENT_URI, values);
-
-		if (listener != null && uri != null) {
-			listener.addedLocation();
-		}
+		Log.d("wtopolski", "addLocation");
 		return uri;
+	}
+
+	public int getCount() {
+		Cursor cursor = getAllLocationsByCursor("");
+		int result = 0;
+		if (cursor != null) {
+			result = cursor.getCount();
+			cursor.close();
+		}
+		return result;
 	}
 
 	public Cursor getAllLocationsByCursor(String query) {

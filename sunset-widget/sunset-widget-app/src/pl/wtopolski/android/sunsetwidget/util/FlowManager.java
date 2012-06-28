@@ -1,9 +1,8 @@
 package pl.wtopolski.android.sunsetwidget.util;
 
-import pl.wtopolski.android.sunsetwidget.MyApplication;
-import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
+import pl.wtopolski.android.sunsetwidget.InitActivity;
+import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarFragmentActivity;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
@@ -22,10 +21,16 @@ public class FlowManager {
 		}
 	}
 	
-	public static boolean shouldGoToInitActivity() {
-		Context context = MyApplication.getMyApplication().getApplicationContext();
-		boolean isContentLoaded = SharedPreferencesStorage.getBoolean(context, SharedPreferencesStorage.IS_CONTENT_LOADED);
-        boolean isMainSelected = SharedPreferencesStorage.getBoolean(context, SharedPreferencesStorage.IS_MAIN_SELECTED);
+	public static boolean shouldGoToInitActivity(ActionBarFragmentActivity activity) {
+		if (activity instanceof InitActivity) {
+			return false;
+		}
+		
+		LocationManager locationManager = new LocationManagerImpl();
+		
+		boolean isContentLoaded = locationManager.getCount() > 0;
+		boolean isMainSelected = locationManager.getMainLocation() != null;
+		
         return (!isContentLoaded || !isMainSelected);
 	}
 }

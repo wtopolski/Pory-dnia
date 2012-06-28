@@ -26,7 +26,6 @@ public class WidgetProvider extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
         LocationManager locationManager = new LocationManagerImpl();
-        locationManager.setContext(context);
         GPSLocation mainLocation = locationManager.getMainLocation();
 
         TimePackageCreator calculator = new TimePackageCreator(mainLocation.convertToTimeLocation());

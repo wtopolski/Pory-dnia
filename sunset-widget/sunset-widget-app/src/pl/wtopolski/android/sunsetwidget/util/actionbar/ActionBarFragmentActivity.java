@@ -1,6 +1,9 @@
 package pl.wtopolski.android.sunsetwidget.util.actionbar;
 
+import pl.wtopolski.android.sunsetwidget.InitActivity;
+import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.helper.ActionBarHelper;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -22,6 +25,12 @@ public abstract class ActionBarFragmentActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         helper.onCreate(savedInstanceState);
+        
+        if (FlowManager.shouldGoToInitActivity(this)) {
+        	startActivity(new Intent(this, InitActivity.class));
+        	finish();
+        	return;
+        }
     }
 
     @Override

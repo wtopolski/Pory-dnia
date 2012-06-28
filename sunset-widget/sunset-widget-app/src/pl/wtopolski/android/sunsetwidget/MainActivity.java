@@ -1,7 +1,6 @@
 package pl.wtopolski.android.sunsetwidget;
 
 import pl.wtopolski.android.sunsetwidget.fragment.MainFragment;
-import pl.wtopolski.android.sunsetwidget.provider.SharedPreferencesStorage;
 import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarFragmentActivity;
 import android.content.Intent;
@@ -21,14 +20,6 @@ public class MainActivity extends ActionBarFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         setTitle(R.string.place);
-        
-        boolean isContentLoaded = SharedPreferencesStorage.getBoolean(this, SharedPreferencesStorage.IS_CONTENT_LOADED);
-        boolean isMainSelected = SharedPreferencesStorage.getBoolean(this, SharedPreferencesStorage.IS_MAIN_SELECTED);
-        if (!isContentLoaded || !isMainSelected) {
-        	startActivity(new Intent(this, ConfListActivity.class));
-        	finish();
-        	return;
-        }
         
         Intent intent = getIntent();
         int locationId = intent.getIntExtra(MainFragment.LOCATION_ID, MainFragment.LOCATION_UNKNOWN);

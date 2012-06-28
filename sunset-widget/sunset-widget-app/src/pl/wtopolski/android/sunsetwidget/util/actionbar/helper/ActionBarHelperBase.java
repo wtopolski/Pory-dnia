@@ -19,6 +19,8 @@ package pl.wtopolski.android.sunsetwidget.util.actionbar.helper;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import pl.wtopolski.android.sunsetwidget.HomeActivity;
+import pl.wtopolski.android.sunsetwidget.InitActivity;
 import pl.wtopolski.android.sunsetwidget.R;
 
 import android.app.Activity;
@@ -178,7 +180,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
             return null;
         }
         
-        if (itemId == R.id.home && !mActivity.isTaskRoot()) {
+        if (itemId == R.id.home && !(mActivity instanceof HomeActivity) && !(mActivity instanceof InitActivity)) { // TODO
 	        ImageView image = new ImageView(mActivity);
 	        int width = (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_navigation_array_width);
 	        image.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.FILL_PARENT));

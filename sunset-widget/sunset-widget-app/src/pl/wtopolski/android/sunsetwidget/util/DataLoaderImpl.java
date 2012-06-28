@@ -4,10 +4,12 @@ import java.io.IOException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import pl.wtopolski.android.sunsetwidget.MyApplication;
 import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.util.Log;
 
 public class DataLoaderImpl implements DataLoader {
     private static final String PLACE_TAG = "place";
@@ -15,8 +17,17 @@ public class DataLoaderImpl implements DataLoader {
     private static final String LATITUDE_TAG = "latitude";
     private static final String LONGITUDE_TAG = "longitude";
     private static final String PROVINCE_TAG = "province";
+    
+	private DataLoaderListener listener;
+	private Context context;
+	
+	public DataLoaderImpl(DataLoaderListener listener) {
+		MyApplication myApplication = MyApplication.getMyApplication();
+		context = myApplication.getApplicationContext();
+		this.listener = listener;
+	}
 
-    public boolean fill(Context context, LocationManager locationManager, int xmlResId) throws IOException, XmlPullParserException {
+    public boolean fill(LocationManager locationManager, int xmlResId) throws IOException, XmlPullParserException {
         XmlResourceParser xmlResourceParser = context.getResources().getXml(R.xml.places);
         xmlResourceParser.next();
 
@@ -24,8 +35,12 @@ public class DataLoaderImpl implements DataLoader {
         while (eventType != XmlResourceParser.END_DOCUMENT) {
             if (eventType == XmlResourceParser.START_TAG) {
                 if (isStartTag(PLACE_TAG, xmlResourceParser)) {
+            		Log.d("wtopolski", "bum");
                     GPSLocation location = processWithPlace(xmlResourceParser);
                     locationManager.addLocation(location);
+                    if (listener != null) {
+                    	listener.locationAdded();
+                    }
                 }
             }
 

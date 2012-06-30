@@ -180,20 +180,23 @@ public class ActionBarHelperBase extends ActionBarHelper {
             return null;
         }
         
+        ImageView image = new ImageView(mActivity);
+        int width = (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_navigation_array_width);
+        ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(width, ViewGroup.LayoutParams.FILL_PARENT);
+        image.setImageResource(R.drawable.ic_navigation_previous);
+        image.setScaleType(ScaleType.CENTER_INSIDE);
+    	image.setVisibility(View.INVISIBLE);
+        actionBar.addView(image, layoutParams);
+        
         if (itemId == R.id.home && !(mActivity instanceof HomeActivity) && !(mActivity instanceof InitActivity)) { // TODO
-	        ImageView image = new ImageView(mActivity);
-	        int width = (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_navigation_array_width);
-	        image.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.FILL_PARENT));
-	        image.setImageResource(R.drawable.ic_navigation_previous);
-	        image.setScaleType(ScaleType.CENTER_INSIDE);
-	        actionBar.addView(image);
+        	image.setVisibility(View.VISIBLE);
         }
 
         // Create the button
         int defStyle = (itemId == R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
         ImageButton actionButton = new ImageButton(mActivity, null, defStyle);
         
-        int width = (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_button_width);
+        width = (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_button_width);
         actionButton.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.FILL_PARENT));
         
         if (itemId == R.id.menu_refresh) {

@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
         android:layout_centerInParent="true"
-        android:shadowColor="#000"
+        android:shadowColor="#ffffff"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="4"

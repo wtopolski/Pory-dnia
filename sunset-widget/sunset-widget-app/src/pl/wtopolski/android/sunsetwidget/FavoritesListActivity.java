@@ -3,7 +3,7 @@ package pl.wtopolski.android.sunsetwidget;
 import pl.wtopolski.android.sunsetwidget.fragment.LocationsListFragment;
 import pl.wtopolski.android.sunsetwidget.fragment.LocationsListFragment.Mode;
 import pl.wtopolski.android.sunsetwidget.fragment.MainFragment;
-import pl.wtopolski.android.sunsetwidget.fragment.OnLocationsSelected;
+import pl.wtopolski.android.sunsetwidget.fragment.OnLocationItemSelected;
 import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarFragmentActivity;
 import android.app.SearchManager;
@@ -15,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class FavoritesListActivity extends ActionBarFragmentActivity implements OnLocationsSelected {
+public class FavoritesListActivity extends ActionBarFragmentActivity implements OnLocationItemSelected {
     protected static final String LOG_TAG = FavoritesListActivity.class.getSimpleName();
     
     private final static String FRAGMENT_TAG = "FAVORITES_FRAGMENT_TAG";
@@ -81,7 +81,7 @@ public class FavoritesListActivity extends ActionBarFragmentActivity implements 
         return super.onOptionsItemSelected(item);
     }
 
-	public void onLocationSelected(int id) {
+	public void onLocationItemSelected(int id) {
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.putExtra(MainFragment.LOCATION_ID, id);
 		startActivity(intent);

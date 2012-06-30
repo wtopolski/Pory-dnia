@@ -3,7 +3,7 @@ package pl.wtopolski.android.sunsetwidget;
 import pl.wtopolski.android.sunsetwidget.fragment.LocationsListFragment;
 import pl.wtopolski.android.sunsetwidget.fragment.LocationsListFragment.Mode;
 import pl.wtopolski.android.sunsetwidget.fragment.MainFragment;
-import pl.wtopolski.android.sunsetwidget.fragment.OnLocationsSelected;
+import pl.wtopolski.android.sunsetwidget.fragment.OnLocationItemSelected;
 import pl.wtopolski.android.sunsetwidget.util.FlowManager;
 import pl.wtopolski.android.sunsetwidget.util.actionbar.ActionBarFragmentActivity;
 import android.app.SearchManager;
@@ -15,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class LocationsListActivity extends ActionBarFragmentActivity implements OnLocationsSelected {
+public class LocationsListActivity extends ActionBarFragmentActivity implements OnLocationItemSelected {
     protected static final String LOG_TAG = LocationsListActivity.class.getSimpleName();
     
     public final static String LIST_FRAGMENT_TAG = "LIST_FRAGMENT_TAG";
@@ -74,7 +74,7 @@ public class LocationsListActivity extends ActionBarFragmentActivity implements 
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			listFragment.setQuery(query);
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			onLocationSelected(Integer.valueOf(intent.getDataString()));
+			onLocationItemSelected(Integer.valueOf(intent.getDataString()));
 		}
 	}
     
@@ -98,7 +98,7 @@ public class LocationsListActivity extends ActionBarFragmentActivity implements 
         return super.onOptionsItemSelected(item);
     }
 
-	public void onLocationSelected(int id) {
+	public void onLocationItemSelected(int id) {
         Bundle arguments = new Bundle();
         arguments.putInt(MainFragment.LOCATION_ID, id);
         

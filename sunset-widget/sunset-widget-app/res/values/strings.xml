@@ -40,6 +40,7 @@
     
     <string name="init_list_message">lub wybierz z listy</string>
     <string name="init_list_get_gps">Pobierz lokalizacje GPS</string>
+    <string name="init_progress_message">Instalacja...</string>
     
     <!-- Search -->
     <string name="search_hint">Wyszukaj miejsce</string>

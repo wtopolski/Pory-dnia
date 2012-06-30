@@ -10,29 +10,36 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class InitListFragment extends ListFragment {
+public class InitListFragment extends ListFragment implements OnClickListener {
 	protected static final String LOG_TAG = InitListFragment.class.getSimpleName();
 	
 	private LocationManager locationManager;
-	private OnLocationsSelected listener;
+	private OnLocationItemSelected listener;
+	private Button gpsButton;
     
     @Override
     public void onAttach(Activity activity) {
     	super.onAttach(activity);
-    	if (activity instanceof OnLocationsSelected) {
-    		listener = (OnLocationsSelected) activity;
+    	if (activity instanceof OnLocationItemSelected) {
+    		listener = (OnLocationItemSelected) activity;
     	} else {
-    		throw new ClassCastException(activity.toString() + " must implement " + OnLocationsSelected.class.getName());
+    		throw new ClassCastException(activity.toString() + " must implement " + OnLocationItemSelected.class.getName());
     	}
     }
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.init_list_fragment, container, false);
+		gpsButton = (Button) view.findViewById(R.id.gpsButton);
+		gpsButton.setOnClickListener(this);
 		locationManager = new LocationManagerImpl();
-		return inflater.inflate(R.layout.init_list_fragment, container, false);
+		return view;
 	}
 	
 	@Override
@@ -47,6 +54,15 @@ public class InitListFragment extends ListFragment {
 	public void onListItemClick(ListView l, View view, int position, long id) {
 		super.onListItemClick(l, view, position, id);
 		getListView().setItemChecked(position, true);
-		listener.onLocationSelected((int)id);
+		listener.onLocationItemSelected((int)id);
+	}
+
+	public void onClick(View v) {
+		if (v.getId() != gpsButton.getId()) {
+			return;
+		}
+		
+		// TODO
+		Toast.makeText(getActivity(), "TO DO", 500).show();
 	}
 }

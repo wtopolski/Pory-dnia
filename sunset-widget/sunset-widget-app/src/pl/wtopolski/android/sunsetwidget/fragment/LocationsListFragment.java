@@ -29,7 +29,7 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 
 	private LocationListAdapter adapter;
 	private LocationManager locationManager;
-	private OnLocationsSelected listener;
+	private OnLocationItemSelected listener;
 	private Mode mode;
 	private String query;
 
@@ -53,10 +53,10 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
     @Override
     public void onAttach(Activity activity) {
     	super.onAttach(activity);
-    	if (activity instanceof OnLocationsSelected) {
-    		listener = (OnLocationsSelected) activity;
+    	if (activity instanceof OnLocationItemSelected) {
+    		listener = (OnLocationItemSelected) activity;
     	} else {
-    		throw new ClassCastException(activity.toString() + " must implement " + OnLocationsSelected.class.getName());
+    		throw new ClassCastException(activity.toString() + " must implement " + OnLocationItemSelected.class.getName());
     	}
     }
 
@@ -120,7 +120,7 @@ public class LocationsListFragment extends ListFragment implements OnStarClickab
 	public void onListItemClick(ListView l, View view, int position, long id) {
 		super.onListItemClick(l, view, position, id);
 		getListView().setItemChecked(position, true);
-		listener.onLocationSelected((int)id);
+		listener.onLocationItemSelected((int)id);
 	}
 
 	public void onStarClicked(int locationId) {

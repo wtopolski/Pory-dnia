@@ -23,7 +23,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 public class LocationManagerImpl implements LocationManager {
 	protected Context context;
@@ -45,7 +44,6 @@ public class LocationManagerImpl implements LocationManager {
 		values.put(COLUMN_PROVINCE, location.getProvince());
 		values.put(COLUMN_SELECTION, location.getType().getValue());
 		Uri uri = context.getContentResolver().insert(CONTENT_URI, values);
-		Log.d("wtopolski", "addLocation");
 		return uri;
 	}
 

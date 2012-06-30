@@ -9,7 +9,6 @@ import pl.wtopolski.android.sunsetwidget.R;
 import pl.wtopolski.android.sunsetwidget.model.GPSLocation;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import android.util.Log;
 
 public class DataLoaderImpl implements DataLoader {
     private static final String PLACE_TAG = "place";
@@ -35,7 +34,6 @@ public class DataLoaderImpl implements DataLoader {
         while (eventType != XmlResourceParser.END_DOCUMENT) {
             if (eventType == XmlResourceParser.START_TAG) {
                 if (isStartTag(PLACE_TAG, xmlResourceParser)) {
-            		Log.d("wtopolski", "bum");
                     GPSLocation location = processWithPlace(xmlResourceParser);
                     locationManager.addLocation(location);
                     if (listener != null) {

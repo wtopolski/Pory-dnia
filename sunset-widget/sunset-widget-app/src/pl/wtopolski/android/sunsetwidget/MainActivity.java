@@ -48,7 +48,8 @@ public class MainActivity extends ActionBarFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.home: {
-            	FlowManager.goToParent(this, HomeActivity.class);
+            	// TODO LocationsListActivity or FavoritesListActivity
+            	FlowManager.goToParent(this, LocationsListActivity.class);
                 return true;
             }
             default: {

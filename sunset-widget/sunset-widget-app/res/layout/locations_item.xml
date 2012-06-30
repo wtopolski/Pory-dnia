@@ -30,9 +30,8 @@
         android:gravity="center_vertical"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text=""
         android:textColor="@color/text_light"
-        android:textSize="16sp" />
+        android:textSize="@dimen/normal_text_size" />
 
     <TextView
         android:id="@+id/firstLine"
@@ -46,8 +45,7 @@
         android:includeFontPadding="false"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text=""
         android:textColor="@color/text_dark"
-        android:textSize="20sp" />
+        android:textSize="@dimen/big_text_size" />
 
 </RelativeLayout>

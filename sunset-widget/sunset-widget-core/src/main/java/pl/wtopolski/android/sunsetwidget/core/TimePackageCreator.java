@@ -95,7 +95,7 @@ public class TimePackageCreator {
 		return new TimeData<Calendar>(sunrise, culmination, sunset);
 	}
 
-	private TimeData<Double> createTimeDataDouble(final int year, final int month, final int day, final TimeConfig config) {
+	protected TimeData<Double> createTimeDataDouble(final int year, final int month, final int day, final TimeConfig config) {
 		final double req = config.getTimeZenit().getValue();
 		final double J = 367 * year - (int) (7 * (year + (int) ((month + 9) / 12)) / 4) + (int) (275 * month / 9) + day - 730531.5;
 		final double Cent = J / 36525;
@@ -106,13 +106,19 @@ public class TimePackageCreator {
 		final double E = 0.0430398 * sin(2 * (L + F)) - 0.00092502 * sin(4 * (L + F)) - F;
 		final double A = asin(sin(O) * sin(L + F));
 		final double C = (sin(0.017453293 * req) - sin(0.017453293 * config.getLatitude()) * sin(A)) / (cos(0.017453293 * config.getLatitude()) * cos(A));
-		final double sunrise = (PI - (E + 0.017453293 * config.getLongitude() + 1 * acos(C))) * 57.29577951 / 15;
-		final double culmination = (PI - (E + 0.017453293 * config.getLongitude() + 0 * acos(C))) * 57.29577951 / 15;
-		final double sunset = (PI - (E + 0.017453293 * config.getLongitude() + (-1) * acos(C))) * 57.29577951 / 15;
+
+		final Double sunrise = (PI - (E + 0.017453293 * config.getLongitude() + 1 * acos(C))) * 57.29577951 / 15;
+		final Double culmination = (PI - (E + 0.017453293 * config.getLongitude() + 0 * acos(C))) * 57.29577951 / 15;
+		final Double sunset = (PI - (E + 0.017453293 * config.getLongitude() + (-1) * acos(C))) * 57.29577951 / 15;
+		
+		if (sunrise.isNaN() || culmination.isNaN() || sunset.isNaN()) {
+			return new TimeData<Double>(0d, 0d, 0d);
+		}
+		
 		return new TimeData<Double>(sunrise, culmination, sunset);
 	}
 
-	private Calendar prepareCalendar(final int year, final int month, final int day, final double time) {
+	protected Calendar prepareCalendar(final int year, final int month, final int day, final double time) {
 		int hour = (int) time;
 		int minutes = (int) (60 * (time - hour));
 		

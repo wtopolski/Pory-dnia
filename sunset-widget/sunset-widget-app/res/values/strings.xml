@@ -17,14 +17,6 @@
     <string name="spring">Wiosna</string>
     <string name="summer">Lato</string>
     
-    <!-- Notification -->
-    <string name="error_during_restoring_state_title">Problem</string>
-    <string name="error_during_restoring_state_msg">Wystąpił problem w trakcie inicjowania listy. Spróbuj jeszcze raz...</string>
-    <string name="error_during_restoring_state_ticker">Reinicjalizacja nie powiodła się</string>
-    
-    <string name="alternate_title">An alternate title that is long</string>
-    <string name="toggle_title">Toggle title</string>
-
     <string name="menu_refresh">Refresh</string>
     <string name="menu_list">List</string>
     <string name="menu_share">Share</string>
@@ -35,9 +27,11 @@
     <string name="dashboard_settings">Ustawienia</string>
     <string name="place">Miejsce</string>
     
+    <!-- Title -->
     <string name="favorites_title">@string/dashboard_favorites</string>
     <string name="locations_title">@string/dashboard_locations</string>
     
+    <!-- Init -->
     <string name="init_list_message">lub wybierz z listy</string>
     <string name="init_list_get_gps">Pobierz lokalizacje GPS</string>
     <string name="init_progress_message">Instalacja...</string>

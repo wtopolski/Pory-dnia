@@ -8,21 +8,30 @@ public class TimePackage {
 	private Date sunrise;
 	private Date culmination;
 	private Date sunset;
-	private final long lengthOfDay;
+	private long lengthOfDay;
 	private long longerThanTheShortestDayOfYear;
 	private long shorterThanTheLongestDayOfYear;
 	private Season season;
+	private boolean valid;
 
-	public TimePackage(TimeData<Calendar> threePack) {
+	public TimePackage(TimeData<Calendar> threePack, boolean valid) {
 		Calendar sunrise = threePack.getSunrise();
 		Calendar culmination = threePack.getCulmination();
 		Calendar sunset = threePack.getSunset();
 
-		this.lengthOfDay = sunset.getTimeInMillis() - sunrise.getTimeInMillis();
+		this.valid = valid;
+		this.currentDayInYear = culmination.get(Calendar.DAY_OF_YEAR);
 		this.sunrise = sunrise.getTime();
 		this.culmination = culmination.getTime();
 		this.sunset = sunset.getTime();
-		this.currentDayInYear = culmination.get(Calendar.DAY_OF_YEAR);
+		
+		if (valid) {
+			this.lengthOfDay = sunset.getTimeInMillis() - sunrise.getTimeInMillis();
+		}
+	}
+	
+	public boolean isValid() {
+		return valid;
 	}
 
 	public int getCurrentDayInYear() {

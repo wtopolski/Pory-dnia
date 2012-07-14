@@ -35,15 +35,22 @@ public class TimePackageCreator {
 		prepareBorders(year);
 		
 		TimePackage selectedDay = createTimePackage(year, month, day, config);
-		int currentDayInYear = selectedDay.getCurrentDayInYear();
 		
-		long lengthOfSelectedDay = selectedDay.getLengthOfDay();
-		long lengthOfShortestDay = winterSolstice.getLengthOfDay();
-		long lengthOfLongestDay = summerSolstice.getLengthOfDay();
-
+		int currentDayInYear = selectedDay.getCurrentDayInYear();
 		selectedDay.setSeason(determineSeason(year, currentDayInYear));
-		selectedDay.setLongerThanTheShortestDayOfYear(lengthOfSelectedDay - lengthOfShortestDay);
-		selectedDay.setShorterThanTheLongestDayOfYear(lengthOfLongestDay - lengthOfSelectedDay);
+		
+		if (selectedDay.isValid()) {
+			long lengthOfSelectedDay = selectedDay.getLengthOfDay();
+			long lengthOfShortestDay = winterSolstice.getLengthOfDay();
+			
+			long lengthOfLongestDay = summerSolstice.getLengthOfDay();
+			if (lengthOfLongestDay == 0L) {
+				lengthOfLongestDay = 1000*60*60*24;
+			}
+			
+			selectedDay.setLongerThanTheShortestDayOfYear(lengthOfSelectedDay - lengthOfShortestDay);
+			selectedDay.setShorterThanTheLongestDayOfYear(lengthOfLongestDay - lengthOfSelectedDay);
+		}
 		
 		return selectedDay;
 	}
@@ -82,17 +89,18 @@ public class TimePackageCreator {
 		return result;
 	}
 
-	private TimePackage createTimePackage(int year, int month, int day, TimeConfig config) {
-		TimeData<Calendar> data = createTimeDataCalendar(year, month, day, config);
-		return new TimePackage(data);
-	}
-
-	private TimeData<Calendar> createTimeDataCalendar(final int year, final int month, final int day, final TimeConfig config) {
+	protected TimePackage createTimePackage(final int year, final int month, final int day, final TimeConfig config) {
 		TimeData<Double> threePack = createTimeDataDouble(year, month, day, config);
+		boolean valid = isThreePackValid(threePack);
 		Calendar sunrise = prepareCalendar(year, month, day, threePack.getSunrise());
 		Calendar culmination = prepareCalendar(year, month, day, threePack.getCulmination());
 		Calendar sunset = prepareCalendar(year, month, day, threePack.getSunset());
-		return new TimeData<Calendar>(sunrise, culmination, sunset);
+		TimeData<Calendar> data = new TimeData<Calendar>(sunrise, culmination, sunset);
+		return new TimePackage(data, valid);
+	}
+
+	private boolean isThreePackValid(TimeData<Double> threePack) {
+		return threePack.getCulmination() != 0d && threePack.getSunrise() != 0d && threePack.getSunset() != 0d;
 	}
 
 	protected TimeData<Double> createTimeDataDouble(final int year, final int month, final int day, final TimeConfig config) {

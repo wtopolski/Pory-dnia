@@ -25,11 +25,16 @@ public enum PresentationView {
 			LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View view = layoutInflater.inflate(R.layout.presenter_page, null);
 
-			String sunrise = formatDate(timePackage.getSunrise());
-			String culmination = formatDate(timePackage.getCulmination());
-			String sunset = formatDate(timePackage.getSunset());
+			String sunrise = "---";
+			String culmination = "---";
+			String sunset = "---";
 
-
+			if (timePackage.isValid()) {
+				sunrise = formatDate(timePackage.getSunrise());
+				culmination = formatDate(timePackage.getCulmination());
+				sunset = formatDate(timePackage.getSunset());
+			}
+			
 			TextView seasonView = (TextView) view.findViewById(R.id.season);
 			seasonView.setTypeface(tf);
 
@@ -60,11 +65,27 @@ public enum PresentationView {
 			sunriseView.setText(sunrise);
 			culminationView.setText(culmination);
 			sunsetView.setText(sunset);
-			dayLength.setText(TimePackage.getSunsetSunriseDiffDescribe(timePackage.getLengthOfDay()));
+			
+			String tmp = "---";
+			if (timePackage.isValid()) {
+				tmp = TimePackage.getSunsetSunriseDiffDescribe(timePackage.getLengthOfDay());
+			}
+			dayLength.setText(tmp);
+			
 			dayInYear.setText("" + timePackage.getCurrentDayInYear());
-			longerThanTheShortestDayOfYear.setText(TimePackage.getSunsetSunriseDiffDescribe(timePackage.getLongerThanTheShortestDayOfYear()));
-			shorterThanTheLongestDayOfYear.setText(TimePackage.getSunsetSunriseDiffDescribe(timePackage.getShorterThanTheLongestDayOfYear()));
 
+			tmp = "---";
+			if (timePackage.isValid()) {
+				tmp = TimePackage.getSunsetSunriseDiffDescribe(timePackage.getLongerThanTheShortestDayOfYear());
+			}
+			longerThanTheShortestDayOfYear.setText(tmp);
+			
+			tmp = "---";
+			if (timePackage.isValid()) {
+				tmp = TimePackage.getSunsetSunriseDiffDescribe(timePackage.getShorterThanTheLongestDayOfYear());
+			}
+			shorterThanTheLongestDayOfYear.setText(tmp);
+			
 			return view;
 		}
 
